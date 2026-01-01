@@ -1,3 +1,15 @@
+﻿Character/Name/Queen=Queen
+Character/Name/Terran=Raynor
+Conversation/ArtanisBuilding/Line00001=The Terrans have built upon this location.
+Conversation/ArtanisIntro/Line00002=(unintelligible)
+Conversation/KerriganBuilding/Line00001=Why would they build this structure out here?
+Conversation/KerriganBuilding/Line00002=I am the Swarm!
+Conversation/KerriganBuilding/Line00003=Slaughter that creature!
+Conversation/KerriganIntro/Line00001=Yeah. I'm still the queen-bitch of the universe!
+Conversation/QueenBuilding/Line00001=We are the Swarm. Numberless. Merciless!
+Conversation/RaynorIntro/Line00001=I ain't your brother. You're a murdering psychopath!
+Conversation/TerranIntro/Line00001=I ain't your brother. You're a murdering psychopath!
+Conversation/TychusIntro/Line00001=We better get to that data core fast, Jimmy. The queen-bitch over there is getting awful close.
 Conversation/pMission_Aiur03/Line00013=The induction is nearing completing.
 Conversation/pMission_Aiur03/Line00016=Power approaching maximum output...
 Conversation/pMission_Aiur03/Line00019=Generator two functions. The last is below our Nexus Point. Once it  gains power, the Ark will be under our control.

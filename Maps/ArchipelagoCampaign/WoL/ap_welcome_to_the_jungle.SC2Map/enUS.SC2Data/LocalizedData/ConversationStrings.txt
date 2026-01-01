@@ -1,0 +1,11 @@
+﻿Character/Name/Ascendant=Ascendant
+Character/Name/Supplicant=Supplicant
+Conversation/AlarakIntro/Line00001=Ahh... Mmmh, the Breath of Creation fuels my every... what was I saying? I am hungry.
+Conversation/Ascendant/Line00001=Okay... Maybe I deserve to die for that one.
+Conversation/AscendantVictory/Line00001=I'm twitching. Perhaps I should limit my Terrazine intake. Uh... for a while.
+Conversation/KerriganIntro/Line00001=I always did look better in purple.
+Conversation/KerriganIntro/Line00002=Did your heart just skip a beat? You might want to get that checked.
+Conversation/KerriganVictory/Line00001=Strange. This structure doesn't belong here.
+Conversation/SelendisIntro/Line00001=I am surrounded by inferior lifeforms.
+Conversation/TTosh02/Line00068=Drone: I've got the first canister unhooked, Queen! I'll take it to the nearest Hatchery.
+Conversation/TTosh02/Line00069=Probe: I've got the first canister unhooked, Hierarch! I'll take it to the nearest Nexus.

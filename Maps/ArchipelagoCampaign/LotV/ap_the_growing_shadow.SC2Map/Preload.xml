@@ -126,11 +126,17 @@
 <Behavior id="AP_SOARadar"/>
 <Effect id="AmonTakeoverEffect"/>
 <Light id="AiurNight"/>
-<Objective id="PAiur02Bonus01"/>
-<Objective id="PAiur02Primary02"/>
-<Objective id="PAiur02Primary03"/>
-<Objective id="PAiur02Primary01"/>
-<Objective id="PAiur02Primary04"/>
+<Model id="QueenPortrait"/>
+<Model id="HydraliskPortrait"/>
+<Model id="KerriganPortrait"/>
+<Model id="RaynorMarinePortrait"/>
+<Model id="ArcturusPortrait"/>
+<Model id="GoliathPortrait"/>
+<Model id="AP_GoliathPortrait"/>
+<Model id="AP_GoliathMercenaryPortrait"/>
+<Race id="Terr"/>
+<Race id="Zerg"/>
+<Race id="Prot"/>
 <Sound id="Zealot_Death" Variations="2"/>
 <Sound id="Event_Lab01_ZerglingRelease" Variations="0,1,2"/>
 <Sound id="PAiur02_Music_Stinger" Variations="0"/>
@@ -141,6 +147,9 @@
 <Sound id="PAiur02_ReticuleAppears"/>
 <Sound id="PAiur02_AmonConversion"/>
 <Sound id="PAiur02_ZealotBam"/>
+<Sound id="Tutorial_SC2Core_ZergQueen_089"/>
+<Sound id="Mission_Epilogue01_Horner_016"/>
+<Sound id="Mission_Epilogue03_Kerrigan_056"/>
 <Sound id="pMission_Aiur02_Artanis_032"/>
 <Sound id="pMission_Aiur02_Artanis_075"/>
 <Sound id="pMission_Aiur02_DarkVoice_077"/>
@@ -187,6 +196,17 @@
 <Sound id="pMission_Aiur02_Zealot_193"/>
 <Sound id="pMission_Aiur02_Stalker_196"/>
 <Sound id="pMission_Aiur02_Zeratul_199"/>
+<Sound id="pMission_Ulnar02_Kerrigan_051"/>
+<Sound id="AP_GoliathIntro00001"/>
+<Sound id="AP_GoliathIntro00002"/>
+<Sound id="AP_GoliathIntro00003"/>
+<Sound id="AP_KerriganIntro00001"/>
+<Sound id="AP_HydraliskIntro00001"/>
+<Sound id="AP_MengskIntro00001"/>
+<Sound id="AP_RaynorIntro00001"/>
+<Sound id="AP_RaynorIntro00002"/>
+<Sound id="AP_RaynorIntro00003"/>
+<Sound id="AP_TychusIntro00001"/>
 <Soundtrack id="PAiur02_Music_CS1"/>
 <Soundtrack id="PAiur02_Music_Intro"/>
 <Soundtrack id="PAiur02_Music_S2"/>
@@ -238,9 +258,20 @@
 <Unit id="InvisibleTutorialHelper"/>
 <Unit id="Invisible2x2"/>
 <Unit id="Invisible3x3"/>
+<Unit id="AP_Hydralisk"/>
+<Unit id="AP_Barracks"/>
+<Unit id="AP_Factory"/>
+<Unit id="AP_HunterKiller"/>
+<Unit id="AP_Goliath"/>
 <Unit id="AP_Probe"/>
 <Unit id="AP_StalkerShakuras"/>
 <Unit id="AP_Gateway"/>
 <Unit id="AP_Nexus"/>
 <Unit id="AP_CyberneticsCore"/>
+<Unit id="AP_Overlord"/>
+<Unit id="AP_SpartanCompany"/>
+<Unit id="AP_MercCompound"/>
+<Unit id="AP_SpawningPool"/>
+<Unit id="AP_HydraliskDen"/>
+<Unit id="AP_ZergMercenaryCompound"/>
 </Preload>

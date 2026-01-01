@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Catalog>
+<Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../schemas/SchemaUpgradeData.xsd">
     <CUpgrade id="AP_FastBuildBattlecruiser">
         <!-- Override -->
         <EffectArray Operation="Subtract" Reference="Abil,AP_HyperionTrain,InfoArray[Train1].Time" Value="15.000000"/>
@@ -12,26 +12,26 @@
     </CUpgrade>
     <CUpgrade id="SJHyperionShipUpgrade2">
         <!-- Override -->
-        <EffectArray index="2" removed="1"/>
+        <EffectArray index="2" Value="0"/>
         <EffectArray index="9" removed="1"/>
         <EffectArray index="10" removed="1"/>
-        <EffectArray index="11" removed="1"/>
+        <EffectArray index="11" Value="0"/>
         <EffectArray Reference="Unit,SJHyperion,Food" Value="10"/>
     </CUpgrade>
     <CUpgrade id="SJHyperionShipUpgrade3">
         <!-- Override -->
-        <EffectArray index="2" removed="1"/>
+        <EffectArray index="2" Value="0"/>
         <EffectArray index="9" removed="1"/>
         <EffectArray index="10" removed="1"/>
-        <EffectArray index="11" removed="1"/>
+        <EffectArray index="11" Value="0"/>
         <EffectArray Reference="Unit,SJHyperion,Food" Value="10"/>
     </CUpgrade>
     <CUpgrade id="SJHyperionShipUpgrade4">
         <!-- Override -->
-        <EffectArray index="2" removed="1"/>
+        <EffectArray index="2" Value="0"/>
         <EffectArray index="9" removed="1"/>
         <EffectArray index="10" removed="1"/>
-        <EffectArray index="11" removed="1"/>
+        <EffectArray index="11" Value="0"/>
         <EffectArray Reference="Unit,SJHyperion,Food" Value="10"/>
     </CUpgrade>
     <CUpgrade default="1" id="AP_BaseTerranShipWeapons">
@@ -88,6 +88,24 @@
         <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
         <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-shieldslevel3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_TerranShipArmorsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Unit,SJHyperion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,LifeArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel4.dds"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipArmorsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Unit,SJHyperion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,LifeArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel5.dds"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_TerranShipArmorsVanadiumPlatingLevel1">
         <!-- Override -->
         <EffectArray Reference="Unit,SJHyperion,LifeArmorLevel" Value="1"/>
@@ -121,6 +139,28 @@
         <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
         <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-shieldslevel3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_TerranShipArmorsVanadiumPlatingLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Unit,SJHyperion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,LifeArmor" Value="1"/>
+        <EffectArray Operation="Multiply" Reference="Unit,SJHyperion,LifeMax" Value="1.05"/>
+        <EffectArray Operation="Multiply" Reference="Unit,SJHyperion,LifeStart" Value="1.05"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel4.dds"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipArmorsVanadiumPlatingLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Unit,SJHyperion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,LifeArmor" Value="1"/>
+        <EffectArray Operation="Multiply" Reference="Unit,SJHyperion,LifeMax" Value="1.05"/>
+        <EffectArray Operation="Multiply" Reference="Unit,SJHyperion,LifeStart" Value="1.05"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel5.dds"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,SJHyperion,ShieldArmor" Value="1"/>
+        <EffectArray Operation="Set" Reference="Actor,SJHyperion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipplatinglevel5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_TerranShipWeaponsLevel1">
         <!-- Override -->
         <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
@@ -138,6 +178,18 @@
         <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
         <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
         <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="Assets\Textures\btn-upgrade-terran-shipweaponslevel3.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipWeaponsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
+        <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
+        <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipweaponslevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipWeaponsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
+        <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
+        <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipweaponslevel5.dds"/>
     </CUpgrade>
     <CUpgrade id="AP_TerranShipWeaponsUltraCapacitorsLevel1">
         <!-- Override -->
@@ -159,6 +211,20 @@
         <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
         <EffectArray Reference="Weapon,SJHyperion,RateMultiplier" Value="0.05"/>
         <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="Assets\Textures\btn-upgrade-terran-shipweaponslevel3.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipWeaponsUltraCapacitorsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
+        <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
+        <EffectArray Reference="Weapon,SJHyperion,RateMultiplier" Value="0.05"/>
+        <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipweaponslevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_TerranShipWeaponsUltraCapacitorsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,SJHyperion,Level" Value="1"/>
+        <EffectArray Reference="Effect,SJHyperionDamage,Amount" Value="1"/>
+        <EffectArray Reference="Weapon,SJHyperion,RateMultiplier" Value="0.05"/>
+        <EffectArray Operation="Set" Reference="Weapon,SJHyperion,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-terran-shipweaponslevel5.dds"/>
     </CUpgrade>
     <CUpgrade id="AP_SwannCommanderVehicleWeaponRange">
         <!-- Override -->
@@ -185,5 +251,13 @@
         <EffectArray index="4" Value="0"/>
         <EffectArray index="6" Value="0"/>
         <EffectArray index="7" Value="0"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ShieldRegenBonusBattlecruiser">
+        <!--  Override -->
+        <EffectArray Reference="Unit,SJHyperion,ShieldRegenRate" Value="0.05"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ShieldRegenBonusBattlecruiser100Stack">
+        <!--  Override -->
+        <EffectArray Reference="Unit,SJHyperion,ShieldRegenRate" Value="5"/>
     </CUpgrade>
 </Catalog>

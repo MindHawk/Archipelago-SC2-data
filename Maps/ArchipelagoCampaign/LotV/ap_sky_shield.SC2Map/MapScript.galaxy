@@ -35,6 +35,16 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_LOCATION_ID_MID_EMP_SCRAMBLER = 1;
+const int gv_LOCATION_ID_SOUTHEAST_EMP_SCRAMBLER = 2;
+const int gv_LOCATION_ID_NORTH_EMP_SCRAMBLER = 3;
+const int gv_LOCATION_ID_MID_STABILIZER = 4;
+const int gv_LOCATION_ID_SOUTHWEST_STABILIZER = 5;
+const int gv_LOCATION_ID_NORTHWEST_STABILIZER = 6;
+const int gv_LOCATION_ID_NORTHEAST_STABILIZER = 7;
+const int gv_LOCATION_ID_SOUTHEAST_STABILIZER = 8;
+const int gv_LOCATION_ID_WEST_RAYNOR_BASE = 9;
+const int gv_LOCATION_ID_EAST_RAYNOR_BASE = 10;
 const string gv_oBJECTIVE_RANYOR_BASES_TEXT = "Clear Base Spots for Raynor";
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_MOEBIUS = 2;
@@ -111,6 +121,7 @@ struct gs_RECORD_Reinforcements {
 //--------------------------------------------------------------------------------------------------
 int gv_objectiveRaynorBases;
 string gv_mapMusicTrack;
+bool gv_stabilizerBeingSecured;
 gs_RECORD_Stabilizer[6] gv_stabilizers;
 int gv_stabilizersSecured;
 int gv_stabilizersNeeded;
@@ -150,8 +161,8 @@ fixed gv_priorMasteryTimestamp;
 int gv_masteryProgress;
 int gv_victory_OrbitalStrikeorSolarLanceKills;
 int gv_anniversaryAchievementTermOrbitalStrikeorSolarLanceKills;
-int gv_objectiveDestroyZergBase;
-int gv_objectiveRescueStalkers;
+int gv_objectiveSecureStabilizers;
+int gv_objectiveDestroyScramblers;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicPausedUnits;
 unitgroup gv_cinematicTempUnits;
@@ -189,8 +200,8 @@ void InitGlobals () {
     gv_nextAttackWave = UnitGroupEmpty();
     gv_orbitalCommand = UnitFromId(232);
     gv_lowestTimeToImpact = 999.0;
-    gv_objectiveDestroyZergBase = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers = c_invalidObjectiveId;
+    gv_objectiveSecureStabilizers = c_invalidObjectiveId;
+    gv_objectiveDestroyScramblers = c_invalidObjectiveId;
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicPausedUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
@@ -225,6 +236,7 @@ void gf_SpawnUnitsforIntro (string lp_unitType, int lp_count, point lp_location)
 //--------------------------------------------------------------------------------------------------
 // Trigger Variables
 //--------------------------------------------------------------------------------------------------
+trigger gt_FactionSwapInit;
 trigger gt_onDifficultyCasual;
 trigger gt_onDifficultyNormal;
 trigger gt_onDifficultyHard;
@@ -360,6 +372,7 @@ bool auto_gf_SecureStabilizer_TriggerFunc (bool testConds, bool runActions) {
     // Variable Initialization
 
     // Implementation
+    gv_stabilizerBeingSecured = true;
     gf_ActivateTurbinesforStabilizer(lp_stabilizerIndex);
     libNtve_gf_CreateUnitsWithDefaultFacing(1, "SpecialOpsDropship", 0, gv_pLAYER_04_RAYNOR_AI, gv_stabilizers[lp_stabilizerIndex].lv_dropshipEntry);
     lv_dropship = UnitLastCreated();
@@ -389,34 +402,39 @@ bool auto_gf_SecureStabilizer_TriggerFunc (bool testConds, bool runActions) {
     gf_DespawnDropship(lp_stabilizerIndex, lv_dropship);
     auto6D57B987_val = lp_stabilizerIndex;
     if (auto6D57B987_val == 1) {
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(4);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_MID_STABILIZER);
         gf_ActivateIdleStateforSCV(1, lp_stabilizerIndex);
         gf_ActivateIdleStateforSCV(2, lp_stabilizerIndex);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 3, "SensorTower", gv_stabilizers[lp_stabilizerIndex].lv_sensorTowerPoint);
+        gv_stabilizerBeingSecured = false;
     }
     else if (auto6D57B987_val == 2) {
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(5);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTHWEST_STABILIZER);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 1, "SupplyDepot", gv_stabilizers[lp_stabilizerIndex].lv_supplyDepotPoint1);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 2, "SensorTower", gv_stabilizers[lp_stabilizerIndex].lv_sensorTowerPoint);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 3, "Bunker", gv_stabilizers[lp_stabilizerIndex].lv_bunkerPoint);
+        gv_stabilizerBeingSecured = false;
     }
     else if (auto6D57B987_val == 3) {
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(6);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NORTHWEST_STABILIZER);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 1, "SupplyDepot", gv_stabilizers[lp_stabilizerIndex].lv_supplyDepotPoint1);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 2, "Bunker", gv_stabilizers[lp_stabilizerIndex].lv_bunkerPoint);
         gf_ActivateIdleStateforSCV(3, lp_stabilizerIndex);
+        gv_stabilizerBeingSecured = false;
     }
     else if (auto6D57B987_val == 4) {
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(7);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NORTHEAST_STABILIZER);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 1, "SupplyDepot", gv_stabilizers[lp_stabilizerIndex].lv_supplyDepotPoint1);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 2, "Bunker", gv_stabilizers[lp_stabilizerIndex].lv_bunkerPoint);
         gf_ActivateIdleStateforSCV(3, lp_stabilizerIndex);
+        gv_stabilizerBeingSecured = false;
     }
     else if (auto6D57B987_val == 5) {
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(8);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTHEAST_STABILIZER);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 1, "SupplyDepot", gv_stabilizers[lp_stabilizerIndex].lv_supplyDepotPoint1);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 2, "SensorTower", gv_stabilizers[lp_stabilizerIndex].lv_sensorTowerPoint);
         gf_OrderSCVtoBuildStructure(lp_stabilizerIndex, 3, "Bunker", gv_stabilizers[lp_stabilizerIndex].lv_bunkerPoint);
+        gv_stabilizerBeingSecured = false;
     }
     else {
     }
@@ -1597,6 +1615,46 @@ bool auto_gf_SpawnUnitsforIntro_TriggerFunc (bool testConds, bool runActions) {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Faction Swap Init
+//--------------------------------------------------------------------------------------------------
+bool gt_FactionSwapInit_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), "Prot", false);
+    }
+    else {
+        libABFE498B_gv_aP_Triggers_skipCutscenes = true;
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), libABFE498B_gv_aP_Triggers_Option_overridePlayerRace, false);
+        if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Terr")) {
+            PlayerSetRace(gv_pLAYER_01_USER, "Terr");
+            lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_RAYNORS_RAIDERS);
+        }
+        else {
+            if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Zerg")) {
+                PlayerSetRace(gv_pLAYER_01_USER, "Zerg");
+                lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_KERRIGAN_SWARM);
+            }
+
+        }
+        lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap(gv_pLAYER_01_USER);
+        libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionEntireMap(), gv_pLAYER_01_USER);
+        lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_FactionSwapInit_Init () {
+    gt_FactionSwapInit = TriggerCreate("gt_FactionSwapInit_Func");
+    TriggerAddEventGeneric(gt_FactionSwapInit, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: onDifficultyCasual
 //--------------------------------------------------------------------------------------------------
 bool gt_onDifficultyCasual_Func (bool testConds, bool runActions) {
@@ -1781,7 +1839,7 @@ bool gt_MidScrambler_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_MID_EMP_SCRAMBLER);
     return true;
 }
 
@@ -1809,7 +1867,7 @@ bool gt_SoutheastScrambler_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(2);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTHEAST_EMP_SCRAMBLER);
     return true;
 }
 
@@ -1837,7 +1895,7 @@ bool gt_NorthScrambler_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NORTH_EMP_SCRAMBLER);
     return true;
 }
 
@@ -1851,7 +1909,13 @@ void gt_NorthScrambler_Init () {
 // Trigger: ObjectiveRaynorBasesCreate
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveRaynorBasesCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Extra;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -1865,9 +1929,12 @@ bool gt_ObjectiveRaynorBasesCreate_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    ObjectiveCreate(StringToText(gv_oBJECTIVE_RANYOR_BASES_TEXT), StringToText(""), c_objectiveStateActive, false);
-    lib5BD4895D_gf_AP_Core_addObjectiveWithCounter(ObjectiveLastCreated(), "checks", 0, 2);
+    ObjectiveCreate(StringToText(gv_oBJECTIVE_RANYOR_BASES_TEXT), StringToText(""), c_objectiveStateHidden, false);
     gv_objectiveRaynorBases = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveRaynorBases, lv_category, "", gv_basesReclaimed, 2, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveRaynorBases, gv_LOCATION_ID_WEST_RAYNOR_BASE);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveRaynorBases, gv_LOCATION_ID_EAST_RAYNOR_BASE);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveRaynorBases, true);
     return true;
 }
 
@@ -2002,6 +2069,10 @@ bool gt_TransferFirstBaseToPlayer_Func (bool testConds, bool runActions) {
         if ((UnitGetType(lv_unit) == "AP_ZerglingRespawnControllerUnit")) {
             UnitRemove(lv_unit);
         }
+        else if ((UnitGetType(lv_unit) == "OrbitalCommand")) {
+            libNtve_gf_ReplaceUnit(lv_unit, "AP_CommandCenter", libNtve_ge_ReplaceUnitOptions_OldUnitsRelative);
+            lv_unit = libNtve_gf_LastReplacedUnit();
+        }
         else if (true) {
             lv_unitType = UnitGetType(lv_unit);
             libNtve_gf_ReplaceUnit(lv_unit, "AP_" + lv_unitType, libNtve_ge_ReplaceUnitOptions_OldUnitsRelative);
@@ -2010,6 +2081,7 @@ bool gt_TransferFirstBaseToPlayer_Func (bool testConds, bool runActions) {
         libNtve_gf_RescueUnit(lv_unit, gv_pLAYER_01_USER, true);
         lib15EF4C78_gf_AP_Player_ReapplyDefaultBehaviorsToUnit(lv_unit);
     }
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     TriggerExecute(gt_IncreaseSupplyCap, true, false);
     return true;
 }
@@ -2060,6 +2132,10 @@ bool gt_TransferSecondBaseToPlayer_Func (bool testConds, bool runActions) {
         if ((UnitGetType(lv_unit) == "AP_ZerglingRespawnControllerUnit")) {
             UnitRemove(lv_unit);
         }
+        else if ((UnitGetType(lv_unit) == "OrbitalCommand")) {
+            libNtve_gf_ReplaceUnit(lv_unit, "AP_CommandCenter", libNtve_ge_ReplaceUnitOptions_OldUnitsRelative);
+            lv_unit = libNtve_gf_LastReplacedUnit();
+        }
         else if (true) {
             lv_unitType = UnitGetType(lv_unit);
             libNtve_gf_ReplaceUnit(lv_unit, "AP_" + lv_unitType, libNtve_ge_ReplaceUnitOptions_OldUnitsRelative);
@@ -2068,6 +2144,7 @@ bool gt_TransferSecondBaseToPlayer_Func (bool testConds, bool runActions) {
         libNtve_gf_RescueUnit(lv_unit, gv_pLAYER_01_USER, true);
         lib15EF4C78_gf_AP_Player_ReapplyDefaultBehaviorsToUnit(lv_unit);
     }
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     TriggerExecute(gt_IncreaseSupplyCap, true, false);
     return true;
 }
@@ -2085,6 +2162,8 @@ bool gt_Initialization_Func (bool testConds, bool runActions) {
     unit lv_unit;
 
     // Automatic Variable Declarations
+    unitgroup autoD4A42770_g;
+    int autoD4A42770_u;
     unitgroup autoB23963B4_g;
     int autoB23963B4_u;
 
@@ -2100,16 +2179,24 @@ bool gt_Initialization_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_Init05Environment, true, false);
     TriggerExecute(gt_Init06Difficulties, true, false);
     TriggerExecute(gt_IntroQ, true, true);
-    if ((libABFE498B_gv_aP_Triggers_Option_takeOverAIAllies == false)) {
+    if ((libABFE498B_gv_aP_Triggers_Option_takeOverAIAllies == true)) {
         autoB23963B4_g = UnitGroupFromId(1);
         autoB23963B4_u = UnitGroupCount(autoB23963B4_g, c_unitCountAll);
         for (;; autoB23963B4_u -= 1) {
             lv_unit = UnitGroupUnitFromEnd(autoB23963B4_g, autoB23963B4_u);
             if (lv_unit == null) { break; }
+            libNtve_gf_ShowHideUnit(lv_unit, true);
+        }
+    }
+    else {
+        autoD4A42770_g = UnitGroupFromId(1);
+        autoD4A42770_u = UnitGroupCount(autoD4A42770_g, c_unitCountAll);
+        for (;; autoD4A42770_u -= 1) {
+            lv_unit = UnitGroupUnitFromEnd(autoD4A42770_g, autoD4A42770_u);
+            if (lv_unit == null) { break; }
             UnitRemove(lv_unit);
         }
     }
-
     TriggerExecute(gt_StartGameQ, true, false);
     return true;
 }
@@ -2152,7 +2239,11 @@ bool gt_Init02Players_Func (bool testConds, bool runActions) {
     }
 
     UISetAlertTypeVisible(PlayerGroupAll(), "AttackTownAlly_Prot", false);
+    UISetAlertTypeVisible(PlayerGroupAll(), "AttackTownAlly_Terr", false);
+    UISetAlertTypeVisible(PlayerGroupAll(), "AttackTownAlly_Zerg", false);
     UISetAlertTypeVisible(PlayerGroupAll(), "AttackUnitAlly_Prot", false);
+    UISetAlertTypeVisible(PlayerGroupAll(), "AttackUnitAlly_Terr", false);
+    UISetAlertTypeVisible(PlayerGroupAll(), "AttackUnitAlly_Zerg", false);
     libNtve_gf_SetAlliance(gv_pLAYER_01_USER, gv_pLAYER_03_PLATFORM_STABILIZER, libNtve_ge_AllianceSetting_Neutral);
     libNtve_gf_SetAlliance(gv_pLAYER_02_MOEBIUS, gv_pLAYER_03_PLATFORM_STABILIZER, libNtve_ge_AllianceSetting_Neutral);
     libNtve_gf_SetAlliance(gv_pLAYER_04_RAYNOR_AI, gv_pLAYER_03_PLATFORM_STABILIZER, libNtve_ge_AllianceSetting_Ally);
@@ -2447,6 +2538,7 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
         return true;
     }
 
+    libABFE498B_gf_AP_Triggers_resetBase(gv_pLAYER_01_USER);
     TriggerExecute(gt_OrbitalStrikeSequence, true, false);
     TriggerExecute(gt_StatInitialResourcePickupCount, true, false);
     TriggerEnable(gt_CreateHolesinGround, true);
@@ -2455,7 +2547,6 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
         VisRevealArea(gv_pLAYER_01_USER, RegionCircle(gv_introDebrisLocations[lv_index], 6.0), 0.0625, false);
     }
     UIAlertPoint("Trigger", gv_pLAYER_01_USER, StringExternal("Param/Value/4F74AC54"), null, PointFromId(45));
-    libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionPlayableMap(), gv_pLAYER_01_USER);
     Wait(3.0, c_timeReal);
     TriggerExecute(gt_MonitorTimerWindowQ, true, false);
     TriggerQueueEnter();
@@ -2474,7 +2565,6 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
         }
 
     }
-    TriggerExecute(gt_ObjectiveRaynorBasesCreate, true, true);
     TriggerQueueExit();
     Wait(4.0, c_timeReal);
     TriggerQueueEnter();
@@ -2493,6 +2583,7 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerQueueExit();
+    TriggerExecute(gt_ObjectiveRaynorBasesCreate, true, true);
     Wait(200.0, c_timeGame);
     TriggerExecute(gt_DiscoverBonusQ, true, false);
     return true;
@@ -2956,15 +3047,16 @@ bool gt_MonitorStabilizers_Func (bool testConds, bool runActions) {
 
                 if ((gv_stabilizersSecured >= gv_stabilizersNeeded)) {
                     gv_finalStabilizerIndex = lv_index;
-                    TriggerExecute(gt_VictorySecureStabilizers, true, false);
                     TimerPause(gv_skyshieldTimer, true);
                     TimerWindowShow(gv_skyshieldTimerWindow, PlayerGroupAll(), false);
+                    gf_SecureStabilizer(lv_index);
+                    TriggerExecute(gt_VictorySecureStabilizers, true, false);
                 }
                 else {
                     libVCUI_gf_FlashTimerWindow(5.0, false);
                     TimerStart(gv_skyshieldTimer, (TimerGetRemaining(gv_skyshieldTimer) + gv_additionalTimePostRepair), false, c_timeAI);
+                    gf_SecureStabilizer(lv_index);
                 }
-                gf_SecureStabilizer(lv_index);
                 TriggerExecute(gt_ReinforceOtherStabilizers, true, false);
             }
 
@@ -3180,7 +3272,7 @@ bool gt_RaynorBase1_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(9);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_WEST_RAYNOR_BASE);
     gv_basesReclaimed += 1;
     TriggerExecute(gt_ObjectiveRaynorBasesUpdate, true, false);
     libNtve_gf_CreateUnitsWithDefaultFacing(1, "OrbitalCommandFlying", c_unitCreateIgnorePlacement, gv_pLAYER_05_RAYNOR_BASE_1, PointFromId(1929));
@@ -3240,7 +3332,7 @@ bool gt_RaynorBase2_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(10);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_EAST_RAYNOR_BASE);
     gv_basesReclaimed += 1;
     TriggerExecute(gt_ObjectiveRaynorBasesUpdate, true, false);
     libNtve_gf_CreateUnitsWithDefaultFacing(1, "OrbitalCommandFlying", c_unitCreateIgnorePlacement, gv_pLAYER_06_RAYNOR_BASE_2, PointFromId(1946));
@@ -4697,6 +4789,9 @@ bool gt_VictorySecureStabilizers_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
+    while (!((gv_stabilizerBeingSecured == false))) {
+        Wait(0.5, c_timeGame);
+    }
     TriggerExecute(gt_VictorySequence, true, false);
     return true;
 }
@@ -4724,7 +4819,7 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     libVCMI_gf_GameOver(libVCMI_ge_CampaignMissionGameResultType_Victory);
     Wait(2.0, c_timeReal);
     TriggerExecute(gt_ObjectiveSecuretheStabilizersComplete, true, true);
@@ -5140,8 +5235,17 @@ bool gt_ObjectiveSecuretheStabilizersCreate_Func (bool testConds, bool runAction
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("PKorhal01Primary01");
-    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PKorhal01Primary01", "", gv_stabilizersSecured);
+    gv_objectiveSecureStabilizers = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objectiveSecureStabilizers, libVoiC_gf_MissionObjectiveName("PKorhal01Primary01"));
+    ObjectiveShow(gv_objectiveSecureStabilizers, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveSecureStabilizers, lib5BD4895D_ge_APObjectiveCategory_Primary, "", gv_stabilizersSecured, libVoiC_gf_MissionObjectiveItemCount("PKorhal01Primary01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, gv_LOCATION_ID_MID_STABILIZER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, gv_LOCATION_ID_SOUTHWEST_STABILIZER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, gv_LOCATION_ID_NORTHWEST_STABILIZER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, gv_LOCATION_ID_NORTHEAST_STABILIZER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, gv_LOCATION_ID_SOUTHEAST_STABILIZER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureStabilizers, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveSecureStabilizers, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5173,7 +5277,7 @@ bool gt_ObjectiveSecuretheStabilizersComplete_Func (bool testConds, bool runActi
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveSecuretheStabilizersCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveSecureStabilizers);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5201,7 +5305,7 @@ bool gt_ObjectiveSecuretheStabilizersUpdate_Func (bool testConds, bool runAction
     }
 
     TriggerExecute(gt_ObjectiveSecuretheStabilizersCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyZergBase, gv_stabilizersSecured);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveSecureStabilizers, gv_stabilizersSecured);
     return true;
 }
 
@@ -5232,7 +5336,7 @@ bool gt_ObjectiveSecuretheStabilizersFailed_Func (bool testConds, bool runAction
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveSecuretheStabilizersCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveSecureStabilizers);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5246,7 +5350,13 @@ void gt_ObjectiveSecuretheStabilizersFailed_Init () {
 // Trigger: Objective - Destroy Shadow Scrambers  - Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveDestroyShadowScrambersCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -5264,8 +5374,14 @@ bool gt_ObjectiveDestroyShadowScrambersCreate_Func (bool testConds, bool runActi
         Wait(1.0, c_timeGame);
     }
     libVCMI_gf_CreateObjectiveCampaign("PKorhal01Bonus01");
-    gv_objectiveRescueStalkers = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PKorhal01Bonus01", "", gv_scramblersDestroyed);
+    gv_objectiveDestroyScramblers = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objectiveDestroyScramblers, libVoiC_gf_MissionObjectiveName("PKorhal01Bonus01"));
+    ObjectiveShow(gv_objectiveDestroyScramblers, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveDestroyScramblers, lv_category, "", gv_scramblersDestroyed, libVoiC_gf_MissionObjectiveItemCount("PKorhal01Bonus01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyScramblers, gv_LOCATION_ID_MID_EMP_SCRAMBLER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyScramblers, gv_LOCATION_ID_SOUTHEAST_EMP_SCRAMBLER);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyScramblers, gv_LOCATION_ID_NORTH_EMP_SCRAMBLER);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyScramblers, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5294,7 +5410,7 @@ bool gt_ObjectiveDestroyShadowScrambersComplete_Func (bool testConds, bool runAc
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveDestroyShadowScrambersCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyScramblers);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5318,7 +5434,7 @@ bool gt_ObjectiveDestroyShadowScrambersUpdate_Func (bool testConds, bool runActi
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDestroyShadowScrambersCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveRescueStalkers, gv_scramblersDestroyed);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyScramblers, gv_scramblersDestroyed);
     return true;
 }
 
@@ -5347,7 +5463,7 @@ bool gt_IntroQ_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
     TriggerExecute(gt_IntroSetup, true, true);
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         TriggerExecute(gt_IntroCinematic, true, true);
         TriggerExecute(gt_IntroCinematicEnd, true, true);
     }
@@ -5953,7 +6069,7 @@ bool gt_MidOrbitalStrikeQ_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         TriggerExecute(gt_MidOrbitalStrikeSetup, true, true);
         TriggerExecute(gt_MidOrbitalStrikeCinematic, true, true);
         TriggerExecute(gt_MidOrbitalStrikeCinematicEnd, true, true);
@@ -6548,6 +6664,7 @@ void gt_VictoryMusic_Init () {
 // Trigger Initialization
 //--------------------------------------------------------------------------------------------------
 void InitTriggers () {
+    gt_FactionSwapInit_Init();
     gt_onDifficultyCasual_Init();
     gt_onDifficultyNormal_Init();
     gt_onDifficultyHard_Init();

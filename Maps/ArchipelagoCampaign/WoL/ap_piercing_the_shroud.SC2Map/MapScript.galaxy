@@ -27,6 +27,15 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_LOCATION_ID_HOLDING_CELL_RELIC = 1;
+const int gv_LOCATION_ID_BRUTALISK_RELIC = 2;
+const int gv_LOCATION_ID_FIRST_ESCAPE_RELIC = 3;
+const int gv_LOCATION_ID_SECOND_ESCAPE_RELIC = 4;
+const int gv_LOCATION_ID_BRUTALISK = 5;
+const int gv_LOCATION_ID_FUSION_REACTOR = 6;
+const int gv_LOCATION_ID_ENTRANCE_HOLDING_PEN = 7;
+const int gv_LOCATION_ID_CARGO_BAY_WARBOT = 8;
+const int gv_LOCATION_ID_ESCAPE_WARBOT = 9;
 const int gv_objectiveFindWarBotWarbotsTotal = 2;
 const int gv_p01_USER = 1;
 const int gv_p02_DOMINION = 2;
@@ -385,7 +394,6 @@ void gf_SetUnitMaxStats (unit lp_unit, fixed lp_maxShields, fixed lp_maxLife);
 trigger gt_ObjectiveFindWarBotCreate;
 trigger gt_ObjectiveFindWarBotComplete;
 trigger gt_ObjectiveFindWarBotUpdate;
-trigger gt_ObjectiveFindWarBotFailed;
 trigger gt_ObjectiveDestroyHoldingPenCreate;
 trigger gt_ObjectiveDestroyHoldingPenComplete;
 trigger gt_ObjectiveDestroyHoldingPenFailed;
@@ -407,6 +415,11 @@ trigger gt_Init04Music;
 trigger gt_Init05Environment;
 trigger gt_Init06Difficulties;
 trigger gt_Init07Help;
+trigger gt_DEBUGResupply;
+trigger gt_DEBUGSection2WarbotMachineHall;
+trigger gt_DEBUGSection3AfterGenerator;
+trigger gt_DEBUGSection4AfterHybridvanish;
+trigger gt_DEBUGVictory;
 trigger gt_StartGame;
 trigger gt_TerminalUseSafety;
 trigger gt_CreateGrenades;
@@ -692,20 +705,33 @@ trigger gt_VictorySceneTiming;
 void gf_SetUnitMaxStats (unit lp_unit, fixed lp_maxShields, fixed lp_maxLife) {
     // Automatic Variable Declarations
     // Implementation
-    UnitSetPropertyFixed(lp_unit, c_unitPropShieldsMax, lp_maxShields);
-    UnitSetPropertyFixed(lp_unit, c_unitPropShieldsPercent, 100.0);
-    UnitSetPropertyFixed(lp_unit, c_unitPropLifeMax, lp_maxLife);
-    UnitSetPropertyFixed(lp_unit, c_unitPropLifePercent, 100.0);
+    if ((UnitGetType(lp_unit) != "AP_SoACaster")) {
+        UnitSetPropertyFixed(lp_unit, c_unitPropShieldsMax, lp_maxShields);
+        UnitSetPropertyFixed(lp_unit, c_unitPropLifeMax, lp_maxLife);
+        UnitSetPropertyFixed(lp_unit, c_unitPropLifePercent, 100.0);
+        UnitSetPropertyFixed(lp_unit, c_unitPropShieldsPercent, 100.0);
+    }
+
 }
 
 //--------------------------------------------------------------------------------------------------
 // Trigger: Objective Find War Bot Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveFindWarBotCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((UnitGetOwner(EventUnit()) == 1))) {
             return false;
         }
     }
@@ -716,9 +742,12 @@ bool gt_ObjectiveFindWarBotCreate_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    ObjectiveCreate(StringExternal("Param/Value/D7142EFF"), StringToText(""), c_objectiveStateActive, false);
-    lib5BD4895D_gf_AP_Core_addObjectiveWithCounter(ObjectiveLastCreated(), ") (1 Remaining in this Area", gv_objectiveFindWarBotWarbotsFound, gv_objectiveFindWarBotWarbotsTotal);
+    ObjectiveCreate(StringExternal("Param/Value/D7142EFF"), StringToText(""), c_objectiveStateHidden, false);
     gv_objectiveFindWarBot = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveFindWarBot, lv_category, ") (1 Remaining in this Area", gv_objectiveFindWarBotWarbotsFound, gv_objectiveFindWarBotWarbotsTotal, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveFindWarBot, gv_LOCATION_ID_CARGO_BAY_WARBOT);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveFindWarBot, gv_LOCATION_ID_ESCAPE_WARBOT);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveFindWarBot, true);
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -726,6 +755,7 @@ bool gt_ObjectiveFindWarBotCreate_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveFindWarBotCreate_Init () {
     gt_ObjectiveFindWarBotCreate = TriggerCreate("gt_ObjectiveFindWarBotCreate_Func");
+    TriggerAddEventUnitRegion(gt_ObjectiveFindWarBotCreate, null, RegionFromId(13), true);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -762,6 +792,8 @@ void gt_ObjectiveFindWarBotComplete_Init () {
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveFindWarBotUpdate_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
+    int autoB994BCC9_val;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -777,7 +809,15 @@ bool gt_ObjectiveFindWarBotUpdate_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_ObjectiveFindWarBotCreate, true, false);
     gv_objectiveFindWarBotWarbotsFound = (gv_objectiveFindWarBotWarbotsFound + 1);
     lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveFindWarBot, gv_objectiveFindWarBotWarbotsFound);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveFindWarBot, (") (" + "None" + " Remaining in this Area"));
+    autoB994BCC9_val = gv_objectiveFindWarBotWarbotsFound;
+    if (autoB994BCC9_val == 1) {
+        lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveFindWarBot, (") (" + "None" + " Remaining in this Area"));
+    }
+    else if (autoB994BCC9_val == 2) {
+        lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveFindWarBot, "");
+    }
+    else {
+    }
     if ((gv_objectiveFindWarBotWarbotsFound == gv_objectiveFindWarBotWarbotsTotal)) {
         TriggerEnable(TriggerGetCurrent(), false);
         TriggerExecute(gt_ObjectiveFindWarBotComplete, true, false);
@@ -793,41 +833,23 @@ void gt_ObjectiveFindWarBotUpdate_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: Objective Find War Bot Failed
-//--------------------------------------------------------------------------------------------------
-bool gt_ObjectiveFindWarBotFailed_Func (bool testConds, bool runActions) {
-    // Automatic Variable Declarations
-    // Conditions
-    if (testConds) {
-        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
-            return false;
-        }
-    }
-
-    // Actions
-    if (!runActions) {
-        return true;
-    }
-
-    TriggerEnable(TriggerGetCurrent(), false);
-    TriggerExecute(gt_ObjectiveFindWarBotCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveFindWarBot);
-    return true;
-}
-
-//--------------------------------------------------------------------------------------------------
-void gt_ObjectiveFindWarBotFailed_Init () {
-    gt_ObjectiveFindWarBotFailed = TriggerCreate("gt_ObjectiveFindWarBotFailed_Func");
-}
-
-//--------------------------------------------------------------------------------------------------
 // Trigger: Objective Destroy Holding Pen Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveDestroyHoldingPenCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Extra;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((UnitGetOwner(EventUnit()) == 1))) {
             return false;
         }
     }
@@ -838,9 +860,11 @@ bool gt_ObjectiveDestroyHoldingPenCreate_Func (bool testConds, bool runActions) 
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    ObjectiveCreate(StringExternal("Param/Value/999CBBD4"), StringToText(""), c_objectiveStateActive, false);
-    lib5BD4895D_gf_AP_Core_addObjectiveSimple(ObjectiveLastCreated());
+    ObjectiveCreate(StringExternal("Param/Value/999CBBD4"), StringToText(""), c_objectiveStateHidden, false);
     gv_objectiveDestroyHoldingPen = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveDestroyHoldingPen, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyHoldingPen, gv_LOCATION_ID_ENTRANCE_HOLDING_PEN);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyHoldingPen, true);
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -848,6 +872,7 @@ bool gt_ObjectiveDestroyHoldingPenCreate_Func (bool testConds, bool runActions) 
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveDestroyHoldingPenCreate_Init () {
     gt_ObjectiveDestroyHoldingPenCreate = TriggerCreate("gt_ObjectiveDestroyHoldingPenCreate_Func");
+    TriggerAddEventUnitRegion(gt_ObjectiveDestroyHoldingPenCreate, null, RegionFromId(127), true);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -926,6 +951,14 @@ bool gt_CalcRaynorVanadiumBonus_Func (bool testConds, bool runActions) {
     }
 
     if ((TechTreeUpgradeCount(gv_p01_USER, "AP_TerranInfantryArmorsVanadiumPlatingLevel3", c_techCountCompleteOnly) >= 1)) {
+        gv_raynorMaximumHP *= 1.05;
+    }
+
+    if ((TechTreeUpgradeCount(gv_p01_USER, "AP_TerranInfantryArmorsVanadiumPlatingLevel4", c_techCountCompleteOnly) >= 1)) {
+        gv_raynorMaximumHP *= 1.05;
+    }
+
+    if ((TechTreeUpgradeCount(gv_p01_USER, "AP_TerranInfantryArmorsVanadiumPlatingLevel5", c_techCountCompleteOnly) >= 1)) {
         gv_raynorMaximumHP *= 1.05;
     }
 
@@ -1090,7 +1123,7 @@ bool gt_FirstProtossRelic_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_HOLDING_CELL_RELIC);
     return true;
 }
 
@@ -1121,7 +1154,7 @@ bool gt_SecondProtossRelic_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(2);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_BRUTALISK_RELIC);
     return true;
 }
 
@@ -1152,7 +1185,7 @@ bool gt_ThirdProtossRelic_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_FIRST_ESCAPE_RELIC);
     return true;
 }
 
@@ -1183,7 +1216,7 @@ bool gt_FourthProtossRelic_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(4);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SECOND_ESCAPE_RELIC);
     return true;
 }
 
@@ -1212,6 +1245,7 @@ bool gt_ArchInit_Func (bool testConds, bool runActions) {
     lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_p13_DOMINION_LABS, lib5BD4895D_gv_aP_Core_Faction_TERRAN_DOMINION);
     lib5BD4895D_gf_AP_Core_MapConfig_setMapInit(gt_Initialization);
     libABFE498B_gf_AP_Triggers_MapConfig_setDifficultySetup(gt_onDifficultyCasual, gt_onDifficultyNormal, gt_onDifficultyHard, gt_onDifficultyBrutal);
+    lib5BD4895D_gf_AP_Core_MapConfig_setChatboxPosition(c_anchorTopLeft, 500, 350, 0, 320);
     TechTreeAbilityAllow(gv_p01_USER, AbilityCommand("TossGrenade", 0), false);
     lib5BD4895D_gf_AP_Core_initObjectivePanel();
     gv_mapFullyInitialized = true;
@@ -1713,6 +1747,237 @@ void gt_Init07Help_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: DEBUG: Resupply
+//--------------------------------------------------------------------------------------------------
+bool gt_DEBUGResupply_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    point lv_point;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_point = UnitGetPosition(gv_raynor);
+
+    // Conditions
+    if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerDebugOutput(1, StringExternal("Param/Value/DA6E8BFA"), true);
+    libNtve_gf_CreateUnitsAtPoint2(1, "PickupPlasmaGun", c_unitCreateIgnorePlacement, gv_p07_NEUTRAL, lv_point);
+    libNtve_gf_CreateUnitsAtPoint2(1, "PickupGrenades", c_unitCreateIgnorePlacement, gv_p07_NEUTRAL, lv_point);
+    libNtve_gf_CreateUnitsAtPoint2(1, "PickupRestorationCharge", c_unitCreateIgnorePlacement, gv_p07_NEUTRAL, lv_point);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_DEBUGResupply_Init () {
+    gt_DEBUGResupply = TriggerCreate("gt_DEBUGResupply_Func");
+    TriggerAddEventChatMessage(gt_DEBUGResupply, c_playerAny, "-ammo", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: DEBUG: Section 2 - Warbot/Machine Hall
+//--------------------------------------------------------------------------------------------------
+bool gt_DEBUGSection2WarbotMachineHall_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    point lv_point;
+
+    // Automatic Variable Declarations
+    unitgroup autoCE274940_g;
+    int autoCE274940_u;
+    unit autoCE274940_var;
+
+    // Variable Initialization
+    lv_point = Point(185.0, 80.0);
+
+    // Conditions
+    if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
+            return false;
+        }
+
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerDebugOutput(1, StringExternal("Param/Value/8EC8DA83"), true);
+    autoCE274940_g = UnitGroup(null, gv_p01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
+    autoCE274940_u = UnitGroupCount(autoCE274940_g, c_unitCountAll);
+    for (;; autoCE274940_u -= 1) {
+        autoCE274940_var = UnitGroupUnitFromEnd(autoCE274940_g, autoCE274940_u);
+        if (autoCE274940_var == null) { break; }
+        UnitSetPosition(autoCE274940_var, lv_point, false);
+    }
+    CameraPan(gv_p01_USER, lv_point, 0.5, -1, 10.0, false);
+    TriggerExecute(gt_DEBUGResupply, true, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_DEBUGSection2WarbotMachineHall_Init () {
+    gt_DEBUGSection2WarbotMachineHall = TriggerCreate("gt_DEBUGSection2WarbotMachineHall_Func");
+    TriggerAddEventChatMessage(gt_DEBUGSection2WarbotMachineHall, c_playerAny, "-s2", true);
+    TriggerAddEventChatMessage(gt_DEBUGSection2WarbotMachineHall, c_playerAny, "-Stage 2", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: DEBUG: Section 3 - After Generator
+//--------------------------------------------------------------------------------------------------
+bool gt_DEBUGSection3AfterGenerator_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
+            return false;
+        }
+
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((gv_escapeGameStarted == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerDebugOutput(1, StringExternal("Param/Value/AFFC6891"), true);
+    TriggerExecute(gt_MidCleanup, false, true);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_DEBUGSection3AfterGenerator_Init () {
+    gt_DEBUGSection3AfterGenerator = TriggerCreate("gt_DEBUGSection3AfterGenerator_Func");
+    TriggerAddEventChatMessage(gt_DEBUGSection3AfterGenerator, c_playerAny, "-s3", true);
+    TriggerAddEventChatMessage(gt_DEBUGSection3AfterGenerator, c_playerAny, "-Stage 3", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: DEBUG: Section 4 - After Hybrid vanish
+//--------------------------------------------------------------------------------------------------
+bool gt_DEBUGSection4AfterHybridvanish_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    point lv_point;
+
+    // Automatic Variable Declarations
+    unitgroup autoB97CD676_g;
+    int autoB97CD676_u;
+    unit autoB97CD676_var;
+
+    // Variable Initialization
+    lv_point = RegionGetCenter(RegionFromId(58));
+
+    // Conditions
+    if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
+            return false;
+        }
+
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerDebugOutput(1, StringExternal("Param/Value/AE2C0696"), true);
+    if ((gv_escapeGameStarted == false)) {
+        TriggerExecute(gt_MidCleanup, false, true);
+        Wait(1.0, c_timeGame);
+    }
+
+    if ((UnitIsAlive(gv_hybrid) == false)) {
+        TriggerExecute(gt_HybridCreate, false, true);
+        Wait(1.0, c_timeGame);
+    }
+
+    UnitKill(UnitFromId(627));
+    TriggerExecute(gt_HybridRocksDestroyed, false, true);
+    TriggerQueueClear(c_triggerQueueRemove);
+    TransmissionClearAll();
+    Wait(1.0, c_timeGame);
+    autoB97CD676_g = UnitGroup(null, gv_p01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
+    autoB97CD676_u = UnitGroupCount(autoB97CD676_g, c_unitCountAll);
+    for (;; autoB97CD676_u -= 1) {
+        autoB97CD676_var = UnitGroupUnitFromEnd(autoB97CD676_g, autoB97CD676_u);
+        if (autoB97CD676_var == null) { break; }
+        UnitSetPosition(autoB97CD676_var, lv_point, false);
+    }
+    CameraPan(gv_p01_USER, lv_point, 0.5, -1, 10.0, false);
+    TriggerExecute(gt_DEBUGResupply, true, false);
+    Wait(1.0, c_timeGame);
+    TriggerQueueClear(c_triggerQueueRemove);
+    TransmissionClearAll();
+    Wait(1.0, c_timeGame);
+    TransmissionClearAll();
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_DEBUGSection4AfterHybridvanish_Init () {
+    gt_DEBUGSection4AfterHybridvanish = TriggerCreate("gt_DEBUGSection4AfterHybridvanish_Func");
+    TriggerAddEventChatMessage(gt_DEBUGSection4AfterHybridvanish, c_playerAny, "-s4", true);
+    TriggerAddEventChatMessage(gt_DEBUGSection4AfterHybridvanish, c_playerAny, "-Stage 4", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: DEBUG: Victory
+//--------------------------------------------------------------------------------------------------
+bool gt_DEBUGVictory_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
+            return false;
+        }
+
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerDebugOutput(1, StringExternal("Param/Value/03006408"), true);
+    TriggerExecute(gt_VictoryEscape, false, true);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_DEBUGVictory_Init () {
+    gt_DEBUGVictory = TriggerCreate("gt_DEBUGVictory_Func");
+    TriggerAddEventChatMessage(gt_DEBUGVictory, c_playerAny, "-win", true);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: Start Game
 //--------------------------------------------------------------------------------------------------
 bool gt_StartGame_Func (bool testConds, bool runActions) {
@@ -1725,7 +1990,6 @@ bool gt_StartGame_Func (bool testConds, bool runActions) {
     Wait(4.0, c_timeReal);
     TriggerExecute(gt_ObjectiveInvestigateCreate, true, false);
     TriggerExecute(gt_ObjectiveRaynorCreateQ, true, false);
-    TriggerExecute(gt_ObjectiveProtossRelicsCreateQ, true, false);
     TriggerExecute(gt_ObjectiveFusionReactorCreateQ, true, false);
     TriggerExecute(gt_ObjectiveEscapeCreateQ, true, false);
     return true;
@@ -2209,8 +2473,11 @@ bool gt_HealthandEnergyPickup_Func (bool testConds, bool runActions) {
     for (;; auto22FC4D74_u -= 1) {
         auto22FC4D74_var = UnitGroupUnitFromEnd(auto22FC4D74_g, auto22FC4D74_u);
         if (auto22FC4D74_var == null) { break; }
-        UnitSetPropertyFixed(auto22FC4D74_var, c_unitPropLifePercent, 100.0);
-        UnitSetPropertyFixed(auto22FC4D74_var, c_unitPropEnergyPercent, 100.0);
+        if ((UnitGetType(auto22FC4D74_var) != "AP_SoACaster")) {
+            UnitSetPropertyFixed(auto22FC4D74_var, c_unitPropEnergyPercent, 100.0);
+            UnitSetPropertyFixed(auto22FC4D74_var, c_unitPropLifePercent, 100.0);
+        }
+
     }
     return true;
 }
@@ -5152,9 +5419,12 @@ bool gt_Lab01PenDies2_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    libNtve_gf_CreateUnitsAtPoint2(1, "ProtossRelic", 0, gv_p07_NEUTRAL, PointFromId(2957));
-    UnitGroupAdd(gv_protossRelicsGroup, UnitLastCreated());
-    UnitSetInfoText(UnitLastCreated(), StringExternal("Param/Value/2A815D7A"), StringExternal("Param/Value/4B0759D3"), StringToText(""));
+    if (((lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_HOLDING_CELL_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_BRUTALISK_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_FIRST_ESCAPE_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_SECOND_ESCAPE_RELIC) == true))) {
+        libNtve_gf_CreateUnitsAtPoint2(1, "ProtossRelic", 0, gv_p07_NEUTRAL, PointFromId(2957));
+        UnitGroupAdd(gv_protossRelicsGroup, UnitLastCreated());
+        UnitSetInfoText(UnitLastCreated(), StringExternal("Param/Value/2A815D7A"), StringExternal("Param/Value/4B0759D3"), StringToText(""));
+    }
+
     CameraShakeStart(gv_p01_USER, c_cameraPositionTarget, c_cameraDirectionZ, 0.5, 1.0, 100.0, 1.0);
     UnitRemove(UnitFromId(2596));
     UnitRemove(UnitFromId(2951));
@@ -5579,7 +5849,7 @@ bool gt_Computer04WarbotWeaponActivated_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(8);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_CARGO_BAY_WARBOT);
     TriggerExecute(gt_ObjectiveFindWarBotUpdate, true, false);
     gv_computer04AllDone = true;
     gv_computerInUse = false;
@@ -6252,6 +6522,7 @@ bool gt_Computer06Enter_Func (bool testConds, bool runActions) {
     SoundtrackPlay(PlayerGroupAll(), c_soundtrackCategoryMusic, "THorner05SMusicEventA", c_soundtrackCueAny, c_soundtrackIndexAny, false);
     gv_computer06Active = true;
     gv_terminalInUse = true;
+    TriggerExecute(gt_ResearchObjectiveBrutaliskCreateQ, true, false);
     TriggerExecute(gt_Computer06ButtonDisplay, true, false);
     return true;
 }
@@ -6563,7 +6834,7 @@ bool gt_FusionReactorDestroyed_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_RestoreNormalGameplayUI, true, false);
     PingDestroy(gv_pingFusionCore);
     PingDestroy(gv_brutaliskPing);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(6);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_FUSION_REACTOR);
     TriggerExecute(gt_ObjectiveFusionReactorComplete, true, false);
     CameraShakeStart(gv_p01_USER, c_cameraPositionTarget, c_cameraDirectionZ, 0.5, 1.0, 100.0, 1.0);
     Wait(3.0, c_timeGame);
@@ -7598,7 +7869,6 @@ bool gt_DialogueLab01DestroythePenQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerQueueExit();
-    TriggerExecute(gt_ObjectiveDestroyHoldingPenCreate, true, false);
     return true;
 }
 
@@ -7967,10 +8237,9 @@ bool gt_DialoguePowerCoreObjQ_Func (bool testConds, bool runActions) {
 
     lib5BD4895D_gf_AP_Core_deleteObjective(gv_objectiveInvestigate);
     ObjectiveDestroy(gv_objectiveInvestigate);
-    ObjectiveShow(gv_objectiveFusionReactor, PlayerGroupAll(), true);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveFusionReactor);
+    Wait(2.0, c_timeGame);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveFusionReactor, true);
     TriggerExecute(gt_ObjectiveFusionReactorPing, true, false);
-    TriggerExecute(gt_ObjectiveFindWarBotCreate, true, false);
     TriggerQueueExit();
     return true;
 }
@@ -8750,15 +9019,10 @@ bool gt_StartGameEscape_Func (bool testConds, bool runActions) {
     UnitSetTeamColorIndex(gv_hercules, 1);
     UnitSetState(gv_hercules, c_unitStateTargetable, false);
     libNtve_gf_ChangeUnitDamage(gv_hercules, libNtve_ge_UnitDamageTakenDealt_Damage_Take, libNtve_ge_UnitDamageChangeOption_No);
-    ObjectiveShow(gv_objectiveEscape, PlayerGroupAll(), true);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveEscape);
-    ObjectiveShow(gv_objectiveRaynorSurvive, PlayerGroupAll(), true);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveRaynorSurvive);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveEscape, true);
     lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, (") (" + IntToString(gv_obejctiveProtossRelicsRemainingSecondHalf) + " Remaining in this Area"));
     lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveFindWarBot, (") (" + "1" + " Remaining in this Area"));
     Wait(0.2, c_timeGame);
-    ObjectiveShow(gv_objectiveRaynorSurvive, PlayerGroupAll(), true);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveRaynorSurvive);
     PingCreate(PlayerGroupAll(), "PingObjective", PointFromId(1808), ColorWithAlpha(0.00, 100.00, 0.00, 0.00), 0.0);
     gv_pingHercules = PingLastCreated();
     PingSetTooltip(gv_pingHercules, StringExternal("Param/Value/D8282D88"));
@@ -10214,6 +10478,9 @@ bool gt_EscapeComputerEnterWarbot_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
+    UnitRemove(UnitFromId(501));
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_ESCAPE_WARBOT);
+    TriggerExecute(gt_ObjectiveFindWarBotUpdate, true, false);
     for (autoDA36B465_i = 1; autoDA36B465_i <= autoDA36B465_n; autoDA36B465_i += 1) {
         Wait(0.1, c_timeGame);
         TransmissionClearAll();
@@ -10240,11 +10507,8 @@ bool gt_EscapeComputerXbotActivate_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(9);
-    TriggerExecute(gt_ObjectiveFindWarBotUpdate, true, false);
     Wait(4.0, c_timeGame);
     gv_escapeComputerActive = false;
-    UnitRemove(UnitFromId(501));
     libNtve_gf_HideScreenButton(false, gv_escapeX88tbotButton);
     DialogDestroy(gv_buttonEscapeX88tbot);
     SoundPlay(SoundLink("Thor_Build", 0), PlayerGroupAll(), 100.0, 0.0);
@@ -10826,7 +11090,7 @@ bool gt_VictoryEscape_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     gv_gameOver = true;
     TriggerExecute(gt_ObjectiveEscapeComplete, true, true);
     TriggerExecute(gt_ObjectiveRaynorComplete, true, true);
@@ -11013,15 +11277,20 @@ bool gt_ObjectiveInvestigateCreate_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    ObjectiveCreate(StringExternal("Param/Value/7F3E9E69"), StringExternal("Param/Value/45CD0F73"), c_objectiveStateActive, true);
-    lib5BD4895D_gf_AP_Core_addObjectiveSimple(ObjectiveLastCreated());
+    ObjectiveCreate(StringExternal("Param/Value/7F3E9E69"), StringExternal("Param/Value/45CD0F73"), c_objectiveStateHidden, true);
     gv_objectiveInvestigate = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveInvestigate, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveInvestigate, true);
+    Wait(1.0, c_timeGame);
     ObjectiveCreate(StringExternal("Param/Value/C8F06BE4"), StringExternal("Param/Value/25108B5E"), c_objectiveStateHidden, true);
-    lib5BD4895D_gf_AP_Core_addObjectiveSimple(ObjectiveLastCreated());
     gv_objectiveFusionReactor = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveFusionReactor, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveFusionReactor, gv_LOCATION_ID_FUSION_REACTOR);
+    Wait(1.0, c_timeGame);
     ObjectiveCreate(StringExternal("Param/Value/9067AA1F"), StringExternal("Param/Value/D20106AB"), c_objectiveStateHidden, true);
-    lib5BD4895D_gf_AP_Core_addObjectiveSimple(ObjectiveLastCreated());
     gv_objectiveEscape = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveEscape, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveEscape, lib5BD4895D_gv_aP_Core_locationVictory);
     libCamp_gf_RegisterMissionObjective(libCamp_ge_MissionObjective_THorner05Objective2, gv_objectiveInvestigate, StringExternal("Param/Value/62441C9A"));
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     return true;
@@ -11226,9 +11495,10 @@ bool gt_ObjectiveRaynorCreateQ_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
-    ObjectiveCreate(StringExternal("Param/Value/FF4B30F8"), StringExternal("Param/Value/3AA81C0C"), c_objectiveStateActive, true);
-    lib5BD4895D_gf_AP_Core_addObjectiveSimple(ObjectiveLastCreated());
+    ObjectiveCreate(StringExternal("Param/Value/FF4B30F8"), StringExternal("Param/Value/3AA81C0C"), c_objectiveStateHidden, true);
     gv_objectiveRaynorSurvive = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveRaynorSurvive, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveRaynorSurvive, true);
     libCamp_gf_RegisterMissionObjective(libCamp_ge_MissionObjective_THorner05Objective3, ObjectiveLastCreated(), StringExternal("Param/Value/0BFAB47A"));
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     TriggerQueueExit();
@@ -11357,7 +11627,13 @@ void gt_ObjectiveEscapeFailed_Init () {
 // Trigger: Research Objective Brutalisk Create Q
 //--------------------------------------------------------------------------------------------------
 bool gt_ResearchObjectiveBrutaliskCreateQ_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -11372,9 +11648,11 @@ bool gt_ResearchObjectiveBrutaliskCreateQ_Func (bool testConds, bool runActions)
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
-    ObjectiveCreate(StringExternal("Param/Value/5D272D42"), StringExternal("Param/Value/AF4A6014"), c_objectiveStateActive, false);
-    lib5BD4895D_gf_AP_Core_addObjectiveWithCounter(ObjectiveLastCreated(), "check", 1, 0);
+    ObjectiveCreate(StringExternal("Param/Value/5D272D42"), StringExternal("Param/Value/AF4A6014"), c_objectiveStateHidden, false);
     gv_researchObjectiveBrutalisk = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_researchObjectiveBrutalisk, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_researchObjectiveBrutalisk, gv_LOCATION_ID_BRUTALISK);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_researchObjectiveBrutalisk, true);
     libCamp_gf_RegisterMissionObjective(libCamp_ge_MissionObjective_THorner05Objective5, ObjectiveLastCreated(), StringExternal("Param/Value/0E2AB04E"));
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     TriggerQueueExit();
@@ -11412,23 +11690,16 @@ bool gt_ResearchObjectiveBrutaliskUpdateQ_Func (bool testConds, bool runActions)
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(5);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_BRUTALISK);
     PingDestroy(gv_brutaliskPing);
     gv_brutaliskDead = true;
     gv_statBrutaliskKilled += 1;
     gv_brutaliskResearchGranted += 3;
     libCamp_gf_DisplayResearchPointsGiventoPlayer(libCamp_ge_StoryResearchObject_ResearchObjectKilltheBrutalisk, EventUnit(), gv_p01_USER);
     TriggerExecute(gt_ResearchObjectiveBrutaliskCreateQ, true, false);
-    if ((ObjectiveGetState(gv_researchObjectiveBrutalisk) != c_objectiveStateCompleted)) {
-        if ((gv_researchObjectiveBrutalisk == c_invalidObjectiveId)) {
-            TriggerQueueEnter();
-            lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_researchObjectiveBrutalisk);
-            Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
-            TriggerQueueExit();
-        }
-        else {
-            lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_researchObjectiveBrutalisk);
-        }
+    if ((gv_researchObjectiveBrutalisk != c_invalidObjectiveId)) {
+        lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_researchObjectiveBrutalisk);
+        Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     }
 
     if ((libNtve_gf_KillingUnit() == gv_warbot) && (libNtve_gf_DifficultyValueInt(0, 1, 1, 1) == 1) && (gv_brutaliskReleased == true)) {
@@ -11452,10 +11723,20 @@ void gt_ResearchObjectiveBrutaliskUpdateQ_Init () {
 // Trigger: Objective Protoss Relics Create Q
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveProtossRelicsCreateQ_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((UnitGetOwner(EventUnit()) == 1))) {
             return false;
         }
     }
@@ -11467,9 +11748,14 @@ bool gt_ObjectiveProtossRelicsCreateQ_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
-    ObjectiveCreate(StringExternal("Param/Value/80F0376A"), StringExternal("Param/Value/322A1BDF"), c_objectiveStateActive, false);
-    lib5BD4895D_gf_AP_Core_addObjectiveWithCounter(ObjectiveLastCreated(), (") (" + IntToString(gv_obejctiveProtossRelicsTotalFirstHalf) + " Remaining in this Area"), 0, 4);
+    ObjectiveCreate(StringExternal("Param/Value/80F0376A"), StringExternal("Param/Value/322A1BDF"), c_objectiveStateHidden, false);
     gv_objectiveProtossRelics = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveProtossRelics, lib5BD4895D_ge_APObjectiveCategory_Secondary, (") (" + IntToString(gv_obejctiveProtossRelicsTotalFirstHalf) + " Remaining in this Area"), 0, 4, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveProtossRelics, gv_LOCATION_ID_HOLDING_CELL_RELIC);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveProtossRelics, gv_LOCATION_ID_BRUTALISK_RELIC);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveProtossRelics, gv_LOCATION_ID_FIRST_ESCAPE_RELIC);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveProtossRelics, gv_LOCATION_ID_SECOND_ESCAPE_RELIC);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveProtossRelics, true);
     libCamp_gf_RegisterMissionObjective(libCamp_ge_MissionObjective_THorner05Objective52, ObjectiveLastCreated(), StringExternal("Param/Value/EA5A26DE"));
     TriggerExecute(gt_CreateProtossRelicsObjects, true, false);
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
@@ -11480,6 +11766,7 @@ bool gt_ObjectiveProtossRelicsCreateQ_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveProtossRelicsCreateQ_Init () {
     gt_ObjectiveProtossRelicsCreateQ = TriggerCreate("gt_ObjectiveProtossRelicsCreateQ_Func");
+    TriggerAddEventUnitRegion(gt_ObjectiveProtossRelicsCreateQ, null, RegionFromId(8), true);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -11507,7 +11794,7 @@ bool gt_ObjectiveProtossRelicsUpdate_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_ObjectiveProtossRelicsCreateQ, true, false);
     libCamp_gf_DisplayResearchPointsGiventoPlayer(libCamp_ge_StoryResearchObject_ResearchObjectFindProtossRelics, EventUnit(), gv_p01_USER);
     UnitKill(EventUnit());
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, (4 - gv_obejctiveProtossRelics));
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, gv_obejctiveProtossRelics);
     if ((gv_obejctiveProtossRelics == gv_obejctiveProtossRelicsTotalFirstHalf)) {
         lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, (") (" + "None" + " Remaining in this Area"));
     }
@@ -11542,7 +11829,7 @@ bool gt_ObjectiveProtossRelicsComplete_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveProtossRelicsCreateQ, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, (4 - gv_obejctiveProtossRelics));
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, gv_obejctiveProtossRelics);
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -11585,6 +11872,13 @@ void gt_ObjectiveProtossRelicsFailed_Init () {
 //--------------------------------------------------------------------------------------------------
 bool gt_CreateProtossRelicsObjects_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!(((lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_HOLDING_CELL_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_BRUTALISK_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_FIRST_ESCAPE_RELIC) == true) || (lib5BD4895D_gf_AP_Core_isLocationCollectable(gv_LOCATION_ID_SECOND_ESCAPE_RELIC) == true)))) {
+            return false;
+        }
+    }
+
     // Actions
     if (!runActions) {
         return true;
@@ -11634,9 +11928,14 @@ bool gt_ObjectiveProtossRelicsUpdateSecondHalf_Func (bool testConds, bool runAct
     TriggerExecute(gt_ObjectiveProtossRelicsCreateQ, true, false);
     libCamp_gf_DisplayResearchPointsGiventoPlayer(libCamp_ge_StoryResearchObject_ResearchObjectFindProtossRelics, EventUnit(), gv_p01_USER);
     UnitKill(EventUnit());
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, (4 - gv_obejctiveProtossRelics));
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, gv_obejctiveProtossRelics);
     if ((gv_obejctiveProtossRelicsRemainingSecondHalf == 0)) {
-        lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, (") (" + "None" + " Remaining in this Area"));
+        if ((gv_obejctiveProtossRelics == 4)) {
+            lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, "");
+        }
+        else {
+            lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, (") (" + "None" + " Remaining in this Area"));
+        }
     }
     else {
         lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix(gv_objectiveProtossRelics, (") (" + IntToString(gv_obejctiveProtossRelicsRemainingSecondHalf) + " Remaining in this Area"));
@@ -11677,7 +11976,7 @@ bool gt_ObjectiveProtossRelicsCompleteSecondHalf_Func (bool testConds, bool runA
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveProtossRelicsCreateQ, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, (4 - gv_obejctiveProtossRelics));
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, gv_obejctiveProtossRelics);
     lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveProtossRelics);
     Wait(libCamp_gv_campaignObjectiveDelay, c_timeReal);
     return true;
@@ -12501,8 +12800,6 @@ bool gt_Lab01PenDies_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(7);
-    TriggerExecute(gt_ObjectiveDestroyHoldingPenComplete, true, false);
     libNtve_gf_SetAllianceOneWay(gv_p05_ZERG_LAB_SPECIMENS, gv_p02_DOMINION, libNtve_ge_AllianceSetting_Enemy);
     gv_midLab01Zerglings = false;
     CameraShakeStart(gv_p01_USER, c_cameraPositionTarget, c_cameraDirectionZ, 0.5, 1.0, 100.0, 1.0);
@@ -12514,6 +12811,11 @@ bool gt_Lab01PenDies_Func (bool testConds, bool runActions) {
     libNtve_gf_CreateActorAtPoint("FireMedium", PointFromId(1750));
     libNtve_gf_CreateActorAtPoint("FireMedium", PointFromId(2924));
     libNtve_gf_CreateActorAtPoint("FireMedium", PointFromId(2928));
+    while (!((gv_objectiveDestroyHoldingPen != c_invalidObjectiveId))) {
+        Wait(0.1, c_timeGame);
+    }
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_ENTRANCE_HOLDING_PEN);
+    TriggerExecute(gt_ObjectiveDestroyHoldingPenComplete, true, false);
     return true;
 }
 
@@ -13047,8 +13349,6 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
 
     gv_inSecondHalf = true;
     gv_protossRelicsSecondHalf = true;
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtossRelics, (4 - gv_obejctiveProtossRelics));
-    ObjectiveSetState(gv_objectiveProtossRelics, c_objectiveStateActive);
     libNtve_gf_AddUnitGroupToUnitGroup(UnitGroup(null, gv_p01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterStructure) | (1 << c_targetFilterMissile) | (1 << c_targetFilterUncommandable), (1 << (c_targetFilterDead - 32))), 0), gv_playerUnitGroup);
     UnitGroupRemoveUnitGroup(gv_playerUnitGroup, UnitGroup("AP_SoACaster", gv_p01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32))), 0));
     UnitGroupRemoveUnitGroup(gv_playerUnitGroup, UnitGroup("AP_SoAAutonomousCaster", gv_p01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32))), 0));
@@ -13522,7 +13822,6 @@ void InitTriggers () {
     gt_ObjectiveFindWarBotCreate_Init();
     gt_ObjectiveFindWarBotComplete_Init();
     gt_ObjectiveFindWarBotUpdate_Init();
-    gt_ObjectiveFindWarBotFailed_Init();
     gt_ObjectiveDestroyHoldingPenCreate_Init();
     gt_ObjectiveDestroyHoldingPenComplete_Init();
     gt_ObjectiveDestroyHoldingPenFailed_Init();
@@ -13544,6 +13843,11 @@ void InitTriggers () {
     gt_Init05Environment_Init();
     gt_Init06Difficulties_Init();
     gt_Init07Help_Init();
+    gt_DEBUGResupply_Init();
+    gt_DEBUGSection2WarbotMachineHall_Init();
+    gt_DEBUGSection3AfterGenerator_Init();
+    gt_DEBUGSection4AfterHybridvanish_Init();
+    gt_DEBUGVictory_Init();
     gt_StartGame_Init();
     gt_TerminalUseSafety_Init();
     gt_CreateGrenades_Init();

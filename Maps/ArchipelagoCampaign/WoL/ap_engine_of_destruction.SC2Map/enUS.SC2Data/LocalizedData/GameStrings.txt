@@ -62,3 +62,4 @@ Param/Value/EB0F053F=Zerg Research Earned
 Param/Value/F6112D1D=Odin
 Param/Value/FAEB47D8=Devourer Tissue Sample found
 Param/Value/FD0C270E=Odin Must Survive
+Upgrade/Name/AP_ProtossOdin=AP_ProtossOdin

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CSound id="zMission_Expedition01_Swann_456" parent="HoS_PortraitSwann" Portrait="SwannPortrait" Subtitle="zMission_Expedition01" Speaker="Swann" Line="00456">
+        <AssetArray index="0" File="LocalizedData\Sounds\VO\TTychus01Swann00003.ogg" Volume="1.000000,1.000000" FacialAnim="TTychus01Swann00003"/>
+    </CSound>
+    <CSound id="zMission_Expedition01_Raynor_457" parent="HoS_PortraitRaynor" Portrait="RaynorCommanderPortrait" Subtitle="zMission_Expedition01" Speaker="Raynor" Line="00457">
+        <AssetArray index="0" File="LocalizedData\Sounds\VO\TTychus04Raynor00018.ogg" Volume="1.000000,1.000000" FacialAnim="TTychus04Raynor00018"/>
+        <Volume value="1.000000,1.000000"/>
+    </CSound>
+    <CSound id="zMission_Expedition01_Tychus_458" parent="HoS_Portrait" Portrait="TychusPortrait" Subtitle="zMission_Expedition01" Speaker="Tychus" Line="00458">
+        <AssetArray index="0" File="LocalizedData\Sounds\VO\TValerian02ATychus00083.ogg" Volume="1.000000,1.000000" FacialAnim="TValerian02ATychus00083"/>
+        <Volume value="1.000000,1.000000"/>
+    </CSound>
+</Catalog>

@@ -12,6 +12,7 @@ include "TriggerLibs/VoidLib"
 include "TriggerLibs/VoidCampaignLib"
 include "TriggerLibs/VoidCampaignMissionLib"
 include "TriggerLibs/VoidCampaignUILib"
+include "Lib15EF4C78"
 include "Lib30B9E51A"
 include "Lib5BD4895D"
 include "LibABFE498B"
@@ -27,6 +28,7 @@ void InitLibs () {
     libVoiC_InitLib();
     libVCMI_InitLib();
     libVCUI_InitLib();
+    lib15EF4C78_InitLib();
     lib30B9E51A_InitLib();
     lib5BD4895D_InitLib();
     libABFE498B_InitLib();
@@ -35,6 +37,14 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_LOCATION_ID_MID_CELESTIAL_LOCK = 1;
+const int gv_LOCATION_ID_WEST_CELESTIAL_LOCK = 2;
+const int gv_LOCATION_ID_SOUTH_CELESTIAL_LOCK = 3;
+const int gv_LOCATION_ID_EAST_CELESTIAL_LOCK = 4;
+const int gv_LOCATION_ID_NORTH_CELESTIAL_LOCK = 5;
+const int gv_LOCATION_ID_TITANIC_WARP_PRISM = 6;
+const int gv_LOCATION_ID_TITANIC_WARP_PRISM2 = 7;
+const int gv_LOCATION_ID_TITANIC_WARP_PRISM3 = 8;
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_TALDARIM = 2;
 const int gv_pLAYER_03_MOEBIUS = 3;
@@ -102,8 +112,10 @@ timer gv_titanicWarpPrismAchievementTimer;
 int gv_locksRecapturedByEnemy;
 int gv_firstLockIndex;
 bool gv_firstLockRecaptured;
-int gv_objectiveDestroyZergBase;
-int gv_objectiveRescueStalkers;
+int gv_objective_ActivateCelestialLocks;
+int gv_objective_DestroyTitanicWarpPrism;
+int gv_objective_DestroyTerranBase;
+int gv_objective_DestroyProtossBase;
 unitgroup gv_cinematicPausedUnits;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicTempUnits;
@@ -149,8 +161,10 @@ void InitGlobals () {
     gv_attackWaveUnits_PARAM = UnitGroupEmpty();
     gv_recentlySentAttackWaveCounter = 1;
     gv_titanicWarpPrismAchievementTimer = TimerCreate();
-    gv_objectiveDestroyZergBase = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers = c_invalidObjectiveId;
+    gv_objective_ActivateCelestialLocks = c_invalidObjectiveId;
+    gv_objective_DestroyTitanicWarpPrism = c_invalidObjectiveId;
+    gv_objective_DestroyTerranBase = c_invalidObjectiveId;
+    gv_objective_DestroyProtossBase = c_invalidObjectiveId;
     gv_cinematicPausedUnits = UnitGroupEmpty();
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
@@ -174,6 +188,7 @@ void gf_LockBullyUpgrades (int lp_index);
 //--------------------------------------------------------------------------------------------------
 // Trigger Variables
 //--------------------------------------------------------------------------------------------------
+trigger gt_FactionSwapInit;
 trigger gt_onDifficultyCasual;
 trigger gt_onDifficultyNormal;
 trigger gt_onDifficultyHard;
@@ -231,6 +246,10 @@ trigger gt_ObjectiveActivateCelestialLocksComplete;
 trigger gt_ObjectiveActivateCelestialLocksUpdate;
 trigger gt_ObjectiveDestroyTitanicWarpPrismCreate;
 trigger gt_ObjectiveDestroyTitanicWarpPrismComplete;
+trigger gt_ObjectiveDestroyTitanicWarpPrismDeactivate;
+trigger gt_ObjectiveDestroyEnemyBasesCreate;
+trigger gt_ObjectiveDestroyTerranBaseComplete;
+trigger gt_ObjectiveDestroyProtossBaseComplete;
 trigger gt_IntroQ;
 trigger gt_IntroSetup;
 trigger gt_IntroCinematic;
@@ -379,7 +398,7 @@ void gf_SetCelestialLockState (int lp_index, int lp_state) {
         }
 
         if ((gv_locksSent[lp_index] == false)) {
-            lib5BD4895D_gf_AP_Core_sendLocationLocal(lp_index);
+            lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lp_index);
             gv_locksSent[lp_index] = true;
         }
 
@@ -508,7 +527,7 @@ void gf_HandleTitanicWarpPrism (point lp_prismPoint) {
 
     // Implementation
     lv_triggeringUnitPoint = lp_prismPoint;
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(6);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_TITANIC_WARP_PRISM);
     TriggerEnable(gt_TitanicWapPrismmindcontrolled, false);
     TriggerEnable(gt_TitanicWarpPrismBehaviour, false);
     TriggerStop(gt_TitanicWarpPrismBehaviour);
@@ -852,6 +871,45 @@ bool auto_gf_LockBullyUpgrades_TriggerFunc (bool testConds, bool runActions) {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Faction Swap Init
+//--------------------------------------------------------------------------------------------------
+bool gt_FactionSwapInit_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), "Prot", false);
+    }
+    else {
+        libABFE498B_gv_aP_Triggers_skipCutscenes = true;
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), libABFE498B_gv_aP_Triggers_Option_overridePlayerRace, true);
+        if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Terr")) {
+            PlayerSetRace(gv_pLAYER_01_USER, "Terr");
+            lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_RAYNORS_RAIDERS);
+        }
+        else {
+            if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Zerg")) {
+                PlayerSetRace(gv_pLAYER_01_USER, "Zerg");
+                lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_KERRIGAN_SWARM);
+            }
+
+        }
+        lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap(gv_pLAYER_01_USER);
+        libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionEntireMap(), gv_pLAYER_01_USER);
+        lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_FactionSwapInit_Init () {
+    gt_FactionSwapInit = TriggerCreate("gt_FactionSwapInit_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: onDifficultyCasual
 //--------------------------------------------------------------------------------------------------
 bool gt_onDifficultyCasual_Func (bool testConds, bool runActions) {
@@ -937,7 +995,7 @@ bool gt_onDifficultyHard_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    auto8FA5AB69_g = UnitGroupFromId(2);
+    auto8FA5AB69_g = UnitGroupFromId(3);
     auto8FA5AB69_u = UnitGroupCount(auto8FA5AB69_g, c_unitCountAll);
     for (;; auto8FA5AB69_u -= 1) {
         lv_currentUnit = UnitGroupUnitFromEnd(auto8FA5AB69_g, auto8FA5AB69_u);
@@ -1028,6 +1086,11 @@ bool gt_Initialization_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_Init04MusicSound, true, false);
     TriggerExecute(gt_Init05Environment, true, false);
     TriggerExecute(gt_Init06Difficulties, true, false);
+    UnitSetPropertyFixed(UnitFromId(1690119034), c_unitPropEnergyPercent, 100.0);
+    UnitSetPropertyFixed(UnitFromId(1349492688), c_unitPropEnergyPercent, 100.0);
+    UnitSetPropertyFixed(UnitFromId(1074008513), c_unitPropEnergyPercent, 100.0);
+    UnitSetPropertyFixed(UnitFromId(1530677958), c_unitPropEnergyPercent, 100.0);
+    TriggerExecute(gt_FactionSwapInit, true, true);
     TriggerExecute(gt_IntroQ, true, true);
     TriggerExecute(gt_StartGameQ, true, false);
     return true;
@@ -1117,7 +1180,7 @@ bool gt_Init03Units_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    libVCMI_gf_SetWorkerRallyPointsPlayersNexuses(gv_pLAYER_01_USER);
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     TriggerExecute(gt_CelestialLockInit, true, false);
     auto4198F952_g = UnitGroup("Bunker", gv_pLAYER_03_MOEBIUS, RegionPlayableMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
     auto4198F952_u = UnitGroupCount(auto4198F952_g, c_unitCountAll);
@@ -1348,6 +1411,8 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_CelestialLockController, true, false);
     Wait(8.0, c_timeGame);
     TriggerExecute(gt_PhoenixIntroQ, true, false);
+    Wait(32.0, c_timeGame);
+    TriggerExecute(gt_ObjectiveDestroyEnemyBasesCreate, true, false);
     return true;
 }
 
@@ -2069,7 +2134,7 @@ bool gt_TitanicWarpPrismBehaviour_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_SetUpTitanicWarpPrismEscorts, true, false);
     while (true) {
         Wait(1.0, c_timeAI);
-        if (((UnitIsAlive(gv_titanicWarpPrism) == false) || (UnitGetOwner(gv_titanicWarpPrism) != gv_pLAYER_01_USER) || (libVCMI_gf_GameIsOver() == true))) {
+        if (((UnitIsAlive(gv_titanicWarpPrism) == false) || (UnitGetOwner(gv_titanicWarpPrism) == gv_pLAYER_01_USER) || (libVCMI_gf_GameIsOver() == true) || (UnitHasBehavior2(gv_titanicWarpPrism, "AP_DarkArchonMindControl") == true) || (UnitHasBehavior2(gv_titanicWarpPrism, "AP_NPSwarm") == true) || (UnitHasBehavior2(gv_titanicWarpPrism, "AP_MindControl") == true) || (UnitHasBehavior2(gv_titanicWarpPrism, "AP_NovaDomination") == true))) {
             return true;
         }
 
@@ -2302,6 +2367,10 @@ bool gt_TitanicWapPrismmindcontrolled_Func (bool testConds, bool runActions) {
         if (!((EventUnitTargetUnit() == gv_titanicWarpPrism))) {
             return false;
         }
+
+        if (!((gv_titanicWarpPrism != null))) {
+            return false;
+        }
     }
 
     // Actions
@@ -2320,6 +2389,7 @@ void gt_TitanicWapPrismmindcontrolled_Init () {
     TriggerAddEventUnitAbility(gt_TitanicWapPrismmindcontrolled, null, AbilityCommand("AP_NPSwarm", 0), c_unitAbilStageComplete, false);
     TriggerAddEventUnitAbility(gt_TitanicWapPrismmindcontrolled, null, AbilityCommand("AP_DarkArchonMindControl", 0), c_unitAbilStageComplete, false);
     TriggerAddEventUnitAbility(gt_TitanicWapPrismmindcontrolled, null, AbilityCommand("AP_MindControl", 0), c_unitAbilStageComplete, false);
+    TriggerAddEventUnitAbility(gt_TitanicWapPrismmindcontrolled, null, AbilityCommand("AP_NovaHelmetDomination", 0), c_unitAbilStageComplete, false);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -3068,7 +3138,7 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     libVCMI_gf_GameOver(libVCMI_ge_CampaignMissionGameResultType_Victory);
     Wait(2.0, c_timeReal);
     TriggerExecute(gt_ObjectiveActivateCelestialLocksComplete, true, true);
@@ -3348,8 +3418,17 @@ bool gt_ObjectiveActivateCelestialLocksCreate_Func (bool testConds, bool runActi
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("PUlnar01Primary01");
-    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PUlnar01Primary01", "", gv_celestialLocksActivated);
+    gv_objective_ActivateCelestialLocks = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objective_ActivateCelestialLocks, libVoiC_gf_MissionObjectiveName("PUlnar01Primary01"));
+    ObjectiveShow(gv_objective_ActivateCelestialLocks, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objective_ActivateCelestialLocks, lib5BD4895D_ge_APObjectiveCategory_Primary, "", gv_celestialLocksActivated, libVoiC_gf_MissionObjectiveItemCount("PUlnar01Primary01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, gv_LOCATION_ID_MID_CELESTIAL_LOCK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, gv_LOCATION_ID_WEST_CELESTIAL_LOCK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, gv_LOCATION_ID_SOUTH_CELESTIAL_LOCK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, gv_LOCATION_ID_EAST_CELESTIAL_LOCK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, gv_LOCATION_ID_NORTH_CELESTIAL_LOCK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ActivateCelestialLocks, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_ActivateCelestialLocks, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -3381,7 +3460,7 @@ bool gt_ObjectiveActivateCelestialLocksComplete_Func (bool testConds, bool runAc
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveActivateCelestialLocksCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_ActivateCelestialLocks);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -3402,7 +3481,7 @@ bool gt_ObjectiveActivateCelestialLocksUpdate_Func (bool testConds, bool runActi
     }
 
     TriggerExecute(gt_ObjectiveActivateCelestialLocksCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyZergBase, gv_celestialLocksActivated);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objective_ActivateCelestialLocks, gv_celestialLocksActivated);
     return true;
 }
 
@@ -3415,7 +3494,13 @@ void gt_ObjectiveActivateCelestialLocksUpdate_Init () {
 // Trigger: Objective - Destroy Titanic Warp Prism - Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveDestroyTitanicWarpPrismCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -3433,8 +3518,12 @@ bool gt_ObjectiveDestroyTitanicWarpPrismCreate_Func (bool testConds, bool runAct
         Wait(1.0, c_timeGame);
     }
     libVCMI_gf_CreateObjectiveCampaign("PUlnar01Bonus01");
-    gv_objectiveRescueStalkers = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PUlnar01Bonus01", "", 0);
+    gv_objective_DestroyTitanicWarpPrism = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objective_DestroyTitanicWarpPrism, libVoiC_gf_MissionObjectiveName("PUlnar01Bonus01"));
+    ObjectiveShow(gv_objective_DestroyTitanicWarpPrism, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_DestroyTitanicWarpPrism, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyTitanicWarpPrism, gv_LOCATION_ID_TITANIC_WARP_PRISM);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_DestroyTitanicWarpPrism, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -3463,7 +3552,7 @@ bool gt_ObjectiveDestroyTitanicWarpPrismComplete_Func (bool testConds, bool runA
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveDestroyTitanicWarpPrismCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_DestroyTitanicWarpPrism);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -3471,6 +3560,181 @@ bool gt_ObjectiveDestroyTitanicWarpPrismComplete_Func (bool testConds, bool runA
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveDestroyTitanicWarpPrismComplete_Init () {
     gt_ObjectiveDestroyTitanicWarpPrismComplete = TriggerCreate("gt_ObjectiveDestroyTitanicWarpPrismComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Titanic Warp Prism - Deactivate
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyTitanicWarpPrismDeactivate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_locationCollectable[gv_LOCATION_ID_TITANIC_WARP_PRISM] == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveDestroyTitanicWarpPrismCreate, false);
+    TriggerEnable(gt_TitanicWarpPrismQ, false);
+    TriggerEnable(gt_TitanicWarpPrismProximityTrigger, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyTitanicWarpPrismDeactivate_Init () {
+    gt_ObjectiveDestroyTitanicWarpPrismDeactivate = TriggerCreate("gt_ObjectiveDestroyTitanicWarpPrismDeactivate_Func");
+    TriggerAddEventGeneric(gt_ObjectiveDestroyTitanicWarpPrismDeactivate, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Enemy Bases - Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyEnemyBasesCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Mastery;
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    ObjectiveCreate(StringExternal("Param/Value/00DD99AD"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objective_DestroyTerranBase = ObjectiveLastCreated();
+    ObjectiveCreate(StringExternal("Param/Value/DDED970B"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objective_DestroyProtossBase = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_DestroyTerranBase, lv_category, true);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_DestroyProtossBase, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyTerranBase, gv_LOCATION_ID_TITANIC_WARP_PRISM2);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyProtossBase, gv_LOCATION_ID_TITANIC_WARP_PRISM3);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_DestroyTerranBase, true);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_DestroyProtossBase, true);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyEnemyBasesCreate_Init () {
+    gt_ObjectiveDestroyEnemyBasesCreate = TriggerCreate("gt_ObjectiveDestroyEnemyBasesCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Terran Base - Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyTerranBaseComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((UnitFilterMatch(EventUnit(), gv_pLAYER_01_USER, UnitFilter((1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterPlayer) | (1 << c_targetFilterAlly) | (1 << c_targetFilterNeutral) | (1 << c_targetFilterMissile), (1 << (c_targetFilterHidden - 32)))) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((UnitCount(null, gv_pLAYER_03_MOEBIUS, RegionFromId(27), UnitFilter((1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0) > 0)) {
+        return false;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveDestroyEnemyBasesCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_DestroyTerranBase);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_TITANIC_WARP_PRISM2);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyTerranBaseComplete_Init () {
+    gt_ObjectiveDestroyTerranBaseComplete = TriggerCreate("gt_ObjectiveDestroyTerranBaseComplete_Func");
+    TriggerAddEventUnitDied(gt_ObjectiveDestroyTerranBaseComplete, null);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Protoss Base - Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyProtossBaseComplete_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_remaining;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((UnitFilterMatch(EventUnit(), gv_pLAYER_01_USER, UnitFilter((1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterPlayer) | (1 << c_targetFilterAlly) | (1 << c_targetFilterNeutral) | (1 << c_targetFilterMissile), (1 << (c_targetFilterHidden - 32)))) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((UnitCount(null, gv_pLAYER_02_TALDARIM, RegionFromId(27), UnitFilter((1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0) > 0)) {
+        return false;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveDestroyEnemyBasesCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_DestroyProtossBase);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_TITANIC_WARP_PRISM3);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyProtossBaseComplete_Init () {
+    gt_ObjectiveDestroyProtossBaseComplete = TriggerCreate("gt_ObjectiveDestroyProtossBaseComplete_Func");
+    TriggerAddEventUnitDied(gt_ObjectiveDestroyProtossBaseComplete, null);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -3493,7 +3757,7 @@ bool gt_IntroQ_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
     TriggerExecute(gt_IntroSetup, true, true);
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         TriggerExecute(gt_IntroCinematic, true, true);
         TriggerExecute(gt_IntroCinematicEnd, true, true);
     }
@@ -3721,7 +3985,7 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
     TriggerStop(gt_IntroCapture2);
     GameTimeOfDayPause(false);
     PlayerSetState(gv_pLAYER_01_USER, c_playerStateXPGain, true);
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         UnitSetPropertyFixed(UnitFromId(190), c_unitPropResources, gv_introMinerals[1]);
         UnitSetPropertyFixed(UnitFromId(185), c_unitPropResources, gv_introMinerals[2]);
         UnitSetPropertyFixed(UnitFromId(186), c_unitPropResources, gv_introMinerals[3]);
@@ -4111,6 +4375,7 @@ void gt_VictoryCleanup_Init () {
 // Trigger Initialization
 //--------------------------------------------------------------------------------------------------
 void InitTriggers () {
+    gt_FactionSwapInit_Init();
     gt_onDifficultyCasual_Init();
     gt_onDifficultyNormal_Init();
     gt_onDifficultyHard_Init();
@@ -4168,6 +4433,10 @@ void InitTriggers () {
     gt_ObjectiveActivateCelestialLocksUpdate_Init();
     gt_ObjectiveDestroyTitanicWarpPrismCreate_Init();
     gt_ObjectiveDestroyTitanicWarpPrismComplete_Init();
+    gt_ObjectiveDestroyTitanicWarpPrismDeactivate_Init();
+    gt_ObjectiveDestroyEnemyBasesCreate_Init();
+    gt_ObjectiveDestroyTerranBaseComplete_Init();
+    gt_ObjectiveDestroyProtossBaseComplete_Init();
     gt_IntroQ_Init();
     gt_IntroSetup_Init();
     gt_IntroCinematic_Init();

@@ -40,6 +40,12 @@ const int gv_pLAYER_06_LOCUSTS = 6;
 const int gv_pLAYER_07_DEHAKA = 7;
 const int gv_sPORE_RAY_MAX_COUNT = 5;
 const fixed gv_tyrannozorAchievementTime = 60.0;
+const int gv_LOCATION_ID_TYRANNOZOR = 1;
+const int gv_LOCATION_ID_REACH_THE_POOL = 2;
+const int gv_LOCATION_ID_15_MINUTES_REMAINING = 3;
+const int gv_LOCATION_ID_5_MINUTES_REMAINING = 4;
+const int gv_LOCATION_ID_PINCER_ATTACK = 5;
+const int gv_LOCATION_ID_YAGDRA_CLAIMS_BRAKKS_PACK = 6;
 
 //--------------------------------------------------------------------------------------------------
 // Global Structures
@@ -98,10 +104,10 @@ fixed gv_totalChrysalisDamageTaken;
 int gv_largestForce;
 timer gv_achievementTimedTyrannozorKillTimer;
 fixed gv_victoryStatTyrannozorLifeTimer;
-int gv_objectiveDestroyDominionBase3;
-int gv_objectiveDestroyDominionBase2;
-int gv_objectiveDestroyDominionBase4;
-int gv_objectiveDestroyDominionBase5;
+int gv_objective_ProceedToPool;
+int gv_objective_ChrysalisMustSurvive;
+int gv_objective_KerriganMustSurvive;
+int gv_objective_KillTyrannozor;
 unitgroup gv_cinematicTempUnits;
 bool gv_cinematicCompleted;
 bool gv_introMusicCompleted;
@@ -143,10 +149,10 @@ void InitGlobals () {
     gv_primalPlayerGroup = PlayerGroupEmpty();
     gv_airAttackGroup = UnitGroupEmpty();
     gv_achievementTimedTyrannozorKillTimer = TimerCreate();
-    gv_objectiveDestroyDominionBase3 = c_invalidObjectiveId;
-    gv_objectiveDestroyDominionBase2 = c_invalidObjectiveId;
-    gv_objectiveDestroyDominionBase4 = c_invalidObjectiveId;
-    gv_objectiveDestroyDominionBase5 = c_invalidObjectiveId;
+    gv_objective_ProceedToPool = c_invalidObjectiveId;
+    gv_objective_ChrysalisMustSurvive = c_invalidObjectiveId;
+    gv_objective_KerriganMustSurvive = c_invalidObjectiveId;
+    gv_objective_KillTyrannozor = c_invalidObjectiveId;
     gv_cinematicTempUnits = UnitGroupEmpty();
 }
 
@@ -261,6 +267,7 @@ trigger gt_ObjectiveKerriganMustSurviveComplete;
 trigger gt_ObjectiveKerriganMustSurviveFailed;
 trigger gt_ObjectiveKillTyrannozorCreate;
 trigger gt_ObjectiveKillTyrannozorComplete;
+trigger gt_ObjectiveKillTyrannozorRemove;
 trigger gt_IntroQ;
 trigger gt_IntroSetup;
 trigger gt_IntroCinematic;
@@ -280,6 +287,7 @@ trigger gt_MidCleanup;
 trigger gt_MidChrysalisAnimations;
 trigger gt_MidMusic;
 trigger gt_VictoryQ;
+trigger gt_FactionSwapInit;
 trigger gt_onDifficultyCasual;
 trigger gt_onDifficultyNormal;
 trigger gt_onDifficultyHard;
@@ -874,9 +882,10 @@ void gf_OrderSwarmHoststoUproot (unitgroup lp_swarmHostUnitGroup) {
 void gf_HideKerrigan () {
     // Automatic Variable Declarations
     // Implementation
-    if ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence == 0)) {
+    if (((libABFE498B_gv_aP_Triggers_Option_KerriganPresence == 0) || ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace != "Neut") && (libABFE498B_gv_aP_Triggers_Option_KerriganPresence != 4)))) {
         libNtve_gf_PauseUnit(gv_kerrigan, true);
         libNtve_gf_ShowHideUnit(gv_kerrigan, false);
+        UnitBehaviorAdd(gv_kerrigan, "AP_ImmortalShakurasAntiAirMissileDisableAttack", gv_kerrigan, 1);
     }
 
 }
@@ -1001,6 +1010,12 @@ bool gt_Init03Units_Func (bool testConds, bool runActions) {
     UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_CreepTumorUsed", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
     UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_CreepTumorBurrowed", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
     UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_SporeCrawler", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_MissileTurret", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_PerditionTurret", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_PerditionTurretUnderground", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_PhotonCannon", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_Pylon", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+    UnitGroupAddUnitGroup(gv_playerBase, UnitGroup("AP_SupplyDepot", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
     auto29370206_g = gv_playerBase;
     auto29370206_u = UnitGroupCount(auto29370206_g, c_unitCountAll);
     for (;; auto29370206_u -= 1) {
@@ -1155,7 +1170,7 @@ bool gt_DEBUGMidCinematic_Func (bool testConds, bool runActions) {
 
     // Conditions
     if (testConds) {
-        if (!((GameCheatsEnabled(c_gameCheatCategoryDevelopment) == true))) {
+        if (!((libABFE498B_gv_aP_Triggers_DebugMode == true))) {
             return false;
         }
 
@@ -1177,6 +1192,7 @@ bool gt_DEBUGMidCinematic_Func (bool testConds, bool runActions) {
         return true;
     }
 
+    TriggerDebugOutput(1, (StringExternal("Param/Value/D216AD78")), true);
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerEnable(gt_SwarmHostQ, false);
     while (!((TriggerQueueIsEmpty() == true))) {
@@ -1217,17 +1233,14 @@ bool gt_DEBUGMidCinematic_Func (bool testConds, bool runActions) {
     TriggerEnable(gt_KerriganReachesPool, false);
     TriggerEnable(gt_DefeatKerriganKilled, false);
     UnitKill(UnitFromId(20));
-    libNtve_gf_CreateUnitsWithDefaultFacing(5, "SwarmHost", 0, gv_pLAYER_01_USER, UnitGetPosition(gv_kerrigan));
-    UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
-    TriggerExecute(gt_MidQ, true, false);
+    TriggerExecute(gt_KerriganReachesPool, false, false);
     return true;
 }
 
 //--------------------------------------------------------------------------------------------------
 void gt_DEBUGMidCinematic_Init () {
     gt_DEBUGMidCinematic = TriggerCreate("gt_DEBUGMidCinematic_Func");
-    TriggerAddEventChatMessage(gt_DEBUGMidCinematic, c_playerAny, "mid", true);
-    TriggerAddEventChatMessage(gt_DEBUGMidCinematic, c_playerAny, "s2", true);
+    TriggerAddEventChatMessage(gt_DEBUGMidCinematic, c_playerAny, "-s2", true);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1548,7 +1561,7 @@ bool gt_KerriganReachesPool_Func (bool testConds, bool runActions) {
             return false;
         }
 
-        if (!((((libABFE498B_gv_aP_Triggers_Option_KerriganPresence == 0) && (UnitGetOwner(EventUnit()) == gv_pLAYER_01_USER)) || ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence > 0) && (EventUnit() == gv_kerrigan))))) {
+        if (!(((((libABFE498B_gv_aP_Triggers_Option_KerriganPresence == 0) || (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace != "Neut")) && (UnitGetOwner(EventUnit()) == gv_pLAYER_01_USER)) || ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence > 0) && (EventUnit() == gv_kerrigan))))) {
             return false;
         }
     }
@@ -1559,7 +1572,7 @@ bool gt_KerriganReachesPool_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(2);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_REACH_THE_POOL);
     VisRevealerDestroy(gv_poolBeaconRevealer);
     TriggerEnable(gt_PrimalForcesKilledQ, false);
     libNtve_gf_MakeUnitInvulnerable(gv_kerrigan, true);
@@ -1772,9 +1785,9 @@ bool gt_APEvents_Func (bool testConds, bool runActions) {
     }
 
     libNtve_gf_WaitForTimer(gv_holdoutTimer, 900.0, false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_15_MINUTES_REMAINING);
     libNtve_gf_WaitForTimer(gv_holdoutTimer, 300.0, false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(4);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_5_MINUTES_REMAINING);
     return true;
 }
 
@@ -2076,8 +2089,11 @@ bool gt_BrakkYagdraCeremonialFight_Func (bool testConds, bool runActions) {
         for (;; auto776E3F4D_u -= 1) {
             auto776E3F4D_var = UnitGroupUnitFromEnd(auto776E3F4D_g, auto776E3F4D_u);
             if (auto776E3F4D_var == null) { break; }
-            UnitIssueOrder(auto776E3F4D_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(29))), c_orderQueueReplace);
-            UnitIssueOrder(auto776E3F4D_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(26))), c_orderQueueAddToEnd);
+            if ((lib15EF4C78_gf_AP_Player_UnitIsMindControlled(auto776E3F4D_var) == false)) {
+                UnitIssueOrder(auto776E3F4D_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(29))), c_orderQueueReplace);
+                UnitIssueOrder(auto776E3F4D_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(26))), c_orderQueueAddToEnd);
+            }
+
         }
         if ((UnitGroupCount(lv_yagdraInitialAttackGroup, c_unitCountAlive) >= 1)) {
             if ((lv_initialYagdraDelay <= 0)) {
@@ -2100,7 +2116,7 @@ bool gt_BrakkYagdraCeremonialFight_Func (bool testConds, bool runActions) {
         for (;; autoF1834C33_u -= 1) {
             autoF1834C33_var = UnitGroupUnitFromEnd(autoF1834C33_g, autoF1834C33_u);
             if (autoF1834C33_var == null) { break; }
-            if ((UnitGroupHasUnit(lv_yagdraInitialAttackGroup, autoF1834C33_var) == false)) {
+            if ((UnitGroupHasUnit(lv_yagdraInitialAttackGroup, autoF1834C33_var) == false) && (lib15EF4C78_gf_AP_Player_UnitIsMindControlled(autoF1834C33_var) == false)) {
                 UnitIssueOrder(autoF1834C33_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(29))), c_orderQueueReplace);
                 UnitIssueOrder(autoF1834C33_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionGetCenter(RegionFromId(28))), c_orderQueueAddToEnd);
             }
@@ -2363,7 +2379,7 @@ bool gt_PincerAttackQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(5);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_PINCER_ATTACK);
     Wait(5.0, c_timeAI);
     TriggerQueueEnter();
     UIAlertPoint("Trigger", gv_pLAYER_01_USER, StringExternal("Param/Value/63CDBF90"), null, PointFromId(1827));
@@ -2515,7 +2531,7 @@ bool gt_BrakkIsDeadQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(6);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_YAGDRA_CLAIMS_BRAKKS_PACK);
     TriggerQueueEnter();
     libSwaC_gf_SetAllSoundChannelVolumesCampaign(libSwaC_ge_VolumeChannelModeCampaign_Speech);
     libSwaC_gf_SendTransmissionCampaign(null, "zMission_Zerus02|Line00154", c_transmissionDurationAdd, 0.0, true, libSwaC_ge_CampaignTransmissionPortraitOptioins_HidePortraitAfter, libSwaC_ge_CampaignTransmissionCueSoundOptions_DefaultCueSoundBehavior);
@@ -3524,7 +3540,7 @@ bool gt_TyrannozorDiesQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_TYRANNOZOR);
     TriggerEnable(gt_TyrannozorLifesteal, false);
     PingDestroy(gv_tyrannozorPing);
     VisRevealerDestroy(gv_tyrannozorRevealer);
@@ -4236,12 +4252,15 @@ bool gt_RockBreakingWaves_Func (bool testConds, bool runActions) {
             for (;; auto19610C77_u -= 1) {
                 auto19610C77_var = UnitGroupUnitFromEnd(auto19610C77_g, auto19610C77_u);
                 if (auto19610C77_var == null) { break; }
-                if ((libNtve_gf_UnitInRegion(auto19610C77_var, lv_rockRegion) == true)) {
-                    UnitIssueOrder(auto19610C77_var, OrderTargetingUnit(AbilityCommand("attack", 0), UnitFromId(15)), c_orderQueueReplace);
+                if ((lib15EF4C78_gf_AP_Player_UnitIsMindControlled(auto19610C77_var) == false)) {
+                    if ((libNtve_gf_UnitInRegion(auto19610C77_var, lv_rockRegion) == true)) {
+                        UnitIssueOrder(auto19610C77_var, OrderTargetingUnit(AbilityCommand("attack", 0), UnitFromId(15)), c_orderQueueReplace);
+                    }
+                    else {
+                        UnitIssueOrder(auto19610C77_var, OrderTargetingPoint(AbilityCommand("attack", 0), PointFromId(2534)), c_orderQueueReplace);
+                    }
                 }
-                else {
-                    UnitIssueOrder(auto19610C77_var, OrderTargetingPoint(AbilityCommand("attack", 0), PointFromId(2534)), c_orderQueueReplace);
-                }
+
             }
             Wait(1.0, c_timeAI);
         }
@@ -4387,14 +4406,14 @@ bool gt_ViperAI_Func (bool testConds, bool runActions) {
     for (;; autoA7E5583D_u -= 1) {
         autoA7E5583D_var = UnitGroupUnitFromEnd(autoA7E5583D_g, autoA7E5583D_u);
         if (autoA7E5583D_var == null) { break; }
-        if ((UnitGetPropertyFixed(autoA7E5583D_var, c_unitPropEnergy, c_unitPropCurrent) >= 25.0)) {
+        if ((UnitGetPropertyFixed(autoA7E5583D_var, c_unitPropEnergy, c_unitPropCurrent) >= 25.0) && (lib15EF4C78_gf_AP_Player_UnitIsMindControlled(autoA7E5583D_var) == false)) {
             lv_validEnemies = UnitGroup(null, gv_pLAYER_01_USER, RegionCircle(UnitGetPosition(autoA7E5583D_var), 12.0), UnitFilter((1 << c_targetFilterGround), 0, (1 << c_targetFilterStructure) | (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
             autoCA4C990C_g = lv_validEnemies;
             autoCA4C990C_u = UnitGroupCount(autoCA4C990C_g, c_unitCountAll);
             for (;; autoCA4C990C_u -= 1) {
                 lv_currentUnit = UnitGroupUnitFromEnd(autoCA4C990C_g, autoCA4C990C_u);
                 if (lv_currentUnit == null) { break; }
-                if (((UnitGetCustomValue(lv_currentUnit, 1) > 1.0) || (UnitGetType(lv_currentUnit) == "Locust") || (DistanceBetweenPoints(UnitGetPosition(lv_currentUnit), UnitGetPosition(autoA7E5583D_var)) <= 4.0))) {
+                if (((UnitGetCustomValue(lv_currentUnit, 1) > 1.0) || (UnitGetType(lv_currentUnit) == "AP_Locust") || (UnitGetType(lv_currentUnit) == "AP_LocustFlying") || (DistanceBetweenPoints(UnitGetPosition(lv_currentUnit), UnitGetPosition(autoA7E5583D_var)) <= 4.0))) {
                     UnitGroupRemove(lv_validEnemies, autoA7E5583D_var);
                 }
 
@@ -4574,6 +4593,10 @@ bool gt_DefeatKerriganKilled_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
     // Conditions
     if (testConds) {
+        if (!((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut"))) {
+            return false;
+        }
+
         if (!((gv_gameOver == false))) {
             return false;
         }
@@ -4627,7 +4650,7 @@ bool gt_VictoryHoldoutCompleted_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     TriggerExecute(gt_VictorySequence, true, false);
     return true;
 }
@@ -4678,7 +4701,7 @@ bool gt_Victory_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    if ((ObjectiveGetState(gv_objectiveDestroyDominionBase2) == c_objectiveStateCompleted)) {
+    if ((ObjectiveGetState(gv_objective_ChrysalisMustSurvive) == c_objectiveStateCompleted)) {
         libSwaC_gf_CampaignAwardAchievement("ZZerus02_1", gv_pLAYER_01_USER);
     }
 
@@ -4947,9 +4970,12 @@ bool gt_ObjectiveProceedToPoolCreate_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     libSwaC_gf_CreateObjectiveCampaign("ZZerus02Objective01");
-    gv_objectiveDestroyDominionBase3 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 2);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "ZZerus02Objective01", "", 0);
+    gv_objective_ProceedToPool = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objective_ProceedToPool, 2);
+    ObjectiveShow(gv_objective_ProceedToPool, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_ProceedToPool, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ProceedToPool, gv_LOCATION_ID_REACH_THE_POOL);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_ProceedToPool, true);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -4978,7 +5004,7 @@ bool gt_ObjectiveProceedToPoolComplete_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveProceedToPoolCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyDominionBase3);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_ProceedToPool);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5007,9 +5033,16 @@ bool gt_ObjectiveChrysalisMustSurviveCreate_Func (bool testConds, bool runAction
 
     TriggerEnable(TriggerGetCurrent(), false);
     libSwaC_gf_CreateObjectiveCampaign("ZZerus02Objective3");
-    gv_objectiveDestroyDominionBase2 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 3);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "ZZerus02Objective3", "", 0);
+    gv_objective_ChrysalisMustSurvive = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objective_ChrysalisMustSurvive, 3);
+    ObjectiveShow(gv_objective_ChrysalisMustSurvive, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_ChrysalisMustSurvive, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ChrysalisMustSurvive, gv_LOCATION_ID_15_MINUTES_REMAINING);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ChrysalisMustSurvive, gv_LOCATION_ID_5_MINUTES_REMAINING);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ChrysalisMustSurvive, gv_LOCATION_ID_PINCER_ATTACK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ChrysalisMustSurvive, gv_LOCATION_ID_YAGDRA_CLAIMS_BRAKKS_PACK);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_ChrysalisMustSurvive, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_ChrysalisMustSurvive, true);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5038,7 +5071,7 @@ bool gt_ObjectiveChrysalisMustSurviveComplete_Func (bool testConds, bool runActi
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveChrysalisMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyDominionBase2);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_ChrysalisMustSurvive);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5067,7 +5100,7 @@ bool gt_ObjectiveChrysalisMustSurviveFailed_Func (bool testConds, bool runAction
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveChrysalisMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyDominionBase2);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objective_ChrysalisMustSurvive);
     return true;
 }
 
@@ -5095,9 +5128,11 @@ bool gt_ObjectiveKerriganMustSurviveCreate_Func (bool testConds, bool runActions
 
     TriggerEnable(TriggerGetCurrent(), false);
     libSwaC_gf_CreateObjectiveCampaign("ZZerus02Objective04");
-    gv_objectiveDestroyDominionBase4 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 1);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "ZZerus02Objective04", "", 0);
+    gv_objective_KerriganMustSurvive = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objective_KerriganMustSurvive, 1);
+    ObjectiveShow(gv_objective_KerriganMustSurvive, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_KerriganMustSurvive, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_KerriganMustSurvive, true);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5126,7 +5161,7 @@ bool gt_ObjectiveKerriganMustSurviveComplete_Func (bool testConds, bool runActio
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyDominionBase4);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_KerriganMustSurvive);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5155,7 +5190,7 @@ bool gt_ObjectiveKerriganMustSurviveFailed_Func (bool testConds, bool runActions
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyDominionBase4);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objective_KerriganMustSurvive);
     return true;
 }
 
@@ -5168,7 +5203,13 @@ void gt_ObjectiveKerriganMustSurviveFailed_Init () {
 // Trigger: Objective - Kill Tyrannozor - Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveKillTyrannozorCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -5183,8 +5224,11 @@ bool gt_ObjectiveKillTyrannozorCreate_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     libSwaC_gf_CreateObjectiveCampaign("ZZerus02Objective02");
-    gv_objectiveDestroyDominionBase5 = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "ZZerus02Objective02", "", 0);
+    gv_objective_KillTyrannozor = ObjectiveLastCreated();
+    ObjectiveShow(gv_objective_KillTyrannozor, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_KillTyrannozor, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_KillTyrannozor, gv_LOCATION_ID_TYRANNOZOR);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_KillTyrannozor, true);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5213,7 +5257,7 @@ bool gt_ObjectiveKillTyrannozorComplete_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveKillTyrannozorCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyDominionBase5);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_KillTyrannozor);
     Wait(libSwaC_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5221,6 +5265,36 @@ bool gt_ObjectiveKillTyrannozorComplete_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveKillTyrannozorComplete_Init () {
     gt_ObjectiveKillTyrannozorComplete = TriggerCreate("gt_ObjectiveKillTyrannozorComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Kill Tyrannozor - Remove
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKillTyrannozorRemove_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_locationCollectable[gv_LOCATION_ID_TYRANNOZOR] == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveKillTyrannozorCreate, false);
+    TriggerEnable(gt_ObjectiveKillTyrannozorComplete, false);
+    TriggerEnable(gt_SpawnTyrannozorQ, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKillTyrannozorRemove_Init () {
+    gt_ObjectiveKillTyrannozorRemove = TriggerCreate("gt_ObjectiveKillTyrannozorRemove_Func");
+    TriggerAddEventGeneric(gt_ObjectiveKillTyrannozorRemove, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -5235,7 +5309,7 @@ bool gt_IntroQ_Func (bool testConds, bool runActions) {
 
     TriggerQueueEnter();
     TriggerExecute(gt_IntroSetup, true, true);
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         TriggerExecute(gt_IntroCinematic, true, true);
         TriggerExecute(gt_IntroCinematicEnd, true, true);
     }
@@ -5384,6 +5458,7 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
     unitgroup auto1AE79FEE_g;
     int auto1AE79FEE_u;
     unit auto1AE79FEE_var;
+    string auto779B8E8C_val;
     int autoBC6B256B_n;
     int autoBC6B256B_i;
     int auto1037F09A_n;
@@ -5435,10 +5510,27 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
         if (auto1AE79FEE_var == null) { break; }
         UnitRemove(auto1AE79FEE_var);
     }
-    UnitCreate(3, "AP_SwarmHost", 0, gv_pLAYER_01_USER, PointFromId(170), PointGetFacing(PointFromId(160)));
-    UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
-    UnitCreate(2, "AP_SwarmHost", 0, gv_pLAYER_01_USER, PointFromId(4), PointGetFacing(PointFromId(160)));
-    UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+    auto779B8E8C_val = libABFE498B_gv_aP_Triggers_Option_overridePlayerRace;
+    if (auto779B8E8C_val == "Neut") {
+        UnitCreate(3, "AP_SwarmHost", 0, gv_pLAYER_01_USER, PointFromId(170), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+        UnitCreate(2, "AP_SwarmHost", 0, gv_pLAYER_01_USER, PointFromId(4), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+    }
+    else if (auto779B8E8C_val == "Terr") {
+        UnitCreate(5, "AP_WidowMine", 0, gv_pLAYER_01_USER, PointFromId(170), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+        UnitCreate(5, "AP_WidowMine", 0, gv_pLAYER_01_USER, PointFromId(4), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+    }
+    else if (auto779B8E8C_val == "Prot") {
+        UnitCreate(2, "AP_Reaver", 0, gv_pLAYER_01_USER, PointFromId(170), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+        UnitCreate(1, "AP_Reaver", 0, gv_pLAYER_01_USER, PointFromId(4), PointGetFacing(PointFromId(160)));
+        UnitGroupAddUnitGroup(gv_swarmHostGroup, UnitLastCreatedGroup());
+    }
+    else {
+    }
     UnitRemove(UnitFromId(1766));
     autoBC6B256B_n = libHots_gf_DifficultyValueInt2(6, 6, 10);
     for (autoBC6B256B_i = 1; autoBC6B256B_i <= autoBC6B256B_n; autoBC6B256B_i += 1) {
@@ -5455,7 +5547,7 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
         UnitCreate(1, "PrimalHydralisk", 0, gv_pLAYER_02_BRAKK, RegionRandomPoint(RegionFromId(8)), libNtve_gf_RandomAngle());
         UnitGroupAdd(gv_introAttackUnits, UnitLastCreated());
     }
-    if ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence > 0)) {
+    if ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence > 0) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         UnitCreate(1, "PrimalUltralisk", 0, gv_pLAYER_02_BRAKK, PointFromId(196), 135.0);
         UnitGroupAdd(gv_introAttackUnits, UnitLastCreated());
     }
@@ -5470,16 +5562,20 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
     SoundStop(gv_introImpactSound2, true);
     SoundStop(gv_introSteamSound, true);
     libNtve_gf_SetAllianceOneWay(gv_pLAYER_01_USER, gv_pLAYER_02_BRAKK, libNtve_ge_AllianceSetting_Enemy);
-    UnitGroupAdd(lv_startingSelection, gv_kerrigan);
     UnitGroupAddUnitGroup(lv_startingSelection, gv_swarmHostGroup);
-    UnitGroupSelect(lv_startingSelection, gv_pLAYER_01_USER, true);
-    if ((libABFE498B_gv_aP_Triggers_Option_KerriganPresence > 0)) {
-        lib15EF4C78_gf_SetHeroPanelUnit(1, gv_kerrigan, gv_pLAYER_01_USER);
+    if (((libABFE498B_gv_aP_Triggers_Option_KerriganPresence == 0) || ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace != "Neut") && (libABFE498B_gv_aP_Triggers_Option_KerriganPresence != 4)))) {
+        TriggerEnable(gt_DefeatKerriganKilled, false);
+        libNtve_gf_ShowHideUnit(gv_kerrigan, false);
+        UnitBehaviorAdd(gv_kerrigan, "AP_ImmortalShakurasAntiAirMissileDisableAttack", gv_kerrigan, 1);
     }
     else {
-        libNtve_gf_ShowHideUnit(gv_kerrigan, false);
+        TriggerEnable(gt_DefeatKerriganKilled, true);
+        UnitGroupAdd(lv_startingSelection, gv_kerrigan);
+        lib15EF4C78_gf_SetHeroPanelUnit(1, gv_kerrigan, gv_pLAYER_01_USER);
     }
+    UnitGroupSelect(lv_startingSelection, gv_pLAYER_01_USER, true);
     TriggerExecute(gt_StartAIIntro, true, false);
+    libABFE498B_gf_AP_Triggers_startNoBuild(gv_pLAYER_01_USER);
     if ((gv_cinematicCompleted == true)) {
         lv_fadeDuration = 1.5;
         CameraApplyInfo(gv_pLAYER_01_USER, CameraInfoDefault(), lv_fadeDuration, -1, 10, false);
@@ -5812,10 +5908,8 @@ bool gt_MidSetup_Func (bool testConds, bool runActions) {
     TriggerEnable(gt_DEBUGMidCinematic, false);
     UnitClearSelection(gv_pLAYER_01_USER);
     RegionPlayableMapSet(RegionFromId(23));
-    ObjectiveShow(gv_objectiveDestroyDominionBase4, PlayerGroupAll(), false);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveDestroyDominionBase4);
-    ObjectiveShow(gv_objectiveDestroyDominionBase3, PlayerGroupAll(), false);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveDestroyDominionBase3);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_KerriganMustSurvive, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_ProceedToPool, false);
     UnitRemove(gv_kerrigan);
     auto2094D6DE_g = UnitGroup(null, c_playerAny, RegionPlayableMap(), UnitFilter(0, (1 << (c_targetFilterSummoned - 32)), (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
     auto2094D6DE_u = UnitGroupCount(auto2094D6DE_g, c_unitCountAll);
@@ -6085,14 +6179,17 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
             libNtve_gf_ShowHideUnit(autoF51D2832_var, true);
             UnitSetOwner(autoF51D2832_var, gv_pLAYER_01_USER, true);
         }
-        CreepModify(UnitGetPosition(UnitFromId(8)), 13.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(1823)), 9.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(210)), 9.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(209)), 9.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(212)), 9.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(1822)), 9.0, true, false);
-        CreepModify(UnitGetPosition(UnitFromId(1)), 9.0, true, false);
-        lib15EF4C78_gf_AP_Player_SpawnLarvaForHatchery(UnitFromId(8), 3);
+        if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
+            CreepModify(UnitGetPosition(UnitFromId(8)), 13.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(1823)), 9.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(210)), 9.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(209)), 9.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(212)), 9.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(1822)), 9.0, true, false);
+            CreepModify(UnitGetPosition(UnitFromId(1)), 9.0, true, false);
+            lib15EF4C78_gf_AP_Player_SpawnLarvaForHatchery(UnitFromId(8), 3);
+        }
+
         libNtve_gf_ShowHideUnit(gv_chrysalis, true);
         libNtve_gf_PlayAnimation(libNtve_gf_MainActorofUnit(gv_chrysalis), c_animNameDefault, "Stand", c_animFlagPlayForever, c_animTimeDefault);
         libNtve_gf_SetAnimationTimeScale(libNtve_gf_MainActorofUnit(gv_chrysalis), c_animNameDefault, 1.0);
@@ -6100,9 +6197,9 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
 
     UnitPauseAll(false);
     UnitBehaviorRemove(gv_chrysalis, "SuppressCollision", 1);
-    libSwaC_gf_SetHatcheryRallyPoint(UnitFromId(8), PointFromId(2440));
     UnitSetOwner(gv_chrysalis, gv_pLAYER_01_USER, true);
     UIAlertClear(gv_pLAYER_01_USER);
+    libABFE498B_gf_AP_Triggers_resetBase(gv_pLAYER_01_USER);
     lib15EF4C78_gf_SetHeroPanelUnit(1, null, gv_pLAYER_01_USER);
     libSwaC_gf_SetHeroPanelUnit(1, gv_chrysalis);
     libSwaC_gv_zS_SwarmHeroUIShowLevel[1] = false;
@@ -6113,7 +6210,10 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
     GameSetLighting("Zerus", 0.0);
     TriggerEnable(gt_DefeatBaseDead, true);
     libSwaC_gf_EnableDisableZerglingRespawn(true);
-    lib15EF4C78_gf_ZerglingRespawnSetPrimaryHatchery(gv_pLAYER_01_USER, UnitFromId(8));
+    if ((AIHasRes(gv_pLAYER_01_USER, (300 + lib5BD4895D_gv_aP_Core_BonusMinerals), 0) == false)) {
+        PlayerModifyPropertyInt(gv_pLAYER_01_USER, c_playerPropMinerals, c_playerPropOperSetTo, (300 + lib5BD4895D_gv_aP_Core_BonusMinerals));
+    }
+
     libSwaC_gf_EnableDisableNeedOverlordInfo(true);
     VisRevealerCreate(gv_pLAYER_01_USER, RegionFromId(2));
     VisRevealerEnable(VisRevealerLastCreated(), true);
@@ -6240,6 +6340,60 @@ bool gt_VictoryQ_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_VictoryQ_Init () {
     gt_VictoryQ = TriggerCreate("gt_VictoryQ_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Faction Swap Init
+//--------------------------------------------------------------------------------------------------
+bool gt_FactionSwapInit_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    unitgroup auto1D6A17BA_g;
+    int auto1D6A17BA_u;
+    unit auto1D6A17BA_var;
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), "Zerg", false);
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(6), "Zerg", false);
+    }
+    else {
+        libABFE498B_gv_aP_Triggers_skipCutscenes = true;
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(5), libABFE498B_gv_aP_Triggers_Option_overridePlayerRace, true);
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(6), libABFE498B_gv_aP_Triggers_Option_overridePlayerRace, true);
+        if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Terr")) {
+            PlayerSetRace(gv_pLAYER_01_USER, "Terr");
+            lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_RAYNORS_RAIDERS);
+        }
+        else {
+            if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Prot")) {
+                PlayerSetRace(gv_pLAYER_01_USER, "Prot");
+                lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_DAELAAM);
+            }
+
+        }
+        lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap(gv_pLAYER_01_USER);
+        UnitGroupAddUnitGroup(gv_playerBase, UnitGroup(null, gv_pLAYER_01_USER, RegionFromId(6), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
+        auto1D6A17BA_g = gv_playerBase;
+        auto1D6A17BA_u = UnitGroupCount(auto1D6A17BA_g, c_unitCountAll);
+        for (;; auto1D6A17BA_u -= 1) {
+            auto1D6A17BA_var = UnitGroupUnitFromEnd(auto1D6A17BA_g, auto1D6A17BA_u);
+            if (auto1D6A17BA_var == null) { break; }
+            libNtve_gf_ShowHideUnit(auto1D6A17BA_var, false);
+            libNtve_gf_PauseUnit(auto1D6A17BA_var, true);
+        }
+        lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_FactionSwapInit_Init () {
+    gt_FactionSwapInit = TriggerCreate("gt_FactionSwapInit_Func");
+    TriggerAddEventGeneric(gt_FactionSwapInit, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -6384,6 +6538,7 @@ bool gt_ArchInit_Func (bool testConds, bool runActions) {
         return true;
     }
 
+    TriggerEnable(gt_DefeatKerriganKilled, false);
     TriggerExecute(libA472B13C_gt_AP_HotS_Constructor, true, false);
     TriggerExecute(gt_Init02Players, true, false);
     TriggerExecute(gt_Init03Units, true, false);
@@ -6520,6 +6675,7 @@ void InitTriggers () {
     gt_ObjectiveKerriganMustSurviveFailed_Init();
     gt_ObjectiveKillTyrannozorCreate_Init();
     gt_ObjectiveKillTyrannozorComplete_Init();
+    gt_ObjectiveKillTyrannozorRemove_Init();
     gt_IntroQ_Init();
     gt_IntroSetup_Init();
     gt_IntroCinematic_Init();
@@ -6539,6 +6695,7 @@ void InitTriggers () {
     gt_MidChrysalisAnimations_Init();
     gt_MidMusic_Init();
     gt_VictoryQ_Init();
+    gt_FactionSwapInit_Init();
     gt_onDifficultyCasual_Init();
     gt_onDifficultyNormal_Init();
     gt_onDifficultyHard_Init();

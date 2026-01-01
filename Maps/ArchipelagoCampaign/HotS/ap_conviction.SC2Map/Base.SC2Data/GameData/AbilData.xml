@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+    <CAbilMerge id="AP_PrimalIgniterMerge">
+        <CmdButtonArray index="SelectedUnits" Requirements=""/>
+        <CmdButtonArray index="WithTarget" Requirements=""/>
+        <Info Time="5"/>
+    </CAbilMerge>
     <CAbilMorph id="PerditionTurretBurrow">
         <CmdButtonArray index="Execute" DefaultButtonFace="BurrowDown"/>
     </CAbilMorph>
@@ -33,6 +38,7 @@
     </CAbilTrain>
     <CAbilMorph id="AP_MorphToRavager">
         <!-- Override -->
+        <CmdButtonArray index="Execute" Requirements=""/>
         <Flags index="IgnoreUnitCost" value="1"/>
         <InfoArray index="1">
             <SectionArray index="Abils">

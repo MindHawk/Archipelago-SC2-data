@@ -40,6 +40,12 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_LOCATION_ID_RESEARCH_CENTER = 1;
+const int gv_LOCATION_ID_WEAPONRY_LABS = 2;
+const int gv_LOCATION_ID_BRUTALISK = 3;
+const int gv_lOCATION_ID_GAS_PICKUPS = 4;
+const int gv_lOCATION_ID_PROTECT_BUILDINGS = 5;
+const int gv_lOCATION_ID_DESTROY_ZERG_BASE = 6;
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_DOMINION = 2;
 const int gv_pLAYER_02_DOMINION5 = 3;
@@ -52,6 +58,7 @@ const int gv_pLAYER_02_DOMINION7 = 10;
 //--------------------------------------------------------------------------------------------------
 // Global Variables
 //--------------------------------------------------------------------------------------------------
+int gv_objectiveKillBrutalisk;
 int gv_brutaliskLife;
 int gv_brutaliskDamage;
 int gv_bonusObjNorthZerglingCount;
@@ -89,9 +96,14 @@ point[16] gv_lastWaypointsEast;
 int gv_northWaveCount;
 bool gv_finalWaveTriggered;
 int gv_eastWaveCount;
+int gv_objectiveDefendHornersBase;
+int gv_objectiveSecureArmyTech;
+int gv_objectiveSecureNovaTech;
+int gv_objectiveCollectGasPickups;
+int gv_objectiveGasPickupCount;
+int gv_objectiveProtectBuildings;
+int gv_objectiveBuildingDeathCount;
 int gv_objectiveDestroyZergBase;
-int gv_objectiveRescueStalkers;
-int gv_objectiveRescueStalkers2;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicPausedUnits;
 unitgroup gv_cinematicTempUnits;
@@ -110,6 +122,7 @@ unitgroup gv_victoryBattleCruisers;
 unit gv_victoryTransmittingCruiser;
 
 void InitGlobals () {
+    gv_objectiveKillBrutalisk = c_invalidObjectiveId;
     gv_dominionPlayerGroup = PlayerGroupEmpty();
     gv_zergPlayerGroup = PlayerGroupEmpty();
     gv_missionTimer = TimerCreate();
@@ -123,9 +136,12 @@ void InitGlobals () {
     gv_bonusObjNorthPing = c_invalidPingId;
     gv_bonusObjSouthPing = c_invalidPingId;
     gv_bonusObjSouthRavagers = UnitGroupEmpty();
+    gv_objectiveDefendHornersBase = c_invalidObjectiveId;
+    gv_objectiveSecureArmyTech = c_invalidObjectiveId;
+    gv_objectiveSecureNovaTech = c_invalidObjectiveId;
+    gv_objectiveCollectGasPickups = c_invalidObjectiveId;
+    gv_objectiveProtectBuildings = c_invalidObjectiveId;
     gv_objectiveDestroyZergBase = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers2 = c_invalidObjectiveId;
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicPausedUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
@@ -156,6 +172,8 @@ trigger gt_onDifficultyCasual;
 trigger gt_onDifficultyNormal;
 trigger gt_onDifficultyHard;
 trigger gt_onDifficultyBrutal;
+trigger gt_ObjectiveKillBrutaliskCreate;
+trigger gt_ObjectiveKillBrutaliskComplete;
 trigger gt_ArchInit;
 trigger gt_onBrutaliskDeath;
 trigger gt_Initialization;
@@ -243,9 +261,21 @@ trigger gt_ObjectiveDefendHornersBaseFailed;
 trigger gt_ObjectiveSecureArmyTechCreate;
 trigger gt_ObjectiveSecureArmyTechComplete;
 trigger gt_ObjectiveSecureArmyTechFailed;
+trigger gt_ObjectiveSecureArmyTechDisable;
 trigger gt_ObjectiveSecureNovaTechCreate;
 trigger gt_ObjectiveSecureNovaTechComplete;
 trigger gt_ObjectiveSecureNovaTechFailed;
+trigger gt_ObjectiveSecureNovaTechDisable;
+trigger gt_ObjectiveCollectGasPickupsCreate;
+trigger gt_ObjectiveCollectGasPickupsUpdate;
+trigger gt_ObjectiveCollectGasPickupsComplete;
+trigger gt_ObjectiveProtectBuildingsCreate;
+trigger gt_ObjectiveProtectBuildingsUpdate;
+trigger gt_ObjectiveProtectBuildingsComplete;
+trigger gt_ObjectiveProtectBuildingsFail;
+trigger gt_ObjectiveDestroyZergBaseCreate;
+trigger gt_ObjectiveDestroyZergBaseUpdate;
+trigger gt_ObjectiveDestroyZergBaseComplete;
 trigger gt_BriefingQ;
 trigger gt_BriefingSceneHive;
 trigger gt_BriefingSceneReapers;
@@ -1133,6 +1163,76 @@ void gt_onDifficultyBrutal_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kill Brutalisk Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKillBrutaliskCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Extra;
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    ObjectiveCreate(StringExternal("Param/Value/6303DBB3"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveKillBrutalisk = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveKillBrutalisk, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveKillBrutalisk, gv_LOCATION_ID_BRUTALISK);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveKillBrutalisk, true);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKillBrutaliskCreate_Init () {
+    gt_ObjectiveKillBrutaliskCreate = TriggerCreate("gt_ObjectiveKillBrutaliskCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kill Brutalisk Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKillBrutaliskComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNCMI_gf_PlayerInCinematicModeCampaign() == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    TriggerExecute(gt_ObjectiveKillBrutaliskCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveKillBrutalisk);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKillBrutaliskComplete_Init () {
+    gt_ObjectiveKillBrutaliskComplete = TriggerCreate("gt_ObjectiveKillBrutaliskComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: Arch Init
 //--------------------------------------------------------------------------------------------------
 bool gt_ArchInit_Func (bool testConds, bool runActions) {
@@ -1181,7 +1281,8 @@ bool gt_onBrutaliskDeath_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_BRUTALISK);
+    TriggerExecute(gt_ObjectiveKillBrutaliskComplete, true, false);
     return true;
 }
 
@@ -1577,6 +1678,13 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
     TriggerQueueExit();
     Wait(2.0, c_timeReal);
     TriggerExecute(gt_TipReadyQ, true, false);
+    Wait(5.0, c_timeReal);
+    TriggerExecute(gt_ObjectiveCollectGasPickupsCreate, true, false);
+    Wait(5.0, c_timeReal);
+    TriggerExecute(gt_ObjectiveProtectBuildingsCreate, true, false);
+    Wait(20.0, c_timeReal);
+    TriggerExecute(gt_ObjectiveDestroyZergBaseCreate, true, false);
+    Wait(5.0, c_timeReal);
     return true;
 }
 
@@ -1691,7 +1799,7 @@ bool gt_BonusObjNorthSavedQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_RESEARCH_CENTER);
     TriggerQueueEnter();
     libComC_gf_SetAllSoundChannelVolumesCampaign(libComC_ge_VolumeChannelModeCampaign_Speech);
     libNCMI_gf_SendTransmissionCampaign(null, "Mission_Nova02|Line00108", c_transmissionDurationAdd, 0.0, true, libNCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libNCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
@@ -2229,7 +2337,7 @@ bool gt_BonusObjSouthSavedQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(2);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_WEAPONRY_LABS);
     TriggerQueueEnter();
     libComC_gf_SetAllSoundChannelVolumesCampaign(libComC_ge_VolumeChannelModeCampaign_Speech);
     if ((gv_bonusObjProgress == 2)) {
@@ -3137,6 +3245,7 @@ bool gt_Wave12BossWaveIncomingQ_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
+    TriggerExecute(gt_ObjectiveKillBrutaliskCreate, true, false);
     libComC_gf_SetAllSoundChannelVolumesCampaign(libComC_ge_VolumeChannelModeCampaign_Speech);
     libNCMI_gf_SendTransmissionCampaign(null, "Mission_Nova02|Line00091", c_transmissionDurationAdd, 0.0, true, libNCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libNCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     libComC_gf_SetAllSoundChannelVolumesCampaign(libComC_ge_VolumeChannelModeCampaign_Game);
@@ -3868,6 +3977,7 @@ bool gt_VictoryDefendHornersBaseCompleted_Func (bool testConds, bool runActions)
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveProtectBuildingsComplete, true, false);
     TriggerQueuePause(true);
     TriggerQueueClear(c_triggerQueueRemove);
     auto8048C945_g = UnitGroup(null, gv_pLAYER_02_DOMINION, RegionEntireMap(), UnitFilter((1 << c_targetFilterStructure), 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
@@ -3905,10 +4015,10 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     if ((TriggerIsEnabled(gt_onBrutaliskDeath) == true)) {
         TriggerEnable(gt_onBrutaliskDeath, false);
-        lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_BRUTALISK);
     }
 
     libNCMI_gf_GameOver(libNCMI_ge_CampaignMissionGameResultType_Victory);
@@ -4943,7 +5053,7 @@ bool gt_AttackWaveManager_Func (bool testConds, bool runActions) {
         for (;; autoC7BD970B_u -= 1) {
             lv_unit = UnitGroupUnitFromEnd(autoC7BD970B_g, autoC7BD970B_u);
             if (lv_unit == null) { break; }
-            if (((UnitHasBehavior2(EventUnit(), "AP_NovaDomination") == true) || (UnitHasBehavior2(EventUnit(), "AP_MindControl") == true))) {
+            if (((UnitHasBehavior2(lv_unit, "AP_NovaDomination") == true) || (UnitHasBehavior2(lv_unit, "AP_MindControl") == true))) {
                 UnitGroupRemove(lv_waveGroup, lv_unit);
             }
 
@@ -5226,8 +5336,11 @@ bool gt_ObjectiveDefendHornersBaseCreate_Func (bool testConds, bool runActions) 
 
     TriggerEnable(TriggerGetCurrent(), false);
     libCMMI_gf_CreateObjectiveCampaign("Nova02Primary01");
-    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(gv_objectiveDestroyZergBase, "Nova02Primary01", "", 0);
+    gv_objectiveDefendHornersBase = ObjectiveLastCreated();
+    ObjectiveShow(gv_objectiveDefendHornersBase, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveDefendHornersBase, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDefendHornersBase, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDefendHornersBase, true);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5259,7 +5372,7 @@ bool gt_ObjectiveDefendHornersBaseComplete_Func (bool testConds, bool runActions
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDefendHornersBaseCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDefendHornersBase);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5291,7 +5404,7 @@ bool gt_ObjectiveDefendHornersBaseFailed_Func (bool testConds, bool runActions) 
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDefendHornersBaseCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDefendHornersBase);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5305,7 +5418,13 @@ void gt_ObjectiveDefendHornersBaseFailed_Init () {
 // Trigger: Objective Secure Army Tech Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveSecureArmyTechCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -5323,8 +5442,12 @@ bool gt_ObjectiveSecureArmyTechCreate_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     libCMMI_gf_CreateObjectiveCampaign("Nova02Bonus01");
-    gv_objectiveRescueStalkers = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(gv_objectiveRescueStalkers, "Nova02Bonus01", "", 0);
+    gv_objectiveSecureArmyTech = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objectiveSecureArmyTech, libComC_gf_MissionObjectiveName("Nova02Bonus01"));
+    ObjectiveShow(gv_objectiveSecureArmyTech, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveSecureArmyTech, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureArmyTech, gv_LOCATION_ID_RESEARCH_CENTER);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveSecureArmyTech, true);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5354,7 +5477,7 @@ bool gt_ObjectiveSecureArmyTechComplete_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerEnable(gt_BonusObjNorthFacilityKilled, false);
     TriggerExecute(gt_ObjectiveSecureArmyTechCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveSecureArmyTech);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5386,7 +5509,7 @@ bool gt_ObjectiveSecureArmyTechFailed_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveSecureArmyTechCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveSecureArmyTech);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5397,10 +5520,53 @@ void gt_ObjectiveSecureArmyTechFailed_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Objective Secure Army Tech Disable
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveSecureArmyTechDisable_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_locationCollectable[gv_LOCATION_ID_RESEARCH_CENTER] == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveSecureArmyTechCreate, false);
+    TriggerEnable(gt_ObjectiveSecureArmyTechComplete, false);
+    TriggerEnable(gt_BonusObjectiveNorthRevealQ, false);
+    TriggerEnable(gt_BonusObjNorthWarningQ, false);
+    TriggerEnable(gt_BonusObjNorthSavedQ, false);
+    TriggerEnable(gt_BonusObjNorthLostQ, false);
+    TriggerEnable(gt_BonusObjNorthSpawn, false);
+    TriggerEnable(gt_BonusObjNorthRescue, false);
+    TriggerEnable(gt_BonusObjNorthFacilityKilled, false);
+    TriggerEnable(gt_BonusObjNorthCrawlerMorph, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveSecureArmyTechDisable_Init () {
+    gt_ObjectiveSecureArmyTechDisable = TriggerCreate("gt_ObjectiveSecureArmyTechDisable_Func");
+    TriggerAddEventGeneric(gt_ObjectiveSecureArmyTechDisable, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: Objective Secure Nova Tech Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveSecureNovaTechCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -5418,8 +5584,12 @@ bool gt_ObjectiveSecureNovaTechCreate_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     libCMMI_gf_CreateObjectiveCampaign("Nova02Bonus02");
-    gv_objectiveRescueStalkers2 = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(gv_objectiveRescueStalkers2, "Nova02Bonus02", "", 0);
+    gv_objectiveSecureNovaTech = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objectiveSecureNovaTech, libComC_gf_MissionObjectiveName("Nova02Bonus02"));
+    ObjectiveShow(gv_objectiveSecureNovaTech, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveSecureNovaTech, lv_category, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveSecureNovaTech, gv_LOCATION_ID_WEAPONRY_LABS);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveSecureNovaTech, true);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5449,7 +5619,7 @@ bool gt_ObjectiveSecureNovaTechComplete_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerEnable(gt_BonusObjSouthFacilityKilled, false);
     TriggerExecute(gt_ObjectiveSecureNovaTechCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers2);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveSecureNovaTech);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5481,7 +5651,7 @@ bool gt_ObjectiveSecureNovaTechFailed_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveSecureNovaTechCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveRescueStalkers2);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveSecureNovaTech);
     Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5489,6 +5659,407 @@ bool gt_ObjectiveSecureNovaTechFailed_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveSecureNovaTechFailed_Init () {
     gt_ObjectiveSecureNovaTechFailed = TriggerCreate("gt_ObjectiveSecureNovaTechFailed_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Secure Nova Tech Disable
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveSecureNovaTechDisable_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_locationCollectable[gv_LOCATION_ID_WEAPONRY_LABS] == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveSecureNovaTechCreate, false);
+    TriggerEnable(gt_ObjectiveSecureNovaTechComplete, false);
+    TriggerEnable(gt_BonusObjectiveSouthRevealQ, false);
+    TriggerEnable(gt_BonusObjSouthWarningQ, false);
+    TriggerEnable(gt_BonusObjSouthSavedQ, false);
+    TriggerEnable(gt_BonusObjSouthLostQ, false);
+    TriggerEnable(gt_BonusObjSouthSpawn, false);
+    TriggerEnable(gt_BonusObjSouthRescue, false);
+    TriggerEnable(gt_BonusObjSouthFacilityKilled, false);
+    TriggerEnable(gt_BonusObjSouthCrawlerMorph, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveSecureNovaTechDisable_Init () {
+    gt_ObjectiveSecureNovaTechDisable = TriggerCreate("gt_ObjectiveSecureNovaTechDisable_Func");
+    TriggerAddEventGeneric(gt_ObjectiveSecureNovaTechDisable, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Collect Gas Pickups Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveCollectGasPickupsCreate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNCMI_gf_PlayerInCinematicModeCampaign() == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    ObjectiveCreate(StringExternal("Param/Value/D13E0754"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveCollectGasPickups = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveCollectGasPickups, lib5BD4895D_ge_APObjectiveCategory_Extra, "", gv_objectiveGasPickupCount, 8, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveCollectGasPickups, gv_lOCATION_ID_GAS_PICKUPS);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveCollectGasPickups, true);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveCollectGasPickupsCreate_Init () {
+    gt_ObjectiveCollectGasPickupsCreate = TriggerCreate("gt_ObjectiveCollectGasPickupsCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Collect Gas Pickups Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveCollectGasPickupsUpdate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    gv_objectiveGasPickupCount = (gv_objectiveGasPickupCount + 1);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveCollectGasPickups, gv_objectiveGasPickupCount);
+    if ((gv_objectiveGasPickupCount >= 8)) {
+        TriggerExecute(gt_ObjectiveCollectGasPickupsComplete, true, false);
+    }
+    else {
+        Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveCollectGasPickupsUpdate_Init () {
+    gt_ObjectiveCollectGasPickupsUpdate = TriggerCreate("gt_ObjectiveCollectGasPickupsUpdate_Func");
+    TriggerAddEventUnitAbility(gt_ObjectiveCollectGasPickupsUpdate, null, AbilityCommand("PickupGas100", 0), c_abilEffectStageCast, false);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Collect Gas Pickups Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveCollectGasPickupsComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveProtectBuildingsFail, false);
+    TriggerExecute(gt_ObjectiveCollectGasPickupsCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveCollectGasPickups);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_GAS_PICKUPS);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveCollectGasPickupsComplete_Init () {
+    gt_ObjectiveCollectGasPickupsComplete = TriggerCreate("gt_ObjectiveCollectGasPickupsComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Protect Buildings Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveProtectBuildingsCreate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNCMI_gf_PlayerInCinematicModeCampaign() == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    ObjectiveCreate(StringExternal("Param/Value/A5E6ECDB"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveProtectBuildings = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveProtectBuildings, lib5BD4895D_ge_APObjectiveCategory_Challenge, "Buildings Lost", gv_objectiveBuildingDeathCount, 5, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveProtectBuildings, gv_lOCATION_ID_PROTECT_BUILDINGS);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveProtectBuildings, true);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveProtectBuildingsCreate_Init () {
+    gt_ObjectiveProtectBuildingsCreate = TriggerCreate("gt_ObjectiveProtectBuildingsCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Protect Buildings Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveProtectBuildingsUpdate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((libNCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((UnitFilterMatch(EventUnit(), gv_pLAYER_02_DOMINION, UnitFilter((1 << c_targetFilterStructure), 0, (1 << c_targetFilterAlly) | (1 << c_targetFilterNeutral) | (1 << c_targetFilterEnemy) | (1 << c_targetFilterMissile), (1 << (c_targetFilterHidden - 32)))) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerExecute(gt_ObjectiveProtectBuildingsCreate, true, false);
+    gv_objectiveBuildingDeathCount = (gv_objectiveBuildingDeathCount + 1);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveProtectBuildings, gv_objectiveBuildingDeathCount);
+    if ((gv_objectiveBuildingDeathCount > 5)) {
+        TriggerEnable(TriggerGetCurrent(), false);
+        TriggerExecute(gt_ObjectiveProtectBuildingsFail, true, false);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveProtectBuildingsUpdate_Init () {
+    gt_ObjectiveProtectBuildingsUpdate = TriggerCreate("gt_ObjectiveProtectBuildingsUpdate_Func");
+    TriggerAddEventUnitDied(gt_ObjectiveProtectBuildingsUpdate, null);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Protect Buildings Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveProtectBuildingsComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((gv_objectiveBuildingDeathCount <= 5))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveProtectBuildingsCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveProtectBuildings);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_PROTECT_BUILDINGS);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveProtectBuildingsComplete_Init () {
+    gt_ObjectiveProtectBuildingsComplete = TriggerCreate("gt_ObjectiveProtectBuildingsComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Protect Buildings Fail
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveProtectBuildingsFail_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveProtectBuildingsComplete, false);
+    TriggerExecute(gt_ObjectiveProtectBuildingsCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveProtectBuildings);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveProtectBuildingsFail_Init () {
+    gt_ObjectiveProtectBuildingsFail = TriggerCreate("gt_ObjectiveProtectBuildingsFail_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Destroy Zerg Base Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyZergBaseCreate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNCMI_gf_PlayerInCinematicModeCampaign() == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    ObjectiveCreate(StringExternal("Param/Value/F5BBC007"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveDestroyZergBase, lib5BD4895D_ge_APObjectiveCategory_Mastery, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyZergBase, gv_lOCATION_ID_DESTROY_ZERG_BASE);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyZergBase, true);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyZergBaseCreate_Init () {
+    gt_ObjectiveDestroyZergBaseCreate = TriggerCreate("gt_ObjectiveDestroyZergBaseCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Destroy Zerg Base Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyZergBaseUpdate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_buildingsleftcount;
+    unitgroup lv_buildingsleft;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_buildingsleft = UnitGroupEmpty();
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((libNCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((UnitFilterMatch(EventUnit(), gv_pLAYER_02_DOMINION2, UnitFilter((1 << c_targetFilterStructure) | (1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterNeutral) | (1 << c_targetFilterEnemy) | (1 << c_targetFilterMissile) | (1 << c_targetFilterItem), (1 << (c_targetFilterStasis - 32)) | (1 << (c_targetFilterHidden - 32)) | (1 << (c_targetFilterInvulnerable - 32)))) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerExecute(gt_ObjectiveDestroyZergBaseCreate, true, false);
+    lv_buildingsleft = UnitGroup(null, gv_pLAYER_02_DOMINION2, RegionEntireMap(), UnitFilter((1 << c_targetFilterStructure) | (1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterAlly) | (1 << c_targetFilterNeutral) | (1 << c_targetFilterEnemy) | (1 << c_targetFilterMissile) | (1 << c_targetFilterItem), (1 << (c_targetFilterStasis - 32)) | (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32)) | (1 << (c_targetFilterInvulnerable - 32))), 0);
+    lv_buildingsleftcount = UnitGroupCount(lv_buildingsleft, c_unitCountAlive);
+    lv_buildingsleft = UnitGroup(null, gv_pLAYER_02_DOMINION3, RegionEntireMap(), UnitFilter((1 << c_targetFilterStructure) | (1 << c_targetFilterPreventDefeat), 0, (1 << c_targetFilterAlly) | (1 << c_targetFilterNeutral) | (1 << c_targetFilterEnemy) | (1 << c_targetFilterMissile) | (1 << c_targetFilterItem), (1 << (c_targetFilterStasis - 32)) | (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32)) | (1 << (c_targetFilterInvulnerable - 32))), 0);
+    lv_buildingsleftcount = (UnitGroupCount(lv_buildingsleft, c_unitCountAlive) + lv_buildingsleftcount);
+    if ((lv_buildingsleftcount <= 0)) {
+        TriggerExecute(gt_ObjectiveDestroyZergBaseComplete, true, false);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyZergBaseUpdate_Init () {
+    gt_ObjectiveDestroyZergBaseUpdate = TriggerCreate("gt_ObjectiveDestroyZergBaseUpdate_Func");
+    TriggerAddEventUnitDied(gt_ObjectiveDestroyZergBaseUpdate, null);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Destroy Zerg Base Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyZergBaseComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveDestroyZergBaseCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_ZERG_BASE);
+    Wait(libNCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyZergBaseComplete_Init () {
+    gt_ObjectiveDestroyZergBaseComplete = TriggerCreate("gt_ObjectiveDestroyZergBaseComplete_Func");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -6954,6 +7525,8 @@ void InitTriggers () {
     gt_onDifficultyNormal_Init();
     gt_onDifficultyHard_Init();
     gt_onDifficultyBrutal_Init();
+    gt_ObjectiveKillBrutaliskCreate_Init();
+    gt_ObjectiveKillBrutaliskComplete_Init();
     gt_ArchInit_Init();
     gt_onBrutaliskDeath_Init();
     gt_Initialization_Init();
@@ -7041,9 +7614,21 @@ void InitTriggers () {
     gt_ObjectiveSecureArmyTechCreate_Init();
     gt_ObjectiveSecureArmyTechComplete_Init();
     gt_ObjectiveSecureArmyTechFailed_Init();
+    gt_ObjectiveSecureArmyTechDisable_Init();
     gt_ObjectiveSecureNovaTechCreate_Init();
     gt_ObjectiveSecureNovaTechComplete_Init();
     gt_ObjectiveSecureNovaTechFailed_Init();
+    gt_ObjectiveSecureNovaTechDisable_Init();
+    gt_ObjectiveCollectGasPickupsCreate_Init();
+    gt_ObjectiveCollectGasPickupsUpdate_Init();
+    gt_ObjectiveCollectGasPickupsComplete_Init();
+    gt_ObjectiveProtectBuildingsCreate_Init();
+    gt_ObjectiveProtectBuildingsUpdate_Init();
+    gt_ObjectiveProtectBuildingsComplete_Init();
+    gt_ObjectiveProtectBuildingsFail_Init();
+    gt_ObjectiveDestroyZergBaseCreate_Init();
+    gt_ObjectiveDestroyZergBaseUpdate_Init();
+    gt_ObjectiveDestroyZergBaseComplete_Init();
     gt_BriefingQ_Init();
     gt_BriefingSceneHive_Init();
     gt_BriefingSceneReapers_Init();

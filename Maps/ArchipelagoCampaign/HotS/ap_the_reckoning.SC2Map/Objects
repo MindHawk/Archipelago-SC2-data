@@ -8426,6 +8426,7 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="1632211283" Variation="5" Position="168,39.5,0" Scale="1,1,1" UnitType="RichMineralField" Resources="3000"/>
+    <ObjectUnit Id="763645275" Position="47,45,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="513" Position="174,41,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="4"/>
     <ObjectUnit Id="2247" Position="45,90,0" Rotation="5.682" Scale="1,1,1" UnitType="MissileTurret" Player="3">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -8462,6 +8463,9 @@
     </ObjectUnit>
     <ObjectUnit Id="1959" Position="135.5,115.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Barracks" Player="2"/>
     <ObjectUnit Id="623" Position="128,99,0" Rotation="5.4975" Scale="1,1,1" UnitType="GlobeStatue"/>
+    <ObjectUnit Id="288125455" Position="50.8352,50.235,0" Rotation="0.4335" Scale="1,1,1" UnitType="AP_Vulture" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2242" Position="53.5,86.5,0" Rotation="5.497" Scale="1,1,1" UnitType="Bunker" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
         <Flag Index="ForcePlacement" Value="1"/>
@@ -8502,7 +8506,13 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="2030917503" Position="63.7485,38.7517,0" Rotation="2.6367" Scale="1,1,1" UnitType="AP_ImmortalAiur" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="407" Position="152,137,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="2"/>
+    <ObjectUnit Id="396981402" Position="60.3664,43.307,0" Rotation="2.618" Scale="1,1,1" UnitType="AP_CorsairMP" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="57" Position="65.3598,149.5598,0" Rotation="3.4218" Scale="1,1,1" UnitType="ScienceVessel" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -8518,6 +8528,9 @@
     </ObjectUnit>
     <ObjectUnit Id="23" Position="189,86,0" Rotation="0.1252" Scale="1,1,1" UnitType="MissileTurret" Player="5"/>
     <ObjectUnit Id="381854912" Position="55.9477,44.1083,0" Rotation="2.388" Scale="1,1,1" UnitType="AP_Ultralisk" Player="1"/>
+    <ObjectUnit Id="215659120" Position="33,22,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2278" Position="143.5927,152.4875,0" Rotation="4.866" Scale="1,1,1" UnitType="MengskMarauder" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -8545,6 +8558,9 @@
     <ObjectUnit Id="4" Position="70,42,0" Rotation="0.8596" Scale="1,1,1" UnitType="AP_SporeCrawler" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
+    <ObjectUnit Id="923082769" Position="35,20,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="544" Position="132.0886,128.103,0" Rotation="4.053" Scale="1,1,1" UnitType="MengskThor" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -8556,6 +8572,9 @@
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1792346164" Position="35,22,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="413" Position="153.4072,94.2314,0" Rotation="5.9853" Scale="1,1,1" UnitType="MengskHellion" Player="2">
         <AIRebuild Index="2" Value="0"/>
@@ -8569,6 +8588,9 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="2385" Position="110,88,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="2"/>
+    <ObjectUnit Id="253736963" Position="37,24,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="636" Position="81.4677,64.1225,0" Rotation="5.3273" Scale="1,1,1" UnitType="MengskMarine" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -8618,6 +8640,9 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
+    <ObjectUnit Id="1601965585" Position="64.3647,36.3454,0" Rotation="3.54" Scale="1,1,1" UnitType="AP_BrynhildAssault" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="1960" Position="138,115,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="2"/>
     <ObjectUnit Id="47" Position="110.5,68.5,0" Rotation="3.9267" Scale="1,1,1" UnitType="ExtendingBridgeNEWide8Out" BoostexCliffLevel="1"/>
     <ObjectUnit Id="68" Position="63.2441,33.2067,0" Rotation="1.4143" Scale="1,1,1" UnitType="AP_Hydralisk" Player="1">
@@ -8652,6 +8677,9 @@
     <ObjectUnit Id="1053" Position="141.5,152.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Bunker" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
+    <ObjectUnit Id="2096884322" Position="60.9692,35.3674,0" Rotation="1.1613" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2290" Position="39.4624,90.437,0" Rotation="0.8415" Scale="1,1,1" UnitType="WarPig" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
         <AIRebuild Index="1" Value="14"/>
@@ -8665,6 +8693,7 @@
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1807308329" Position="58,52,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="625" Position="119.5,46.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Starport" Player="4"/>
     <ObjectUnit Id="85" Position="39.98,98.0998,0" Rotation="0.1992" Scale="1,1,1" UnitType="WarPig" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
@@ -8740,6 +8769,9 @@
         <AIRebuild Index="4" Value="2"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="59595214" Position="47,47,0" Rotation="1.9467" Scale="1,1,1" UnitType="AP_DevastatorTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="487" Position="47.5,87.5,0" Rotation="5.4963" Scale="1,1,1" UnitType="Bunker" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -8768,6 +8800,9 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1165334045" Position="70,42,0" Rotation="4.983" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="21" Position="178,68,0" Rotation="0.1252" Scale="1,1,1" UnitType="MissileTurret" Player="5"/>
     <ObjectUnit Id="464" Position="55.4472,124.0488,0" Rotation="6.243" Scale="1,1,1" UnitType="MengskMarine" Player="3">
         <AIRebuild Index="1" Value="0"/>
@@ -8788,6 +8823,9 @@
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="891277340" Position="65,41,0" Rotation="0.844" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="628" Position="181.5,104.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Barracks" Player="5"/>
     <ObjectUnit Id="2295" Position="35.4755,92.4504,0" Rotation="0.7907" Scale="1,1,1" UnitType="SCV" Player="9">
@@ -8858,10 +8896,12 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1406898279" Position="61.5,44.5,0" Rotation="1.433" Scale="1,1,1" UnitType="AP_DuskWing" Player="1"/>
     <ObjectUnit Id="40" Position="141.5,159.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Starport" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="592" Position="131.5,96.5,0" Rotation="3.9267" Scale="1,1,1" UnitType="WolfStatue"/>
+    <ObjectUnit Id="1952883700" Position="37,22,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="571" Position="136.2541,128.7302,0" Rotation="3.9836" Scale="1,1,1" UnitType="MengskBanshee" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -8921,12 +8961,18 @@
     </ObjectUnit>
     <ObjectUnit Id="26" Position="168.5,31.5,0" Rotation="2.0935" Scale="1,1,1" UnitType="PlanetaryFortress" Player="4"/>
     <ObjectUnit Id="95" Position="112.5,53.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Starport" Player="4"/>
+    <ObjectUnit Id="370132031" Position="64,31,0" Rotation="4.7678" Scale="1,1,1" UnitType="AP_DevastatorTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="497" Position="143.9655,81.9262,0" Rotation="0.249" Scale="1,1,1" UnitType="MengskThor" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1511057866" Position="58,54,0" Rotation="4.1447" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="52" Position="127.5,152.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Bunker" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -9067,6 +9113,9 @@
         <AIRebuild Index="4" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="217" Position="57.5,32.5,0" Rotation="5.7595" Scale="1,1,1" UnitType="AP_EvolutionChamber" Player="1"/>
+    <ObjectUnit Id="9799136" Position="47,47,0" Rotation="3.7526" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2535" Position="65.3398,142.5097,0" Rotation="5.5485" Scale="1,1,1" UnitType="SCV" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -9100,6 +9149,7 @@
         <AIRebuild Index="4" Value="1"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1437862195" Position="54,44.5,0" Rotation="5.0937" Scale="1,1,1" UnitType="AP_Battlecruiser" Player="1"/>
     <ObjectUnit Id="740" Position="89.5151,60.1594,0" Rotation="5.4621" Scale="1,1,1" UnitType="MengskSiegeTankSieged" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -9107,6 +9157,7 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1646873934" Position="37,20,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="801" Position="81,113,0" Rotation="5.4975" Scale="1,1,1" UnitType="StarportTechReactor" Player="3"/>
     <ObjectUnit Id="655" Position="39.529,87.9902,0" Rotation="5.8723" Scale="1,1,1" UnitType="MengskSiegeTankSieged" Player="3">
         <AIRebuild Index="1" Value="0"/>
@@ -9121,6 +9172,7 @@
         <AIRebuild Index="4" Value="14"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="797952498" Position="37,24,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="719" Position="58.5,75.5,0" Rotation="0.7763" Scale="1,1,1" UnitType="MengskStatueAlone">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
@@ -9190,6 +9242,7 @@
         <AIRebuild Index="4" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="701" Position="102,34,0" Rotation="6.2226" Scale="1,1,1" UnitType="MissileTurret" Player="4"/>
+    <ObjectUnit Id="1871983488" Position="33,20,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="2494" Position="138.1486,25.8791,0" Rotation="0.779" Scale="1,1,1" UnitType="MengskMarine" Player="4">
         <AIRebuild Index="1" Value="14"/>
         <AIRebuild Index="2" Value="14"/>
@@ -9241,6 +9294,9 @@
         <AIRebuild Index="2" Value="1"/>
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
+    </ObjectUnit>
+    <ObjectUnit Id="329817085" Position="53.168,44.156,0" Rotation="2.4645" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="123949039" Variation="3" Position="31,89.5,0" Scale="1,1,1" UnitType="RichMineralField" Resources="3000"/>
     <ObjectUnit Id="640" Position="84.6704,64.6215,0" Rotation="5.133" Scale="1,1,1" UnitType="MengskMedic" Player="2">
@@ -9302,6 +9358,9 @@
     </ObjectUnit>
     <ObjectUnit Id="2143" Variation="5" Position="103,80.5,0" Scale="1,1,1" UnitType="MineralField" Resources="3078"/>
     <ObjectUnit Id="248" Position="50.614,29.0207,0" Rotation="0.1447" Scale="1,1,1" UnitType="AP_Drone" Player="1"/>
+    <ObjectUnit Id="112249697" Position="48.5,41.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Stargate" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="317" Position="110.5,117.5,0" Rotation="3.9267" Scale="1,1,1" UnitType="WolfStatue"/>
     <ObjectUnit Id="2683" Position="147.6086,167.174,0" Rotation="5.8657" Scale="1,1,1" UnitType="MengskGoliath" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -9403,6 +9462,9 @@
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="330" Position="50,116,0" Rotation="5.336" Scale="1,1,1" UnitType="MissileTurret" Player="3"/>
+    <ObjectUnit Id="922098126" Position="50.9062,46.6452,0" Rotation="5.0561" Scale="1,1,1" UnitType="AP_BrynhildAssault" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2541" Position="72.6984,99.3466,0" Rotation="5.1335" Scale="1,1,1" UnitType="MengskMarine" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -9416,6 +9478,9 @@
         <AIRebuild Index="2" Value="1"/>
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
+    </ObjectUnit>
+    <ObjectUnit Id="880424617" Position="56.2485,39.809,0" Rotation="1.6921" Scale="1,1,1" UnitType="AP_ArbiterMP" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="832" Position="114.6074,86.988,0" Rotation="5.6428" Scale="1,1,1" UnitType="MengskSiegeTankSieged" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -9459,6 +9524,9 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="826" Position="171,72,0" Rotation="0.125" Scale="1,1,1" UnitType="MissileTurret" Player="5"/>
+    <ObjectUnit Id="1491319240" Position="64,31,0" Rotation="2.81" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2489" Position="135.6,23.813,0" Rotation="0.779" Scale="1,1,1" UnitType="MengskMarine" Player="4">
         <AIRebuild Index="1" Value="14"/>
         <AIRebuild Index="2" Value="14"/>
@@ -9727,6 +9795,9 @@
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
     <ObjectUnit Id="145" Position="65.5,156.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Starport" Player="3"/>
+    <ObjectUnit Id="1983130245" Position="57.4653,41.8222,0" Rotation="5.4978" Scale="1,1,1" UnitType="AP_CarrierAiur" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="340" Position="101.1826,136.6142,0" Rotation="5.5603" Scale="1,1,1" UnitType="MengskFirebat" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
         <AIRebuild Index="2" Value="0"/>
@@ -9847,12 +9918,20 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="2074753804" Position="68,42,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
+    <ObjectUnit Id="431350726" Position="55.5,36.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_ZergMercenaryCompound" Player="1"/>
+    <ObjectUnit Id="1219860229" Position="66.7922,38.9335,0" Rotation="0.8505" Scale="1,1,1" UnitType="AP_Vulture" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="797" Position="140.4291,123.185,0" Rotation="0.6567" Scale="1,1,1" UnitType="MengskBanshee" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="1"/>
         <AIRebuild Index="4" Value="1"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="648263338" Position="53.3666,47.1936,0" Rotation="1.2145" Scale="1,1,1" UnitType="AP_BrynhildAssault" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="2480" Position="50.6225,145.3098,0" Rotation="3.923" Scale="1,1,1" UnitType="MengskMarine" Player="3">
         <AIRebuild Index="1" Value="14"/>
@@ -9869,6 +9948,9 @@
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1032464272" Position="52.9645,50.2873,0" Rotation="5.9645" Scale="1,1,1" UnitType="AP_Vulture" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="1204" Position="80.2663,106.7575,0" Rotation="5.3574" Scale="1,1,1" UnitType="MengskVikingFighter" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -9876,6 +9958,9 @@
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
     <ObjectUnit Id="2618" Position="91.5,20.5,0" Scale="1,1,1" UnitType="SpacePlatformGeyser" Resources="4750"/>
+    <ObjectUnit Id="1758318233" Position="56.8574,44.4636,0" Rotation="3.379" Scale="1,1,1" UnitType="AP_CarrierTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="772" Position="137.7097,157.231,0" Rotation="6.0227" Scale="1,1,1" UnitType="MengskMarine" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
         <AIRebuild Index="1" Value="0"/>
@@ -9905,6 +9990,9 @@
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1570403466" Position="57,49,0" Rotation="5.574" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="331" Position="117,131,0" Rotation="5.5134" Scale="1,1,1" UnitType="MissileTurret" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -9937,6 +10025,9 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1665412193" Position="57,49,0" Rotation="1.8884" Scale="1,1,1" UnitType="AP_DevastatorTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="2498" Position="181.5,70.5,0" Rotation="2.3513" Scale="1,1,1" UnitType="Bunker" Player="5">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -9986,6 +10077,9 @@
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
     <ObjectUnit Id="206" Position="53.794,50.98,0" Rotation="3.6301" Scale="1,1,1" UnitType="AP_Roach" Player="1"/>
+    <ObjectUnit Id="461350848" Position="53,42,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2503" Position="187.5,76.5,0" Rotation="2.3513" Scale="1,1,1" UnitType="Bunker" Player="5">
         <Flag Index="ForcePlacement" Value="1"/>
         <AIRebuild Index="1" Value="14"/>
@@ -10023,6 +10117,9 @@
     </ObjectUnit>
     <ObjectUnit Id="2623" Position="144,136,0" Rotation="1.9462" Scale="1,1,1" UnitType="MissileTurret" Player="2"/>
     <ObjectUnit Id="188" Variation="2" Position="43,29.5,0" Scale="1,1,1" UnitType="MineralField" Resources="3712"/>
+    <ObjectUnit Id="651805114" Position="60.3115,42.5861,0" Rotation="4.9753" Scale="1,1,1" UnitType="AP_CarrierTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="234" Position="58,54,0" Rotation="4.1147" Scale="1,1,1" UnitType="AP_SporeCrawler" Player="1"/>
     <ObjectUnit Id="324" Position="116,49,0" Rotation="0.277" Scale="1,1,1" UnitType="MissileTurret" Player="4"/>
     <ObjectUnit Id="129" Position="59.5,132.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Barracks" Player="3"/>
@@ -10034,12 +10131,18 @@
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="2665" Position="202.5,54.5,0" Rotation="0.523" Scale="1,1,1" UnitType="GreaterNydusWorm" Player="14"/>
+    <ObjectUnit Id="1448223864" Position="70,42,0" Rotation="3.9982" Scale="1,1,1" UnitType="AP_MissileTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="718" Variation="2" Position="83.5,81.5,0" Rotation="1.5705" Scale="1,1,1" UnitType="DestructibleStoreFrontCityProps"/>
     <ObjectUnit Id="2509" Position="178.631,75.1054,0" Rotation="1.2592" Scale="1,1,1" UnitType="SCV" Player="5">
         <AIRebuild Index="1" Value="14"/>
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
+    </ObjectUnit>
+    <ObjectUnit Id="17254269" Position="60.6748,38.335,0" Rotation="0.2998" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="2470" Position="42.5,85.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Barracks" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
@@ -10149,6 +10252,9 @@
     <ObjectUnit Id="1168" Position="83,96,0" Rotation="5.1433" Scale="1,1,1" UnitType="MissileTurret" Player="3">
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="76992794" Position="35,22,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2590" Position="188.3645,78.5947,0" Rotation="6.063" Scale="1,1,1" UnitType="MengskMarauder" Player="5">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10172,6 +10278,9 @@
         <AIRebuild Index="3" Value="1"/>
         <AIRebuild Index="4" Value="1"/>
     </ObjectUnit>
+    <ObjectUnit Id="1912561927" Position="65.895,37.6191,0" Rotation="5.09" Scale="1,1,1" UnitType="AP_ZealotShakuras" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="374" Position="49.2,128.49,0" Rotation="3.4218" Scale="1,1,1" UnitType="ScienceVessel" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10190,6 +10299,9 @@
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="893606737" Position="56,36,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="663" Position="87.5,73.5,0" Rotation="2.356" Scale="1,1,1" UnitType="DestructibleStoreFrontCityProps"/>
     <ObjectUnit Id="298" Position="67.4404,104.9885,0" Rotation="0.0725" Scale="1,1,1" UnitType="MengskMarine" Player="3">
@@ -10294,6 +10406,9 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
+    <ObjectUnit Id="403087266" Position="57.5,32.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_FleetBeacon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="1220" Position="171.2382,50.4218,0" Rotation="1.7731" Scale="1,1,1" UnitType="ScienceVessel" Player="4">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10313,6 +10428,7 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1092935842" Position="37,26,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="1199" Position="94.5,43.5,0" Rotation="3.9147" Scale="1,1,1" UnitType="MengskStatueAlone">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
@@ -10348,6 +10464,9 @@
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1550104751" Position="48.5,41.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Starport" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="231" Position="57,49,0" Rotation="1.324" Scale="1,1,1" UnitType="AP_SpineCrawler" Player="1"/>
     <ObjectUnit Id="290" Position="39.9306,130.6494,0" Rotation="0.8256" Scale="1,1,1" UnitType="MengskGoliath" Player="3">
@@ -10419,8 +10538,14 @@
     </ObjectUnit>
     <ObjectUnit Id="272" Position="100,22,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="4"/>
     <ObjectUnit Id="190" Variation="6" Position="44,28.5,0" Scale="1,1,1" UnitType="MineralField" Resources="3564"/>
+    <ObjectUnit Id="1335637338" Position="37,20,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="318" Variation="2" Position="95.5,69.5,0" Rotation="3.1406" Scale="1,1,1" UnitType="DestructibleStoreFrontCityProps"/>
     <ObjectUnit Id="341" Position="144.5,142.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Factory" Player="2"/>
+    <ObjectUnit Id="622942603" Position="51.3027,44.0432,0" Rotation="5.0678" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="692" Position="157.0698,138.8098,0" Rotation="6.2114" Scale="1,1,1" UnitType="MengskBanshee" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10448,6 +10573,9 @@
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="2667" Position="150.5,14.5,0" Rotation="0.523" Scale="1,1,1" UnitType="GreaterNydusWorm" Player="14"/>
+    <ObjectUnit Id="1357824430" Position="62.7187,40.1694,0" Rotation="3.5615" Scale="1,1,1" UnitType="AP_DuskWing" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2127" Variation="6" Position="104,79.5,0" Scale="1,1,1" UnitType="MineralField" Resources="3069"/>
     <ObjectUnit Id="777" Position="101.1838,57.1647,0" Rotation="5.2097" Scale="1,1,1" UnitType="MengskMarine" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -10456,6 +10584,7 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1670645383" Position="43.2583,20.1616,0" Rotation="0.8723" Scale="1,1,1" UnitType="AP_Overlord" Player="1"/>
     <ObjectUnit Id="180" Position="175.6643,101.0175,0" Rotation="5.3527" Scale="1,1,1" UnitType="MengskReaper" Player="5">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10477,6 +10606,12 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="455275790" Position="65,41,0" Rotation="2.0012" Scale="1,1,1" UnitType="AP_DevastatorTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="428941859" Position="60.9443,42.5666,0" Rotation="1.6845" Scale="1,1,1" UnitType="AP_MercLiberator" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="1821" Position="126.0498,65.95,0" Rotation="3.3771" Scale="1,1,1" UnitType="MengskBanshee" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10492,6 +10627,9 @@
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
     <ObjectUnit Id="372" Position="147,142,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="2"/>
+    <ObjectUnit Id="1709566325" Position="58,54,0" Rotation="5.3442" Scale="1,1,1" UnitType="AP_MissileTurret" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="827" Position="179.0461,79.7746,0" Rotation="3.7517" Scale="1,1,1" UnitType="MengskSiegeTankSieged" Player="5">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10589,6 +10727,9 @@
     </ObjectUnit>
     <ObjectUnit Id="780" Position="79.5,140.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="ExtendingBridgeNWWide10Out" BoostexCliffLevel="2"/>
     <ObjectUnit Id="632" Position="93.5,69.5,0" Rotation="2.356" Scale="1,1,1" UnitType="DestructibleStoreFrontCityProps"/>
+    <ObjectUnit Id="1002628524" Position="57.9233,44.8466,0" Rotation="3.0998" Scale="1,1,1" UnitType="AP_CorsairMP" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="531" Position="63.2673,146.6767,0" Rotation="5.5004" Scale="1,1,1" UnitType="MengskGoliath" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10597,6 +10738,9 @@
     </ObjectUnit>
     <ObjectUnit Id="1968" Position="147.5,149.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="FusionCore" Player="2"/>
     <ObjectUnit Id="2389" Position="122,88,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="2"/>
+    <ObjectUnit Id="177251033" Position="57.9313,38.513,0" Rotation="0.494" Scale="1,1,1" UnitType="AP_ScienceVessel" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="409" Position="101.8374,60.6145,0" Rotation="5.3562" Scale="1,1,1" UnitType="MengskMedic" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10605,6 +10749,9 @@
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="1082" Position="66,136,0" Rotation="5.4975" Scale="1,1,1" UnitType="FactoryTechReactor" Player="3"/>
+    <ObjectUnit Id="742348369" Position="52.0761,48.9116,0" Rotation="2.4472" Scale="1,1,1" UnitType="AP_ZealotShakuras" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2714" Position="173,128,0" Rotation="3.9326" Scale="1,1,1" UnitType="MissileTurret" Player="2"/>
     <ObjectUnit Id="573" Position="116.959,129.0463,0" Rotation="5.0041" Scale="1,1,1" UnitType="MengskMarine" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -10620,6 +10767,9 @@
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="845999721" Position="58.6091,44.1997,0" Rotation="5.1423" Scale="1,1,1" UnitType="AP_MercLiberator" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="609" Position="50.753,134.4104,0" Rotation="5.7202" Scale="1,1,1" UnitType="MengskVikingFighter" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10628,6 +10778,7 @@
     </ObjectUnit>
     <ObjectUnit Id="1961" Position="133,133,0" Rotation="5.5134" Scale="1,1,1" UnitType="MissileTurret" Player="2"/>
     <ObjectUnit Id="522" Variation="8" Position="107,78.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2988"/>
+    <ObjectUnit Id="847903808" Position="39,24,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="2252" Position="51.0817,89.334,0" Rotation="1.1223" Scale="1,1,1" UnitType="WarPig" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
         <AIRebuild Index="1" Value="14"/>
@@ -10643,6 +10794,7 @@
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
     <ObjectUnit Id="2402" Position="50.9091,50.587,0" Rotation="2.7885" Scale="1,1,1" UnitType="AP_Zergling" Player="1"/>
+    <ObjectUnit Id="1278118545" Position="60,40,0" Rotation="2.2053" Scale="1,1,1" UnitType="AP_Battlecruiser" Player="1"/>
     <ObjectUnit Id="1037" Position="128,125,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="2"/>
     <ObjectUnit Id="43" Position="59.0012,43.4033,0" Rotation="2.1408" Scale="1,1,1" UnitType="AP_Queen" Player="1"/>
     <ObjectUnit Id="1494947493" Position="26.5,95.5,0" Scale="1,1,1" UnitType="RichVespeneGeyser" Resources="5000"/>
@@ -10735,6 +10887,12 @@
     </ObjectUnit>
     <ObjectUnit Id="484" Position="84.5,107.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Factory" Player="3"/>
     <ObjectUnit Id="399" Position="80.5,29.5,0" Rotation="3.9145" Scale="1,1,1" UnitType="MengskStatueAlone">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1983982226" Position="66.9423,36.3752,0" Rotation="5.8317" Scale="1,1,1" UnitType="AP_Vulture" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="904745066" Position="57.9077,45.6354,0" Rotation="0.0251" Scale="1,1,1" UnitType="AP_DuskWing" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="15" Position="55.5,27.5,0" Scale="1,1,1" UnitType="VespeneGeyser" Resources="5024">
@@ -10836,6 +10994,9 @@
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="1054" Position="159.5,135.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Bunker" Player="2"/>
+    <ObjectUnit Id="329345850" Position="35,24,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="470" Position="167,37,0" Rotation="5.4975" Scale="1,1,1" UnitType="StarportTechReactor" Player="4"/>
     <ObjectUnit Id="619" Position="6.9826,198.4743,0" Rotation="4.519" Scale="1,1,1" UnitType="Food1000" Player="4">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -10941,6 +11102,9 @@
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
     <ObjectUnit Id="428" Variation="4" Position="97,17.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2845"/>
+    <ObjectUnit Id="347786983" Position="64.3076,38.1928,0" Rotation="5.313" Scale="1,1,1" UnitType="AP_BrynhildAssault" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="489" Position="34.234,88.956,0" Rotation="0.7851" Scale="1,1,1" UnitType="MengskGoliath" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -10967,6 +11131,9 @@
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
     <ObjectUnit Id="2382" Position="113.5,94.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Factory" Player="2"/>
+    <ObjectUnit Id="905128643" Position="57.5,32.5,0" Scale="1,1,1" UnitType="AP_Armory" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="611" Position="151.9323,154.082,0" Rotation="5.367" Scale="1,1,1" UnitType="MengskGoliath" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
@@ -10990,7 +11157,11 @@
         <AIRebuild Index="4" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="1060" Position="171.5,41.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Factory" Player="4"/>
+    <ObjectUnit Id="239243010" Position="56,37,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_MercCompound" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2190" Position="102.5,86.5,0" Scale="1,1,1" UnitType="SpacePlatformGeyser" Resources="4950"/>
+    <ObjectUnit Id="790236907" Position="33,24,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="614" Variation="5" Position="103,17.5,0" Scale="1,1,1" UnitType="MineralField" Resources="3078"/>
     <ObjectUnit Id="2277" Position="159.42,137.5798,0" Rotation="0.0771" Scale="1,1,1" UnitType="MengskMarauder" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -11071,19 +11242,31 @@
     <ObjectUnit Id="404" Position="64,160,0" Rotation="4.574" Scale="1,1,1" UnitType="MissileTurret" Player="3"/>
     <ObjectUnit Id="58" Position="102,30,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="4"/>
     <ObjectUnit Id="511" Position="177,47,0" Rotation="5.4975" Scale="1,1,1" UnitType="StarportTechReactor" Player="4"/>
+    <ObjectUnit Id="1903861026" Position="55.0227,41.322,0" Rotation="3.5676" Scale="1,1,1" UnitType="AP_ScienceVessel" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="629" Position="152.9023,158.1496,0" Rotation="6.0703" Scale="1,1,1" UnitType="MengskGoliath" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="1"/>
         <AIRebuild Index="3" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="341746947" Position="53.1486,47.0947,0" Rotation="5.1562" Scale="1,1,1" UnitType="AP_ImmortalAiur" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="923" Position="144,167,0" Rotation="3.9328" Scale="1,1,1" UnitType="MissileTurret" Player="2"/>
+    <ObjectUnit Id="384282211" Position="33,24,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="2230" Position="72.5898,101.67,0" Rotation="4.866" Scale="1,1,1" UnitType="MengskMarauder" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="378038264" Position="33,20,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="606" Position="46.978,89.945,0" Rotation="0.446" Scale="1,1,1" UnitType="MengskMarine" Player="3">
         <AIRebuild Index="1" Value="0"/>
@@ -11111,6 +11294,9 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1594375457" Position="60,32,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="84" Position="48.0996,93.6357,0" Rotation="0.3496" Scale="1,1,1" UnitType="WarPig" Player="9">
         <Flag Index="UnitNoCreate" Value="1"/>
@@ -11373,11 +11559,22 @@
         <GroupObject Id="212623375"/>
         <GroupObject Id="734168485"/>
         <GroupObject Id="722190276"/>
+        <GroupObject Id="1792346164"/>
+        <GroupObject Id="253736963"/>
+        <GroupObject Id="1335637338"/>
+        <GroupObject Id="384282211"/>
+        <GroupObject Id="378038264"/>
+        <GroupObject Id="1646873934"/>
+        <GroupObject Id="797952498"/>
+        <GroupObject Id="1871983488"/>
+        <GroupObject Id="76992794"/>
+        <GroupObject Id="790236907"/>
     </Group>
     <Group Type="ObjectUnit" Name="Kerriganless Bonus" Id="6">
         <GroupObject Id="111981857"/>
         <GroupObject Id="381854912"/>
         <GroupObject Id="408456493"/>
+        <GroupObject Id="1670645383"/>
         <GroupObject Id="1674808541"/>
         <GroupObject Id="1869297134"/>
         <GroupObject Id="1900358935"/>
@@ -11437,8 +11634,143 @@
         <GroupObject Id="111981857"/>
         <GroupObject Id="381854912"/>
         <GroupObject Id="408456493"/>
+        <GroupObject Id="431350726"/>
+        <GroupObject Id="1670645383"/>
         <GroupObject Id="1674808541"/>
         <GroupObject Id="1869297134"/>
         <GroupObject Id="1900358935"/>
+    </Group>
+    <Group Type="ObjectUnit" Name="RaceSwapUnits" Id="8">
+        <GroupObject Id="763645275"/>
+        <GroupObject Id="288125455"/>
+        <GroupObject Id="2030917503"/>
+        <GroupObject Id="396981402"/>
+        <GroupObject Id="381854912"/>
+        <GroupObject Id="215659120"/>
+        <GroupObject Id="426"/>
+        <GroupObject Id="4"/>
+        <GroupObject Id="923082769"/>
+        <GroupObject Id="1792346164"/>
+        <GroupObject Id="253736963"/>
+        <GroupObject Id="1470"/>
+        <GroupObject Id="1601965585"/>
+        <GroupObject Id="68"/>
+        <GroupObject Id="452"/>
+        <GroupObject Id="2403"/>
+        <GroupObject Id="123"/>
+        <GroupObject Id="2096884322"/>
+        <GroupObject Id="1807308329"/>
+        <GroupObject Id="59595214"/>
+        <GroupObject Id="1165334045"/>
+        <GroupObject Id="891277340"/>
+        <GroupObject Id="1869297134"/>
+        <GroupObject Id="1952883700"/>
+        <GroupObject Id="370132031"/>
+        <GroupObject Id="1511057866"/>
+        <GroupObject Id="610"/>
+        <GroupObject Id="156"/>
+        <GroupObject Id="217"/>
+        <GroupObject Id="9799136"/>
+        <GroupObject Id="1646873934"/>
+        <GroupObject Id="797952498"/>
+        <GroupObject Id="256"/>
+        <GroupObject Id="242"/>
+        <GroupObject Id="1871983488"/>
+        <GroupObject Id="329817085"/>
+        <GroupObject Id="248"/>
+        <GroupObject Id="112249697"/>
+        <GroupObject Id="211"/>
+        <GroupObject Id="111981857"/>
+        <GroupObject Id="922098126"/>
+        <GroupObject Id="880424617"/>
+        <GroupObject Id="1491319240"/>
+        <GroupObject Id="245"/>
+        <GroupObject Id="2149"/>
+        <GroupObject Id="236"/>
+        <GroupObject Id="258"/>
+        <GroupObject Id="240"/>
+        <GroupObject Id="745"/>
+        <GroupObject Id="264"/>
+        <GroupObject Id="205"/>
+        <GroupObject Id="227"/>
+        <GroupObject Id="250"/>
+        <GroupObject Id="255"/>
+        <GroupObject Id="230"/>
+        <GroupObject Id="291"/>
+        <GroupObject Id="2074753804"/>
+        <GroupObject Id="431350726"/>
+        <GroupObject Id="1219860229"/>
+        <GroupObject Id="648263338"/>
+        <GroupObject Id="1032464272"/>
+        <GroupObject Id="1570403466"/>
+        <GroupObject Id="1665412193"/>
+        <GroupObject Id="206"/>
+        <GroupObject Id="461350848"/>
+        <GroupObject Id="746"/>
+        <GroupObject Id="249"/>
+        <GroupObject Id="234"/>
+        <GroupObject Id="1448223864"/>
+        <GroupObject Id="17254269"/>
+        <GroupObject Id="257"/>
+        <GroupObject Id="349"/>
+        <GroupObject Id="76992794"/>
+        <GroupObject Id="246"/>
+        <GroupObject Id="1912561927"/>
+        <GroupObject Id="893606737"/>
+        <GroupObject Id="2150"/>
+        <GroupObject Id="1674808541"/>
+        <GroupObject Id="403087266"/>
+        <GroupObject Id="1092935842"/>
+        <GroupObject Id="1550104751"/>
+        <GroupObject Id="231"/>
+        <GroupObject Id="204"/>
+        <GroupObject Id="226"/>
+        <GroupObject Id="1335637338"/>
+        <GroupObject Id="622942603"/>
+        <GroupObject Id="259"/>
+        <GroupObject Id="1357824430"/>
+        <GroupObject Id="1670645383"/>
+        <GroupObject Id="223"/>
+        <GroupObject Id="455275790"/>
+    </Group>
+    <Group Type="ObjectUnit" Name="RaceSwapUnits2" Id="9">
+        <GroupObject Id="5"/>
+        <GroupObject Id="43"/>
+        <GroupObject Id="56"/>
+        <GroupObject Id="241"/>
+        <GroupObject Id="392"/>
+        <GroupObject Id="445"/>
+        <GroupObject Id="534"/>
+        <GroupObject Id="1469"/>
+        <GroupObject Id="2148"/>
+        <GroupObject Id="2292"/>
+        <GroupObject Id="2402"/>
+        <GroupObject Id="177251033"/>
+        <GroupObject Id="239243010"/>
+        <GroupObject Id="329345850"/>
+        <GroupObject Id="341746947"/>
+        <GroupObject Id="347786983"/>
+        <GroupObject Id="378038264"/>
+        <GroupObject Id="384282211"/>
+        <GroupObject Id="408456493"/>
+        <GroupObject Id="428941859"/>
+        <GroupObject Id="651805114"/>
+        <GroupObject Id="742348369"/>
+        <GroupObject Id="790236907"/>
+        <GroupObject Id="845999721"/>
+        <GroupObject Id="847903808"/>
+        <GroupObject Id="904745066"/>
+        <GroupObject Id="905128643"/>
+        <GroupObject Id="1002628524"/>
+        <GroupObject Id="1278118545"/>
+        <GroupObject Id="1406898279"/>
+        <GroupObject Id="1437862195"/>
+        <GroupObject Id="1594375457"/>
+        <GroupObject Id="1709566325"/>
+        <GroupObject Id="1758318233"/>
+        <GroupObject Id="1900358935"/>
+        <GroupObject Id="1903861026"/>
+        <GroupObject Id="1983130245"/>
+        <GroupObject Id="1983982226"/>
     </Group>
 </PlacedObjects>

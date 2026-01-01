@@ -30,11 +30,11 @@
     </CTacticalOrder>
     <CTacticalOrder id="AP_Marine">
         <Abil value="AP_Stimpack"/>
-        <Validator value="TacticalStimpack"/>
+        <Validator value="AP_TacticalStimpack"/>
     </CTacticalOrder>
     <CTacticalOrder id="AP_Marauder">
         <Abil value="AP_Stimpack"/>
-        <Validator value="TacticalStimpack"/>
+        <Validator value="AP_TacticalStimpack"/>
     </CTacticalOrder>
     <CTacticalOrder id="AP_SupplyDepot">
         <Abil value="AP_SupplyDepotLower"/>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CAbilWarpTrain id="SuperWarpGateTrain">
+        <InfoArray index="Train12" Unit="AP_ZealotShakuras">
+            <Button DefaultButtonFace="AP_ZealotShakuras"/>
+        </InfoArray>
+        <InfoArray index="Train13" Unit="AP_ZealotAiur">
+            <Button DefaultButtonFace="AP_ZealotAiur"/>
+        </InfoArray>
+        <Flags index="IgnoreUnitCost" value="1"/>
+    </CAbilWarpTrain>
+</Catalog>

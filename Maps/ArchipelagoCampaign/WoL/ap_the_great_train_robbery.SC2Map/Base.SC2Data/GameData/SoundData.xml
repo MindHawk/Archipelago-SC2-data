@@ -1,6 +1,18 @@
-<?xml version="1.0" encoding="us-ascii"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Catalog>
+    <CSound id="ArmorySwannRaynor00080" Portrait="RaynorCommanderPortrait">
+        <AssetArray index="0" PortraitModel="RaynorCommanderPortrait"/>
+    </CSound>
+    <CSound id="ArmorySwannSwann00090" Portrait="SwannPortrait">
+        <AssetArray index="0" PortraitModel="SwannPortrait"/>
+    </CSound>
     <CSound id="Flip">
         <AssetArray File="LocalizedData\Sounds\Misc\TRescue.wav" FacialGroup=""/>
+    </CSound>
+    <CSound id="LabHansonRaynor00031" Portrait="RaynorCommanderPortrait">
+        <AssetArray index="0" PortraitModel="RaynorCommanderPortrait"/>
+    </CSound>
+    <CSound id="ToshPissedLinesTosh00007" Portrait="ToshPortrait">
+        <AssetArray index="0" PortraitModel="ToshPortrait"/>
     </CSound>
 </Catalog>

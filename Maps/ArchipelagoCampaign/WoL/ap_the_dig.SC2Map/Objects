@@ -2910,7 +2910,7 @@
         <Flag Index="HeightAbsolute" Value="1"/>
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectDoodad>
-    <ObjectDoodad Id="988" Variation="3" Position="78.677,128.2663,0.004" Rotation="0.5773" Scale="1.5,1.5,1.5" Type="MammothFossils">
+    <ObjectDoodad Id="988" Variation="3" Position="78.677,128.2663,0.0034" Rotation="0.5773" Scale="1.5,1.5,1.5" Type="MammothFossils">
         <Flag Index="HeightAbsolute" Value="1"/>
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectDoodad>
@@ -3402,14 +3402,14 @@
         <CameraValue Index="FalloffStart" Value="3"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
-    <ObjectCamera Id="151" Position="35.1618,23.639,0" Rotation="3.1408" Scale="1,1,1" Name="Siege Tank Camera 1" Color="0,0,0,0" CameraTarget="35.1618,23.639">
+    <ObjectCamera Id="151" Position="35.1618,23.639,0" Rotation="3.1403" Scale="1,1,1" Name="Siege Tank Camera 1" Color="0,0,0,0" CameraTarget="35.1618,23.639">
         <CameraValue Index="FieldOfView" Value="27.7998"/>
         <CameraValue Index="NearClip" Value="0.0998"/>
         <CameraValue Index="FarClip" Value="400"/>
         <CameraValue Index="ShadowClip" Value="75"/>
         <CameraValue Index="Distance" Value="34"/>
         <CameraValue Index="Pitch" Value="56"/>
-        <CameraValue Index="Yaw" Value="179.9724"/>
+        <CameraValue Index="Yaw" Value="179.9443"/>
         <CameraValue Index="FocalDepth" Value="8"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
@@ -3426,14 +3426,14 @@
         <CameraValue Index="FalloffStart" Value="3"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
-    <ObjectCamera Id="399" Position="64.3686,32.4516,0" Rotation="3.1408" Scale="1,1,1" Name="Siege Tank Camera 2" Color="0,0,0,0" CameraTarget="64.3686,32.4516">
+    <ObjectCamera Id="399" Position="64.3686,32.4516,0" Rotation="3.1403" Scale="1,1,1" Name="Siege Tank Camera 2" Color="0,0,0,0" CameraTarget="64.3686,32.4516">
         <CameraValue Index="FieldOfView" Value="27.7998"/>
         <CameraValue Index="NearClip" Value="0.0998"/>
         <CameraValue Index="FarClip" Value="400"/>
         <CameraValue Index="ShadowClip" Value="75"/>
         <CameraValue Index="Distance" Value="34"/>
         <CameraValue Index="Pitch" Value="56"/>
-        <CameraValue Index="Yaw" Value="179.9724"/>
+        <CameraValue Index="Yaw" Value="179.9443"/>
         <CameraValue Index="FocalDepth" Value="8"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
@@ -3485,14 +3485,14 @@
         <CameraValue Index="FalloffStart" Value="3"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
-    <ObjectCamera Id="404" Position="61.7617,24.2387,0" Rotation="3.1408" Scale="1,1,1" Name="Siege Tank Camera 2a" Color="0,0,0,0" CameraTarget="61.7617,24.2387">
+    <ObjectCamera Id="404" Position="61.7617,24.2387,0" Rotation="3.1403" Scale="1,1,1" Name="Siege Tank Camera 2a" Color="0,0,0,0" CameraTarget="61.7617,24.2387">
         <CameraValue Index="FieldOfView" Value="27.7998"/>
         <CameraValue Index="NearClip" Value="0.0998"/>
         <CameraValue Index="FarClip" Value="400"/>
         <CameraValue Index="ShadowClip" Value="75"/>
         <CameraValue Index="Distance" Value="34"/>
         <CameraValue Index="Pitch" Value="56"/>
-        <CameraValue Index="Yaw" Value="179.9724"/>
+        <CameraValue Index="Yaw" Value="179.9443"/>
         <CameraValue Index="FocalDepth" Value="8"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
@@ -3720,6 +3720,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1484539154" Position="47.2416,66.4887,0" Rotation="4.3791" Scale="1,1,1" UnitType="AP_Overlord" Player="7"/>
     <ObjectUnit Id="75" Position="122,66,0" Scale="1,1,1" UnitType="Pylon" Player="4">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -3842,6 +3843,7 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1113739054" Position="66,69,0" Rotation="3.212" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="7"/>
     <ObjectUnit Id="431" Position="54.088,112.061,0" Rotation="5.497" Scale="1,1,1" UnitType="Stalker" Player="5">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="3" Value="2"/>
@@ -3911,6 +3913,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1032807980" Position="54,68,0" Scale="1,1,1" UnitType="AP_Pylon" Player="7"/>
     <ObjectUnit Id="616" Position="70.2536,119.5405,0" Rotation="0.4045" Scale="1,1,1" UnitType="Immortal" Player="2">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="3" Value="2"/>
@@ -3991,6 +3994,9 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="916106759" Position="68,71,0" Rotation="3.2636" Scale="1,1,1" UnitType="AP_SporeCrawler" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="524" Position="66.5,118.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Forge" Player="2">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -4052,6 +4058,9 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="355449819" Position="58.5,65.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Gateway" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="551" Position="71.967,107.7731,0" Rotation="0.3474" Scale="1,1,1" UnitType="VoidRay" Player="2">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="3" Value="2"/>
@@ -4096,6 +4105,9 @@
     <ObjectUnit Id="133" Position="111,83,0" Scale="1,1,1" UnitType="PhotonCannon" Player="4">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1422931017" Position="62.5,59.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_RoboticsFacility" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="238" Position="40.2253,116.9118,0" Rotation="1.1425" Scale="1,1,1" UnitType="Probe" Player="5">
         <AIRebuild Index="2" Value="14"/>
@@ -4230,6 +4242,9 @@
         <AIRebuild Index="0" Value="0"/>
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1864344331" Position="59.5,54.5,0" Rotation="5.7595" Scale="1,1,1" UnitType="AP_EvolutionChamber" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="683" Position="23.2231,45.0646,0" Rotation="0.862" Scale="1,1,1" UnitType="CarrionBird">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -4371,6 +4386,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="254437736" Position="51.9982,46.8984,0" Rotation="3.708" Scale="1,1,1" UnitType="AP_Overlord" Player="7"/>
     <ObjectUnit Id="1177" Position="104.5,96.5,0" Rotation="4.6606" Scale="1,1,1" UnitType="PathingBlocker1x1"/>
     <ObjectUnit Id="200" Position="131,68,0" Scale="1,1,1" UnitType="Pylon" Player="4">
         <AIRebuild Index="2" Value="14"/>
@@ -4447,6 +4463,9 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1808718810" Position="76,63,0" Rotation="3.2636" Scale="1,1,1" UnitType="AP_SporeCrawler" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="139" Variation="6" Position="114.256,42.51,0" Scale="1,1,1" UnitType="ProtossRelic">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
@@ -4496,6 +4515,7 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="948649544" Position="74,61,0" Rotation="2.5283" Scale="1,1,1" UnitType="AP_PhotonCannon" Player="7"/>
     <ObjectUnit Id="196" Position="43.8276,118.53,0" Scale="1,1,1" UnitType="Probe" Player="5">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -4611,6 +4631,7 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1246088907" Position="69,64,0" Scale="1,1,1" UnitType="AP_Pylon" Player="7"/>
     <ObjectUnit Id="167" Position="82.6662,114.3122,0" Scale="1,1,1" UnitType="Probe" Player="2">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -4625,6 +4646,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="2103559190" Position="66.5,62.5,0" Scale="1,1,1" UnitType="AP_CreepTumorUsed" Player="7"/>
     <ObjectUnit Id="1156" Position="102.5,94.5,0" Rotation="0.885" Scale="1,1,1" UnitType="PathingBlocker1x1"/>
     <ObjectUnit Id="295" Position="110.4436,76.4033,0" Rotation="5.5466" Scale="1,1,1" UnitType="Stalker" Player="4">
         <AIRebuild Index="2" Value="14"/>
@@ -4683,6 +4705,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1511569786" Position="64.5,56.5,0" Rotation="0.5234" Scale="1,1,1" UnitType="AP_LurkerDen" Player="7"/>
     <ObjectUnit Id="131" Position="123,92,0" Scale="1,1,1" UnitType="PhotonCannon" Player="6">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -4729,6 +4752,9 @@
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
     <ObjectUnit Id="1170" Position="101.5,97.5,0" Rotation="0.6154" Scale="1,1,1" UnitType="PathingBlocker1x1"/>
+    <ObjectUnit Id="123691806" Position="59.5,54.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Forge" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="195" Position="42.6772,118.5908,0" Scale="1,1,1" UnitType="Probe" Player="5">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -4954,6 +4980,7 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1568116945" Position="65,54,0" Scale="1,1,1" UnitType="AP_Pylon" Player="7"/>
     <ObjectUnit Id="19" Variation="7" Position="47,53.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2375">
         <AIRebuild Index="0" Value="0"/>
     </ObjectUnit>
@@ -5074,6 +5101,9 @@
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1251141506" Position="50.5,66.5,0" Scale="1,1,1" UnitType="AP_SpawningPool" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="998" Position="49.3986,57.56,0" Rotation="4.7761" Scale="1,1,1" UnitType="AP_SCV" Player="7"/>
     <ObjectUnit Id="1444" Position="34.5,122.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Gateway" Player="5">
         <AIRebuild Index="2" Value="14"/>
@@ -5102,6 +5132,10 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="2018521810" Position="61.5,49.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_ZergMercenaryCompound" Player="7">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1657200015" Position="65.6997,50.1406,0" Rotation="0.4494" Scale="1,1,1" UnitType="AP_Overlord" Player="7"/>
     <ObjectUnit Id="30" Position="124.5,82.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Stargate" Player="4">
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
@@ -5161,6 +5195,7 @@
         <AIRebuild Index="2" Value="14"/>
         <AIRebuild Index="4" Value="14"/>
     </ObjectUnit>
+    <ObjectUnit Id="1571284583" Position="44.5837,54.0571,0" Rotation="1.5534" Scale="1,1,1" UnitType="AP_Overlord" Player="7"/>
     <ObjectUnit Id="20" Position="65.5,106.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Gateway" Player="2">
         <AIRebuild Index="0" Value="0"/>
         <AIRebuild Index="2" Value="14"/>
@@ -5388,5 +5423,45 @@
         <GroupObject Id="117"/>
         <GroupObject Id="451"/>
         <GroupObject Id="1095"/>
+    </Group>
+    <Group Type="ObjectUnit" Name="Starting Units" Id="5">
+        <GroupObject Id="42"/>
+        <GroupObject Id="44"/>
+        <GroupObject Id="60"/>
+        <GroupObject Id="95"/>
+        <GroupObject Id="97"/>
+        <GroupObject Id="113"/>
+        <GroupObject Id="270"/>
+        <GroupObject Id="273"/>
+        <GroupObject Id="406"/>
+        <GroupObject Id="408"/>
+        <GroupObject Id="508"/>
+        <GroupObject Id="581"/>
+        <GroupObject Id="634"/>
+        <GroupObject Id="635"/>
+        <GroupObject Id="636"/>
+        <GroupObject Id="998"/>
+        <GroupObject Id="1087"/>
+        <GroupObject Id="1128"/>
+        <GroupObject Id="1140"/>
+        <GroupObject Id="123691806"/>
+        <GroupObject Id="254437736"/>
+        <GroupObject Id="355449819"/>
+        <GroupObject Id="916106759"/>
+        <GroupObject Id="948649544"/>
+        <GroupObject Id="1032807980"/>
+        <GroupObject Id="1113739054"/>
+        <GroupObject Id="1246088907"/>
+        <GroupObject Id="1251141506"/>
+        <GroupObject Id="1422931017"/>
+        <GroupObject Id="1484539154"/>
+        <GroupObject Id="1511569786"/>
+        <GroupObject Id="1568116945"/>
+        <GroupObject Id="1571284583"/>
+        <GroupObject Id="1657200015"/>
+        <GroupObject Id="1808718810"/>
+        <GroupObject Id="1864344331"/>
+        <GroupObject Id="2018521810"/>
+        <GroupObject Id="2103559190"/>
     </Group>
 </PlacedObjects>

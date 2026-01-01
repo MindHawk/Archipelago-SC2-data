@@ -3133,14 +3133,14 @@
         <CameraValue Index="FalloffStart" Value="158.2956"/>
         <CameraValue Index="FalloffEnd" Value="8"/>
     </ObjectCamera>
-    <ObjectCamera Id="1237" Position="45.9997,109.5236,0" Rotation="3.1372" Scale="1,1,1" Name="Road Preload" Color="0,0,0,0" CameraTarget="45.9997,109.5236">
+    <ObjectCamera Id="1237" Position="45.9997,109.5236,0" Rotation="3.1362" Scale="1,1,1" Name="Road Preload" Color="0,0,0,0" CameraTarget="45.9997,109.5236">
         <CameraValue Index="FieldOfView" Value="27.7995"/>
         <CameraValue Index="NearClip" Value="0.0998"/>
         <CameraValue Index="FarClip" Value="20213.3437"/>
         <CameraValue Index="ShadowClip" Value="75"/>
         <CameraValue Index="Distance" Value="48.4118"/>
         <CameraValue Index="Pitch" Value="42.49"/>
-        <CameraValue Index="Yaw" Value="179.7626"/>
+        <CameraValue Index="Yaw" Value="179.7065"/>
         <CameraValue Index="DepthOfField" Value="0.002"/>
         <CameraValue Index="FocalDepth" Value="43"/>
         <CameraValue Index="FalloffStart" Value="0.0002"/>
@@ -3297,6 +3297,9 @@
     <ObjectUnit Id="75" Position="136.757,35.5971,0" Rotation="6.2773" Scale="1,1,1" UnitType="AP_Drone" Player="1"/>
     <ObjectUnit Id="345911269" Position="135.8393,51.379,0" Rotation="3.7158" Scale="1,1,1" UnitType="AP_Roach" Player="1"/>
     <ObjectUnit Id="32" Variation="5" Position="141,114.5,0" Scale="1,1,1" UnitType="MineralField"/>
+    <ObjectUnit Id="377749477" Position="128.0615,46.7507,0" Rotation="5.913" Scale="1,1,1" UnitType="AP_Marine" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="398" Position="105.3925,99.4421,0" Rotation="0.5354" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -3317,6 +3320,7 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="226711346" Position="146,42,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="57" Variation="7" Position="133,32.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2000"/>
     <ObjectUnit Id="124" Position="51.5,86.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Factory" Player="3"/>
     <ObjectUnit Id="23" Position="111.6142,111.5971,0" Rotation="6.25" Scale="1,1,1" UnitType="Predator" Player="2">
@@ -3328,6 +3332,9 @@
     <ObjectUnit Id="42" Position="129.5,33.5,0" Scale="1,1,1" UnitType="SpacePlatformGeyser"/>
     <ObjectUnit Id="388" Position="144.5532,37.0173,0" Rotation="6.054" Scale="1,1,1" UnitType="AP_Overlord" Player="1"/>
     <ObjectUnit Id="111" Position="37.5,91.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="GhostAcademy" Player="3">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1031463131" Variation="1" Position="89.3542,29.1135,0" Rotation="3.447" Scale="1,1,1" UnitType="AP_Ghost" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="426" Position="128.5,38.5,0" Scale="1,1,1" UnitType="AP_SpawningPool" Player="1"/>
@@ -3354,6 +3361,9 @@
     <ObjectUnit Id="54" Position="83.25,40.75,0" Scale="1,1,1" Name="Beacon - Sneak Attack 1" UnitType="Beacon_Zerg">
         <Flag Index="UnitHidden" Value="1"/>
     </ObjectUnit>
+    <ObjectUnit Id="1400627147" Position="91.0576,29.0305,0" Rotation="5.345" Scale="1,1,1" UnitType="AP_HighTemplarTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="24" Position="117.0202,78.4365,0" Rotation="1.6008" Scale="1,1,1" UnitType="SiegeTankSieged" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -3361,6 +3371,12 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="115" Position="75,116,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="4"/>
+    <ObjectUnit Id="724399160" Position="128.5,38.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Barracks" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1602009226" Position="88.0622,26.4624,0" Rotation="4.8225" Scale="1,1,1" UnitType="AP_HighTemplarTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="385" Position="129.1291,46.973,0" Rotation="3.8774" Scale="1,1,1" UnitType="AP_Zergling" Player="1"/>
     <ObjectUnit Id="68" Position="136.6086,73.2116,0" Rotation="5.5673" Scale="1,1,1" UnitType="Marauder" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -3408,6 +3424,12 @@
     <ObjectUnit Id="460" Position="92,126,0" Rotation="2.4155" Scale="1,1,1" UnitType="MissileTurret" Player="3">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
+    <ObjectUnit Id="1939391719" Position="133.257,49.4204,0" Rotation="0.506" Scale="1,1,1" UnitType="AP_Marauder" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1132774520" Position="127.2004,46.097,0" Rotation="4.5585" Scale="1,1,1" UnitType="AP_Marine" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="76" Position="124.5,78.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="EngineeringBay" Player="2"/>
     <ObjectUnit Id="393" Position="60.2978,53.1384,0" Rotation="2.815" Scale="1,1,1" UnitType="Marine" Player="2"/>
     <ObjectUnit Id="39" Variation="6" Position="144,111.5,0" Scale="1,1,1" UnitType="MineralField"/>
@@ -3418,6 +3440,9 @@
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="868309919" Position="128.0734,47.0888,0" Rotation="0.5305" Scale="1,1,1" UnitType="AP_ZealotAiur" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="396" Position="61.709,51.2485,0" Rotation="2.7983" Scale="1,1,1" UnitType="Marine" Player="2"/>
     <ObjectUnit Id="34" Position="51.23,106.5798,0" Rotation="0.9077" Scale="1,1,1" UnitType="ScienceVessel" Player="3">
@@ -3439,6 +3464,9 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
         <AIFlag Index="IsUseable" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1278844554" Position="135,46,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="59" Variation="4" Position="142,36.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2000"/>
     <ObjectUnit Id="405" Position="118.8244,78.3764,0" Rotation="1.503" Scale="1,1,1" UnitType="Marine" Player="3">
@@ -3462,7 +3490,7 @@
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
     </ObjectUnit>
-    <ObjectUnit Id="90" Position="90.7333,27.9357,0" Rotation="4.4526" Scale="1,1,1" UnitType="AP_Infestor" Player="1"/>
+    <ObjectUnit Id="90" Position="90.733,27.9462,0" Rotation="4.4526" Scale="1,1,1" UnitType="AP_Infestor" Player="1"/>
     <ObjectUnit Id="113" Position="72.5,116.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Barracks" Player="4"/>
     <ObjectUnit Id="26" Position="72.5397,63.8198,0" Rotation="2.2292" Scale="1,1,1" UnitType="Banshee" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
@@ -3470,6 +3498,7 @@
         <AIRebuild Index="4" Value="2"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="852218010" Position="138.5,48.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_ZergMercenaryCompound" Player="1"/>
     <ObjectUnit Id="410" Position="92.0593,90.859,0" Rotation="0.7485" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
@@ -3564,6 +3593,7 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="54615324" Position="146,40,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="128" Position="139.5476,64.015,0" Rotation="5.4377" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -3579,6 +3609,12 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="1187" Position="92,124,0" Rotation="0.3032" Scale="1,1,1" UnitType="MissileTurret" Player="2">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="957194087" Position="139,49,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_MercCompound" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="358630803" Position="134.1625,45.2827,0" Rotation="3.9028" Scale="1,1,1" UnitType="AP_PhoenixPurifier" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="153" Position="123.2,48.8198,0" Rotation="4.6682" Scale="1,1,1" UnitType="Diamondback" Player="2">
@@ -3664,6 +3700,9 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1749982661" Position="130.7792,48.4824,0" Rotation="5.1491" Scale="1,1,1" UnitType="AP_ZealotAiur" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="211" Position="54.7998,103.0498,0" Rotation="0.7951" Scale="1,1,1" UnitType="Battlecruiser" Player="3">
         <Flag Index="ForcePlacement" Value="1"/>
         <AIRebuild Index="2" Value="0"/>
@@ -3677,6 +3716,15 @@
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="330" Position="138.623,112.085,0" Rotation="3.1811" Scale="1,1,1" UnitType="SCV" Player="2">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1357936756" Position="134.918,48.5751,0" Rotation="3.5717" Scale="1,1,1" UnitType="AP_DarkArchon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1536219564" Position="135.1755,49.891,0" Rotation="2.642" Scale="1,1,1" UnitType="AP_Marauder" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1210427028" Position="132.5397,46.5927,0" Rotation="5.9104" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="161" Position="135.5,39.5,0" Scale="1,1,1" UnitType="AP_Lair" Player="1"/>
@@ -3696,6 +3744,7 @@
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="2085833954" Position="146,38,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_SupplyDepot" Player="1"/>
     <ObjectUnit Id="1231" Position="33.16,127.23,0" Rotation="3.9777" Scale="1,1,1" UnitType="VikingFighter" Player="4">
         <AIRebuild Index="1" Value="14"/>
         <AIRebuild Index="2" Value="14"/>
@@ -3811,6 +3860,9 @@
         <AIRebuild Index="4" Value="14"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="2035472439" Position="130,43,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="166" Position="79.949,80.7895,0" Rotation="0.0974" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
@@ -3829,6 +3881,9 @@
     </ObjectUnit>
     <ObjectUnit Id="273" Position="41,46,0" Rotation="0.8093" Scale="1,1,1" UnitType="MissileTurret" Player="2"/>
     <ObjectUnit Id="212" Position="38,120,0" Rotation="5.4975" Scale="1,1,1" UnitType="HybridHatchEntrance" Player="2"/>
+    <ObjectUnit Id="105821671" Position="87.8352,29.2795,0" Rotation="2.529" Scale="1,1,1" UnitType="AP_HighTemplarTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="880" Position="98,113,0" Rotation="0.303" Scale="1,1,1" UnitType="MissileTurret" Player="2">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
@@ -3870,6 +3925,12 @@
     <ObjectUnit Id="338" Position="42,127,0" Rotation="2.416" Scale="1,1,1" UnitType="MissileTurret" Player="3"/>
     <ObjectUnit Id="252" Position="107,56,0" Rotation="0.8364" Scale="1,1,1" UnitType="InfestedDominionHousing2" Player="5"/>
     <ObjectUnit Id="728" Position="141,110.5,0" Rotation="0.5546" Scale="1,1,1" UnitType="SCV" Player="2"/>
+    <ObjectUnit Id="1497584292" Position="140.5,44.5,0" Rotation="0.7851" Scale="1,1,1" UnitType="AP_TemplarArchive" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1906419281" Position="132.1618,48.875,0" Rotation="4.301" Scale="1,1,1" UnitType="AP_Marine" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="185" Position="59.5,104.5,0" Rotation="5.4973" Scale="1,1,1" UnitType="Bunker" Player="3"/>
     <ObjectUnit Id="210" Position="137.894,71.367,0" Rotation="5.2705" Scale="1,1,1" UnitType="Marauder" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -3917,6 +3978,9 @@
     </ObjectUnit>
     <ObjectUnit Id="267" Position="53.9958,56.087,0" Rotation="0.168" Scale="1,1,1" UnitType="Marauder" Player="2"/>
     <ObjectUnit Id="165" Position="39,84,0" Rotation="5.4975" Scale="1,1,1" UnitType="StarportTechReactor" Player="3"/>
+    <ObjectUnit Id="539418253" Position="132.938,45.1914,0" Rotation="4.6433" Scale="1,1,1" UnitType="AP_ValkyrieSCBW" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="343" Position="144.5,74.5,0" Rotation="5.6096" Scale="1,1,1" UnitType="Virophage"/>
     <ObjectUnit Id="249" Position="77.5827,81.602,0" Rotation="5.3466" Scale="1,1,1" UnitType="SpiderMineBurrowed" Player="3">
         <AIRebuild Index="2" Value="0"/>
@@ -3954,6 +4018,9 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="129" Position="37,79,0" Rotation="0.4631" Scale="1,1,1" UnitType="MissileTurret" Player="3">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="1550721564" Position="130.6464,48.5244,0" Rotation="1.7341" Scale="1,1,1" UnitType="AP_Marine" Player="1">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="362" Position="59.5,44.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="Starport" Player="2"/>
@@ -4053,6 +4120,9 @@
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="321" Position="129,105,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="2"/>
+    <ObjectUnit Id="175132342" Position="140.5,44.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_GhostAcademy" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="260" Position="83.546,91.6123,0" Rotation="3.5014" Scale="1,1,1" UnitType="SpiderMineBurrowed" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -4282,6 +4352,9 @@
         <AIRebuild Index="4" Value="14"/>
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="706072020" Position="132.1135,43.7368,0" Rotation="4.8107" Scale="1,1,1" UnitType="AP_PhoenixPurifier" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="55" Position="89.5551,29.4987,0" Rotation="4.4526" Scale="1,1,1" UnitType="AP_Infestor" Player="1"/>
     <ObjectUnit Id="409" Position="91.1413,89.8723,0" Rotation="1.047" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="2" Value="0"/>
@@ -4314,12 +4387,19 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="1671490883" Position="145,45,0" Scale="1,1,1" UnitType="AP_Pylon" Player="1"/>
     <ObjectUnit Id="119" Position="102.5,122.5,0" Rotation="0.7456" Scale="1,1,1" UnitType="InfestedDominionHousing3" Player="5"/>
+    <ObjectUnit Id="1562787015" Position="89.3813,26.0495,0" Rotation="2.4387" Scale="1,1,1" UnitType="AP_Spectre" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="918" Position="142.279,99.583,0" Rotation="4.8723" Scale="1,1,1" UnitType="HellionTank" Player="3">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
+    </ObjectUnit>
+    <ObjectUnit Id="561041095" Position="88.9272,28.9582,0" Rotation="4.4504" Scale="1,1,1" UnitType="AP_Spectre" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
     </ObjectUnit>
     <ObjectUnit Id="960" Position="111.43,116.63,0" Rotation="0.4614" Scale="1,1,1" UnitType="Medic" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -4359,6 +4439,9 @@
         <AIRebuild Index="3" Value="0"/>
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
+    <ObjectUnit Id="956403682" Position="91.1791,26.2551,0" Rotation="4.0097" Scale="1,1,1" UnitType="AP_HighTemplarTaldarim" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="22" Position="77.5,39.5,0" Rotation="1.5825" Scale="1,1,1" UnitType="InfestedDominionHousing3" Player="5"/>
     <ObjectUnit Id="61" Variation="6" Position="138,32.5,0" Scale="1,1,1" UnitType="MineralField" Resources="2000"/>
     <ObjectUnit Id="403" Position="118.4995,77.3188,0" Rotation="0.845" Scale="1,1,1" UnitType="Marine" Player="3">
@@ -4368,6 +4451,12 @@
         <AIRebuild Index="4" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="86" Position="68,91,0" Rotation="5.4975" Scale="1,1,1" UnitType="BarracksTechReactor" Player="3"/>
+    <ObjectUnit Id="1858958587" Position="90.4882,26.7878,0" Rotation="2.6643" Scale="1,1,1" UnitType="AP_MercMedic" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
+    <ObjectUnit Id="848306405" Position="92.2145,27.8518,0" Rotation="0.1386" Scale="1,1,1" UnitType="AP_MercMedic" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="120" Position="114.5,117.5,0" Rotation="5.4316" Scale="1,1,1" UnitType="InfestedDominionHousing3" Player="5"/>
     <ObjectUnit Id="512" Position="141,92,0" Rotation="3.9096" Scale="1,1,1" UnitType="PerditionTurret" Player="2">
         <AIRebuild Index="1" Value="0"/>
@@ -4375,6 +4464,9 @@
     </ObjectUnit>
     <ObjectUnit Id="394" Position="62.168,54.3088,0" Rotation="2.3483" Scale="1,1,1" UnitType="Marine" Player="2"/>
     <ObjectUnit Id="36" Variation="4" Position="143,110.5,0" Scale="1,1,1" UnitType="MineralField"/>
+    <ObjectUnit Id="941121495" Position="87.893,28.0051,0" Rotation="3.6542" Scale="1,1,1" UnitType="AP_Ghost" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="79" Position="57.408,90.268,0" Rotation="1.0341" Scale="1,1,1" UnitType="Marine" Player="3">
         <AIRebuild Index="3" Value="2"/>
         <AIRebuild Index="4" Value="2"/>
@@ -4442,6 +4534,9 @@
     <ObjectUnit Id="35" Variation="7" Position="144,109.5,0" Scale="1,1,1" UnitType="MineralField"/>
     <ObjectUnit Id="397" Position="63.53,52.6171,0" Rotation="2.3654" Scale="1,1,1" UnitType="Marine" Player="2"/>
     <ObjectUnit Id="72" Position="135.5,29,0" Rotation="1.9421" Scale="1,1,1" UnitType="AP_Overlord" Player="1"/>
+    <ObjectUnit Id="1228788777" Position="128.5,38.5,0" Rotation="5.4975" Scale="1,1,1" UnitType="AP_Gateway" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="20" Position="78.0952,36.9104,0" Rotation="0.667" Scale="1,1,1" UnitType="Marine" Player="2">
         <AIRebuild Index="1" Value="0"/>
         <AIRebuild Index="2" Value="0"/>
@@ -4494,6 +4589,9 @@
         <AIFlag Index="IsUseable" Value="0"/>
     </ObjectUnit>
     <ObjectUnit Id="898" Position="113,61,0" Rotation="6.2746" Scale="1,1,1" UnitType="InfestedDominionHousing2" Player="5"/>
+    <ObjectUnit Id="414382855" Position="129.842,45.1003,0" Rotation="2.2431" Scale="1,1,1" UnitType="AP_Dragoon" Player="1">
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectUnit>
     <ObjectUnit Id="77" Position="87.847,28.0278,0" Rotation="4.4526" Scale="1,1,1" UnitType="AP_Infestor" Player="1"/>
     <ObjectUnit Id="38" Variation="4" Position="142,113.5,0" Scale="1,1,1" UnitType="MineralField"/>
     <Group Type="ObjectUnit" Name="Patrol - Sneak Attack Marine" Id="1">
@@ -4598,5 +4696,74 @@
         <GroupObject Id="345911269"/>
         <GroupObject Id="1598343886"/>
         <GroupObject Id="1999491393"/>
+        <GroupObject Id="852218010"/>
+    </Group>
+    <Group Type="ObjectUnit" Name="RaceSwapUnits" Id="10">
+        <GroupObject Id="87"/>
+        <GroupObject Id="75"/>
+        <GroupObject Id="377749477"/>
+        <GroupObject Id="345911269"/>
+        <GroupObject Id="388"/>
+        <GroupObject Id="1031463131"/>
+        <GroupObject Id="426"/>
+        <GroupObject Id="88"/>
+        <GroupObject Id="1400627147"/>
+        <GroupObject Id="724399160"/>
+        <GroupObject Id="1602009226"/>
+        <GroupObject Id="385"/>
+        <GroupObject Id="1939391719"/>
+        <GroupObject Id="1132774520"/>
+        <GroupObject Id="868309919"/>
+        <GroupObject Id="1278844554"/>
+        <GroupObject Id="90"/>
+        <GroupObject Id="852218010"/>
+        <GroupObject Id="70"/>
+        <GroupObject Id="387"/>
+        <GroupObject Id="54615324"/>
+        <GroupObject Id="957194087"/>
+        <GroupObject Id="358630803"/>
+        <GroupObject Id="1999491393"/>
+        <GroupObject Id="353"/>
+        <GroupObject Id="1749982661"/>
+        <GroupObject Id="1357936756"/>
+        <GroupObject Id="1210427028"/>
+        <GroupObject Id="1536219564"/>
+        <GroupObject Id="161"/>
+        <GroupObject Id="356"/>
+        <GroupObject Id="2085833954"/>
+        <GroupObject Id="2035472439"/>
+        <GroupObject Id="355"/>
+        <GroupObject Id="105821671"/>
+        <GroupObject Id="383"/>
+        <GroupObject Id="358"/>
+        <GroupObject Id="1497584292"/>
+        <GroupObject Id="1906419281"/>
+        <GroupObject Id="352"/>
+        <GroupObject Id="539418253"/>
+        <GroupObject Id="1550721564"/>
+        <GroupObject Id="175132342"/>
+        <GroupObject Id="354"/>
+        <GroupObject Id="360"/>
+        <GroupObject Id="351"/>
+        <GroupObject Id="706072020"/>
+        <GroupObject Id="55"/>
+        <GroupObject Id="389"/>
+        <GroupObject Id="89"/>
+        <GroupObject Id="1562787015"/>
+        <GroupObject Id="74"/>
+        <GroupObject Id="956403682"/>
+        <GroupObject Id="71"/>
+        <GroupObject Id="386"/>
+        <GroupObject Id="1228788777"/>
+        <GroupObject Id="72"/>
+        <GroupObject Id="1598343886"/>
+        <GroupObject Id="414382855"/>
+        <GroupObject Id="77"/>
+        <GroupObject Id="226711346"/>
+        <GroupObject Id="1671490883"/>
+        <GroupObject Id="561041095"/>
+        <GroupObject Id="1858958587"/>
+        <GroupObject Id="848306405"/>
+        <GroupObject Id="941121495"/>
     </Group>
 </PlacedObjects>

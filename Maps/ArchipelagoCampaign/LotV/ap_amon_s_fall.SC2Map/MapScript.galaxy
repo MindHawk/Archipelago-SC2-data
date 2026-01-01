@@ -36,6 +36,13 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_lOCATION_ID_DESTROY_CRYSTAL1 = 1;
+const int gv_lOCATION_ID_DESTROY_CRYSTAL2 = 2;
+const int gv_lOCATION_ID_DESTROY_CRYSTAL3 = 3;
+const int gv_lOCATION_ID_DESTROY_CRYSTAL4 = 4;
+const int gv_lOCATION_ID_DESTROY_CRYSTAL5 = 5;
+const int gv_lOCATION_ID_DESTROY_CRYSTAL6 = 6;
+const int gv_lOCATION_ID_CLEAR_VOID_CHASMS = 7;
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_RAYNOR = 2;
 const int gv_pLAYER_03_ARTANIS = 3;
@@ -193,7 +200,8 @@ int gv_unitsDestroyedByKerrigan;
 int gv_unitsLostToTerrainDestruction;
 int gv_tripleTapCounter;
 bool gv_achievementConstructedSpire;
-int gv_objectiveDestroyZergBase;
+int gv_objective_DestroyCrystals;
+int gv_objective_DestroyChasms;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicTempUnits;
 bool gv_cinematicCompleted;
@@ -265,7 +273,8 @@ void InitGlobals () {
     }
     gv_numberOfWorldCleaverBaseAreas = 9;
     gv_numberOfWorldCleaverFieldAreas = 6;
-    gv_objectiveDestroyZergBase = c_invalidObjectiveId;
+    gv_objective_DestroyCrystals = c_invalidObjectiveId;
+    gv_objective_DestroyChasms = c_invalidObjectiveId;
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
     gv_cinematicPausedUnits = UnitGroupEmpty();
@@ -298,6 +307,7 @@ void gf_CleaveBase (int lp_index);
 void gf_CleaveField (int lp_index);
 void gf_MakeAmonCleaveTarget (int lp_baseCleaveIndex);
 void gf_BlackOutTerraininRegion (region lp_region);
+void gf_HandleHeroDeathVoid (unit lp_heroUnit, unit lp_reviveLocation, fixed lp_reviveTime);
 void gf_CreateQuantumRayReticle (unit lp_targetUnit);
 bool gf_UnitisArmyforPlayer (unit lp_unit, int lp_player);
 
@@ -380,8 +390,10 @@ trigger gt_TripleTapCounter;
 trigger gt_KerriganKills;
 trigger gt_AchievementVictorywithoutmorphingSpire;
 trigger gt_ObjectiveDestroyCrystalsCreate;
-trigger gt_ObjectiveDestroyCrystalsComplete;
 trigger gt_ObjectiveDestroyCrystalsUpdate;
+trigger gt_ObjectiveDestroyCrystalsComplete;
+trigger gt_ObjectiveDestroyChasmsCreate;
+trigger gt_ObjectiveDestroyChasmsComplete;
 trigger gt_IntroQ;
 trigger gt_IntroSetup;
 trigger gt_IntroCinematic;
@@ -1735,6 +1747,213 @@ void gf_BlackOutTerraininRegion (region lp_region) {
     }
 }
 
+trigger auto_gf_HandleHeroDeathVoid_Trigger = null;
+unit auto_gf_HandleHeroDeathVoid_lp_heroUnit;
+unit auto_gf_HandleHeroDeathVoid_lp_reviveLocation;
+fixed auto_gf_HandleHeroDeathVoid_lp_reviveTime;
+
+void gf_HandleHeroDeathVoid (unit lp_heroUnit, unit lp_reviveLocation, fixed lp_reviveTime) {
+    auto_gf_HandleHeroDeathVoid_lp_heroUnit = lp_heroUnit;
+    auto_gf_HandleHeroDeathVoid_lp_reviveLocation = lp_reviveLocation;
+    auto_gf_HandleHeroDeathVoid_lp_reviveTime = lp_reviveTime;
+
+    if (auto_gf_HandleHeroDeathVoid_Trigger == null) {
+        auto_gf_HandleHeroDeathVoid_Trigger = TriggerCreate("auto_gf_HandleHeroDeathVoid_TriggerFunc");
+    }
+
+    TriggerExecute(auto_gf_HandleHeroDeathVoid_Trigger, false, false);
+}
+
+bool auto_gf_HandleHeroDeathVoid_TriggerFunc (bool testConds, bool runActions) {
+    unit lp_heroUnit = auto_gf_HandleHeroDeathVoid_lp_heroUnit;
+    unit lp_reviveLocation = auto_gf_HandleHeroDeathVoid_lp_reviveLocation;
+    fixed lp_reviveTime = auto_gf_HandleHeroDeathVoid_lp_reviveTime;
+
+    // Variable Declarations
+    int lv_heroType;
+    unit lv_actualReviveLocation;
+    string lv_reviveUnitType;
+    text lv_reviveMessage;
+    text lv_reviveRebuildMessage;
+    fixed lv_reviveCooldown;
+    int lv_revivePlayer;
+    bool lv_updateRally;
+
+    // Automatic Variable Declarations
+    int auto661AB472_val;
+    int autoC8B6A825_val;
+
+    // Variable Initialization
+
+    // Implementation
+    if ((lp_reviveLocation != null) && (UnitIsAlive(lp_reviveLocation) == false)) {
+        TriggerDebugOutput(1, StringExternal("Param/Value/C82B3B91"), false);
+        return true;
+    }
+
+    lv_heroType = libVCMI_gf_PM_HeroTypeFromUnitType(UnitGetType(lp_heroUnit));
+    libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)] = UnitGetOwner(lp_heroUnit);
+    lv_revivePlayer = UnitGetOwner(lp_heroUnit);
+    libVCMI_gv_pM_HeroRevivingUnit[(lv_heroType)] = lp_heroUnit;
+    auto661AB472_val = lv_heroType;
+    if (auto661AB472_val == libVCMI_ge_PM_HeroType_PM_HeroType_Kerrigan) {
+        lv_reviveUnitType = "KerriganReviveCocoon";
+        libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)] = "Abil/KerriganRevive";
+        libVCMI_gv_pM_HeroReviveCommand[(lv_heroType)] = AbilityCommand("KerriganRevive", 0);
+        if ((lp_reviveTime == -1.0)) {
+            lv_reviveCooldown = libVCMI_gv_pM_ReviveCooldownTimeKerrigan;
+        }
+        else {
+            lv_reviveCooldown = lp_reviveTime;
+        }
+        if ((libVCMI_gv_pM_ReviveUseAltMessage == true)) {
+            TextExpressionSetToken("Param/Expression/8E97F9B6", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+            lv_reviveMessage = TextExpressionAssemble("Param/Expression/8E97F9B6");
+            lv_reviveRebuildMessage = StringExternal("Param/Value/E0BAB522");
+        }
+        else {
+            TextExpressionSetToken("Param/Expression/08A85A09", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+            lv_reviveMessage = TextExpressionAssemble("Param/Expression/08A85A09");
+            lv_reviveRebuildMessage = StringExternal("Param/Value/8E750E9B");
+        }
+        if ((libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)] == 1)) {
+            lv_updateRally = true;
+        }
+
+    }
+    else if (auto661AB472_val == libVCMI_ge_PM_HeroType_PM_HeroType_Kerrigan_XelNaga) {
+        lv_reviveUnitType = "KerriganXelNagaReviveCocoon";
+        libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)] = "Abil/KerriganRevive";
+        libVCMI_gv_pM_HeroReviveCommand[(lv_heroType)] = AbilityCommand("KerriganRevive", 0);
+        if ((lp_reviveTime == -1.0)) {
+            lv_reviveCooldown = libVCMI_gv_pM_ReviveCooldownTimeKerriganXelNaga;
+        }
+        else {
+            lv_reviveCooldown = lp_reviveTime;
+        }
+        if ((libVCMI_gv_pM_ReviveUseAltMessage == true)) {
+            TextExpressionSetToken("Param/Expression/38D6D677", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+            lv_reviveMessage = TextExpressionAssemble("Param/Expression/38D6D677");
+            lv_reviveRebuildMessage = StringExternal("Param/Value/BDFAE492");
+        }
+        else {
+            TextExpressionSetToken("Param/Expression/AAEB29A3", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+            lv_reviveMessage = TextExpressionAssemble("Param/Expression/AAEB29A3");
+            lv_reviveRebuildMessage = StringExternal("Param/Value/F58FA9B9");
+        }
+        if ((libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)] == 1)) {
+            lv_updateRally = true;
+        }
+
+    }
+    else if (auto661AB472_val == libVCMI_ge_PM_HeroType_PM_HeroType_Fenix) {
+        lv_reviveUnitType = "FenixCocoon";
+        libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)] = "Abil/FenixRevive";
+        libVCMI_gv_pM_HeroReviveCommand[(lv_heroType)] = AbilityCommand("FenixRevive", 0);
+        if ((lp_reviveTime == -1.0)) {
+            lv_reviveCooldown = libVCMI_gv_pM_ReviveCooldownTimeFenix;
+        }
+        else {
+            lv_reviveCooldown = lp_reviveTime;
+        }
+        TextExpressionSetToken("Param/Expression/B919D88D", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+        lv_reviveMessage = TextExpressionAssemble("Param/Expression/B919D88D");
+        lv_reviveRebuildMessage = StringExternal("Param/Value/1F92C371");
+    }
+    else if (auto661AB472_val == libVCMI_ge_PM_HeroType_PM_HeroType_Stukov) {
+        lv_reviveUnitType = "StukovReviveCocoon";
+        libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)] = "Abil/StukovRevive";
+        libVCMI_gv_pM_HeroReviveCommand[(lv_heroType)] = AbilityCommand("StukovRevive", 0);
+        if ((lp_reviveTime == -1.0)) {
+            lv_reviveCooldown = libVCMI_gv_pM_ReviveCooldownTimeStukov;
+        }
+        else {
+            lv_reviveCooldown = lp_reviveTime;
+        }
+        TextExpressionSetToken("Param/Expression/FB666FCE", "A", IntToText(FixedToInt(lv_reviveCooldown)));
+        lv_reviveMessage = TextExpressionAssemble("Param/Expression/FB666FCE");
+        lv_reviveRebuildMessage = StringExternal("Param/Value/7A1C36D6");
+    }
+    else if (auto661AB472_val == libVCMI_ge_PM_HeroType_PM_HeroType_Zagara) {
+        lv_reviveUnitType = "ZagaraReviveCocoon";
+        libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)] = "Abil/ZagaraRevive";
+        libVCMI_gv_pM_HeroReviveCommand[(lv_heroType)] = AbilityCommand("ZagaraRevive", 0);
+        if ((lp_reviveTime == -1.0)) {
+            lv_reviveCooldown = libVCMI_gv_pM_ReviveCooldownTimeZagara;
+        }
+        else {
+            lv_reviveCooldown = lp_reviveTime;
+        }
+    }
+    else {
+        TextExpressionSetToken("Param/Expression/06280A2B", "A", StringToText((UnitGetType(lp_heroUnit))));
+        TriggerDebugOutput(1, TextExpressionAssemble("Param/Expression/06280A2B"), false);
+        return true;
+    }
+    libVCMI_gv_pM_ReviveUseAltMessage = false;
+    if ((lp_reviveLocation != null)) {
+        lv_actualReviveLocation = lp_reviveLocation;
+    }
+    else {
+        lv_actualReviveLocation = lib15EF4C78_gf_AP_Player_getPrimaryTownHall(lv_revivePlayer);
+    }
+    if ((libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)] == 1)) {
+        if (((lv_actualReviveLocation == null) || (UnitIsAlive(lv_actualReviveLocation) == false))) {
+            libVCMI_gf_DisplayCampaignMessage(PlayerGroupAll(), libVCMI_ge_CampaignMessageType_Warning, lv_reviveRebuildMessage, libVCMI_ge_CampaignMessageFormatNotFormat_FormatMessage);
+        }
+        else {
+            libVCMI_gf_DisplayCampaignMessage(PlayerGroupAll(), libVCMI_ge_CampaignMessageType_Warning, lv_reviveMessage, libVCMI_ge_CampaignMessageFormatNotFormat_FormatMessage);
+        }
+    }
+
+    Wait(2.0, c_timeGame);
+    while (((lv_actualReviveLocation == null) || (UnitIsAlive(lv_actualReviveLocation) == false))) {
+        Wait(1.0, c_timeGame);
+        lv_actualReviveLocation = lib15EF4C78_gf_AP_Player_getPrimaryTownHall(lv_revivePlayer);
+    }
+    if ((UnitIsAlive(lp_heroUnit) == false)) {
+        libNtve_gf_CreateUnitsWithDefaultFacing(1, lv_reviveUnitType, 0, libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)], UnitGetPosition(lv_actualReviveLocation));
+        libVCMI_gv_pM_HeroReviverUnit[(lv_heroType)] = UnitLastCreated();
+        if ((lv_heroType == libVCMI_ge_PM_HeroType_PM_HeroType_Kerrigan_XelNaga)) {
+            libVCUI_gf_SetHeroPanelUnit(1, UnitLastCreated());
+        }
+
+        if ((lv_updateRally == true)) {
+            UnitCreateEffectUnit(lv_actualReviveLocation, "CopyHatcheryRally", libVCMI_gv_pM_HeroReviverUnit[(lv_heroType)]);
+            UnitIssueOrder(libVCMI_gv_pM_HeroReviverUnit[(lv_heroType)], OrderTargetingUnit(AbilityCommand("RallyHatchery", 1), libVCMI_gv_pM_HeroReviverUnit[(lv_heroType)]), c_orderQueueReplace);
+        }
+
+        libNtve_gf_PlayerRemoveCooldown(libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)], libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)]);
+        PlayerAddCooldown(libVCMI_gv_pM_HeroRevivePlayer[(lv_heroType)], libVCMI_gv_pM_HeroReviveCDLink[(lv_heroType)], lv_reviveCooldown);
+    }
+
+    autoC8B6A825_val = lv_heroType;
+    if (autoC8B6A825_val == libVCMI_ge_PM_HeroType_PM_HeroType_Kerrigan) {
+        TriggerEnable(libVCMI_gt_PM_HeroReviveKerriganCooldownWait, true);
+    }
+    else if (autoC8B6A825_val == libVCMI_ge_PM_HeroType_PM_HeroType_Kerrigan_XelNaga) {
+        TriggerEnable(libVCMI_gt_PM_HeroReviveKerriganXelNagaCooldownWait, true);
+    }
+    else if (autoC8B6A825_val == libVCMI_ge_PM_HeroType_PM_HeroType_Fenix) {
+        UnitBehaviorAdd(libVCMI_gv_pM_SoAUnit, "SOAFenixCooldownDummy", libVCMI_gv_pM_SoAUnit, 1);
+        TriggerEnable(libVCMI_gt_PM_HeroReviveFenixCooldownWait, true);
+    }
+    else if (autoC8B6A825_val == libVCMI_ge_PM_HeroType_PM_HeroType_Stukov) {
+        TriggerEnable(libVCMI_gt_PM_HeroReviveStukovCooldownWait, true);
+    }
+    else if (autoC8B6A825_val == libVCMI_ge_PM_HeroType_PM_HeroType_Zagara) {
+        TriggerEnable(libVCMI_gt_PM_HeroReviveZagaraCooldownWait, true);
+    }
+    else {
+    }
+    Wait(7.0, c_timeGame);
+    if ((UnitIsAlive(lp_heroUnit) == false)) {
+        UnitSetPosition(lp_heroUnit, UnitGetPosition(libVCMI_gv_pM_HeroReviverUnit[(lv_heroType)]), false);
+    }
+
+    return true;
+}
+
 trigger auto_gf_CreateQuantumRayReticle_Trigger = null;
 unit auto_gf_CreateQuantumRayReticle_lp_targetUnit;
 
@@ -1965,6 +2184,8 @@ bool gt_Initialization_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_Init04MusicSound, true, false);
     TriggerExecute(gt_Init05Environment, true, false);
     TriggerExecute(gt_Init06Difficulties, true, false);
+    GameSetSpeedValueMinimum(c_gameSpeedSlower);
+    GameSetSpeedValue(libABFE498B_gv_aP_Triggers_Option_gameSpeed);
     TriggerExecute(gt_IntroQ, true, true);
     TriggerExecute(gt_StartGameQ, true, false);
     return true;
@@ -2247,8 +2468,10 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
     TriggerExecute(gt_QuantumRayCheck, true, false);
     UIAlertPoint("Trigger", gv_pLAYER_01_USER, StringExternal("Param/Value/ADA11C5C"), null, PointFromId(1));
     libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionPlayableMap(), gv_pLAYER_01_USER);
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     VisRevealArea(gv_pLAYER_01_USER, RegionFromId(2), 0.0, false);
     Wait(3.0, c_timeReal);
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     TriggerQueueEnter();
     TriggerExecute(gt_ObjectiveDestroyCrystalsCreate, true, true);
     gv_pingsAllowed = true;
@@ -2256,6 +2479,11 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
     TriggerQueueExit();
     Wait(10.0, c_timeReal);
     TriggerExecute(gt_VoidCrystalPathsQ, true, false);
+    Wait(20.0, c_timeReal);
+    TriggerQueueEnter();
+    TriggerExecute(gt_ObjectiveDestroyChasmsCreate, true, true);
+    Wait(2.0, c_timeReal);
+    TriggerQueueExit();
     return true;
 }
 
@@ -2655,21 +2883,27 @@ bool gt_VoidCrystalDiesQ_Func (bool testConds, bool runActions) {
     SoundChannelSetVolume(PlayerGroupAll(), c_soundCategoryDoodad, 12.0, 0.25);
     auto85B852E0_val = lv_voidCrystalsDestroyed_LOCAL;
     if (auto85B852E0_val == 1) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL1);
         libVCMI_gf_SendTransmissionCampaign(gv_kerrigan, "Mission_Epilogue03|Line00009", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 2) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL2);
         libVCMI_gf_SendTransmissionCampaign(gv_kerrigan, "Mission_Epilogue03|Line00030", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 3) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL3);
         libVCMI_gf_SendTransmissionCampaign(gv_kerrigan, "Mission_Epilogue03|Line00031", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 4) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL4);
         libVCMI_gf_SendTransmissionCampaign(null, "Mission_Epilogue03|Line00032", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 5) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL5);
         libVCMI_gf_SendTransmissionCampaign(gv_kerrigan, "Mission_Epilogue03|Line00054", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 6) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL6);
         libVCMI_gf_SendTransmissionCampaign(null, "Mission_Epilogue03|Line00055", c_transmissionDurationAdd, 0.0, true, libVCMI_ge_MissionTransmissionPortraitOptioins_HidePortraitAfter, libVCMI_ge_MissionTransmissionCueSoundOptions_DefaultCueSoundBehavior);
     }
     else if (auto85B852E0_val == 7) {
@@ -3225,6 +3459,8 @@ bool gt_VoidChasmDies_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
     int autoE9F74A91_ae;
     const int autoE9F74A91_ai = 1;
+    int autoE403F188_ae;
+    const int autoE403F188_ai = 1;
 
     // Variable Initialization
 
@@ -3254,6 +3490,15 @@ bool gt_VoidChasmDies_Func (bool testConds, bool runActions) {
 
     TimerStart(gv_voidChasm[lv_index].lv_respawnTimer, gv_voidChasmRespawnDelay, false, c_timeAI);
     UnitBehaviorRemove(gv_voidChasm[lv_index].lv_unit, "InfiniteCrystalisRepulsorBehavior", 1);
+    autoE403F188_ae = gv_numberOfVoidChasms;
+    lv_i = 1;
+    for ( ; ( (autoE403F188_ai >= 0 && lv_i <= autoE403F188_ae) || (autoE403F188_ai < 0 && lv_i >= autoE403F188_ae) ) ; lv_i += autoE403F188_ai ) {
+        if ((UnitGetType(gv_voidChasm[lv_i].lv_unit) == "VoidChasm")) {
+            return true;
+        }
+
+    }
+    TriggerExecute(gt_ObjectiveDestroyChasmsComplete, true, false);
     return true;
 }
 
@@ -4646,7 +4891,7 @@ bool gt_KerriganDies_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    libVCMI_gf_HandleHeroDeathVoid(gv_kerrigan, lib15EF4C78_gf_AP_Player_getPrimaryTownHall(gv_pLAYER_01_USER), -1.0);
+    gf_HandleHeroDeathVoid(gv_kerrigan, lib15EF4C78_gf_AP_Player_getPrimaryTownHall(gv_pLAYER_01_USER), -1.0);
     return true;
 }
 
@@ -5668,7 +5913,7 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     libVCMI_gf_GameOver(libVCMI_ge_CampaignMissionGameResultType_Victory);
     Wait(2.0, c_timeReal);
     libVoiC_gf_CampaignAwardAchievement("SC2Epilogue03_1", gv_pLAYER_01_USER);
@@ -5945,8 +6190,18 @@ bool gt_ObjectiveDestroyCrystalsCreate_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue03Primary01");
-    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue03Primary01", "", gv_crystalsDestroyed);
+    gv_objective_DestroyCrystals = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objective_DestroyCrystals, libVoiC_gf_MissionObjectiveName("SC2Epilogue03Primary01"));
+    ObjectiveShow(gv_objective_DestroyCrystals, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objective_DestroyCrystals, lib5BD4895D_ge_APObjectiveCategory_Primary, "", gv_crystalsDestroyed, libVoiC_gf_MissionObjectiveItemCount("SC2Epilogue03Primary01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL1);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL2);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL3);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL4);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL5);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyCrystals, gv_lOCATION_ID_DESTROY_CRYSTAL6);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_DestroyCrystals, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5954,6 +6209,51 @@ bool gt_ObjectiveDestroyCrystalsCreate_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveDestroyCrystalsCreate_Init () {
     gt_ObjectiveDestroyCrystalsCreate = TriggerCreate("gt_ObjectiveDestroyCrystalsCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Crystals - Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyCrystalsUpdate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    int auto3AE16C28_val;
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerExecute(gt_ObjectiveDestroyCrystalsCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objective_DestroyCrystals, gv_crystalsDestroyed);
+    auto3AE16C28_val = gv_crystalsDestroyed;
+    if (auto3AE16C28_val == 1) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL1);
+    }
+    else if (auto3AE16C28_val == 2) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL2);
+    }
+    else if (auto3AE16C28_val == 3) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL3);
+    }
+    else if (auto3AE16C28_val == 4) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL4);
+    }
+    else if (auto3AE16C28_val == 5) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL5);
+    }
+    else if (auto3AE16C28_val == 6) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_DESTROY_CRYSTAL6);
+    }
+    else if (auto3AE16C28_val == 7) {
+    }
+    else {
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyCrystalsUpdate_Init () {
+    gt_ObjectiveDestroyCrystalsUpdate = TriggerCreate("gt_ObjectiveDestroyCrystalsUpdate_Func");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -5975,7 +6275,7 @@ bool gt_ObjectiveDestroyCrystalsComplete_Func (bool testConds, bool runActions) 
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveDestroyCrystalsCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_DestroyCrystals);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -5986,23 +6286,81 @@ void gt_ObjectiveDestroyCrystalsComplete_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: Objective - Destroy Crystals - Update
+// Trigger: Objective - Destroy Chasms - Create
 //--------------------------------------------------------------------------------------------------
-bool gt_ObjectiveDestroyCrystalsUpdate_Func (bool testConds, bool runActions) {
+bool gt_ObjectiveDestroyChasmsCreate_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
     // Actions
     if (!runActions) {
         return true;
     }
 
-    TriggerExecute(gt_ObjectiveDestroyCrystalsCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyZergBase, gv_crystalsDestroyed);
+    TriggerEnable(TriggerGetCurrent(), false);
+    TimerWindowCreate(gv_voidChasm[7].lv_initialTimer, StringExternal("Param/Value/B9BCD5C2"), false, false);
+    TimerWindowShow(TimerWindowLastCreated(), PlayerGroupAll(), true);
+    ObjectiveCreate(StringExternal("Param/Value/400C8724"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objective_DestroyChasms = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objective_DestroyChasms, lib5BD4895D_ge_APObjectiveCategory_Mastery, true);
+    lib5BD4895D_gf_AP_Core_addObjectiveExtraLine(gv_objective_DestroyChasms);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objective_DestroyChasms, gv_lOCATION_ID_CLEAR_VOID_CHASMS);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objective_DestroyChasms, true);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
 
 //--------------------------------------------------------------------------------------------------
-void gt_ObjectiveDestroyCrystalsUpdate_Init () {
-    gt_ObjectiveDestroyCrystalsUpdate = TriggerCreate("gt_ObjectiveDestroyCrystalsUpdate_Func");
+void gt_ObjectiveDestroyChasmsCreate_Init () {
+    gt_ObjectiveDestroyChasmsCreate = TriggerCreate("gt_ObjectiveDestroyChasmsCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective - Destroy Chasms - Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyChasmsComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((gv_cinematicCompleted == true))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((TimerGetRemaining(gv_voidChasm[gv_numberOfVoidChasms].lv_initialTimer) <= 0.0))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveDestroyChasmsCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objective_DestroyChasms);
+    ObjectiveSetName(gv_objective_DestroyChasms, StringExternal("Param/Value/0D6B9C04"));
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_CLEAR_VOID_CHASMS);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyChasmsComplete_Init () {
+    gt_ObjectiveDestroyChasmsComplete = TriggerCreate("gt_ObjectiveDestroyChasmsComplete_Func");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -6318,6 +6676,7 @@ bool gt_IntroCleanup_Func (bool testConds, bool runActions) {
         lv_fadeDuration = 1.0;
     }
     libVCMI_gf_CinematicModeCampaign(false, lv_fadeDuration, false);
+    gv_cinematicCompleted = true;
     libNtve_gf_SwooshCamera(gv_pLAYER_01_USER, ((CameraInfoGetValue(CameraInfoDefault(), c_cameraValueDistance)) + 8.0), CameraInfoGetValue(CameraInfoDefault(), c_cameraValueDistance), PlayerStartLocation(gv_pLAYER_01_USER), lv_fadeDuration);
     CinematicFade(true, lv_fadeDuration, c_fadeStyleNormal, ColorWithAlpha(0.00, 0.00, 0.00, 0.00), 0.0, true);
     return true;
@@ -6992,6 +7351,7 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
     else {
         lv_fadeDuration = 1.0;
     }
+    gv_cinematicCompleted = true;
     libVCMI_gf_CinematicModeCampaign(false, lv_fadeDuration, false);
     CinematicFade(true, lv_fadeDuration, c_fadeStyleNormal, ColorWithAlpha(0.00, 0.00, 0.00, 0.00), 0.0, true);
     return true;
@@ -7392,8 +7752,10 @@ void InitTriggers () {
     gt_KerriganKills_Init();
     gt_AchievementVictorywithoutmorphingSpire_Init();
     gt_ObjectiveDestroyCrystalsCreate_Init();
-    gt_ObjectiveDestroyCrystalsComplete_Init();
     gt_ObjectiveDestroyCrystalsUpdate_Init();
+    gt_ObjectiveDestroyCrystalsComplete_Init();
+    gt_ObjectiveDestroyChasmsCreate_Init();
+    gt_ObjectiveDestroyChasmsComplete_Init();
     gt_IntroQ_Init();
     gt_IntroSetup_Init();
     gt_IntroCinematic_Init();

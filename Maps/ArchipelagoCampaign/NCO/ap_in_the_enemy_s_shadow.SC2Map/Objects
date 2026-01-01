@@ -10494,6 +10494,7 @@
     <ObjectPoint Color="0,0,0,0" Id="1160309722" Name="S3 - Alarm Bot Patrol 1 - 1" Position="119,184.5,0" Scale="1,1,1" Type="Normal">
         <Flag Index="ForcePlacement" Value="1"/>
     </ObjectPoint>
+    <ObjectPoint Id="2046855289" Position="97.051,224.5903,0" Scale="1,1,1" Type="BlockPathing" Name="Pathing Cliff Fill 057" Color="0,0,0,0"/>
     <ObjectPoint Color="0,0,0,0" Id="1675461827" Name="S1 - Ghost Target" Position="85.1647,45.0485,0" Rotation="2.8657" Scale="1,1,1" Type="Normal"/>
     <ObjectPoint Color="0,0,0,0" Id="570270352" Name="Mid 2 Stone Walk From" Position="133.9443,182.4296,0" Rotation="5.098" Scale="1,1,1" Type="Normal"/>
     <ObjectPoint Color="0,0,0,0" Id="1399392562" Name="S3 - Alarm Bot Patrol 1 - 2" Position="125,190.5,0" Scale="1,1,1" Type="Normal">

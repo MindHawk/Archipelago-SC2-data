@@ -60,17 +60,23 @@
 <Actor id="PortZionGridFloorCompactorDoodad"/>
 <Actor id="PortZionGridFloorDoodad"/>
 <Actor id="PortZionScrapElevatorLeft"/>
+<Behavior id="AP_SiegeTankSiegeModeProgressiveRangeIncease"/>
 <Behavior id="AP_RegeneratorRegenBioSteelL1L2"/>
 <Behavior id="AP_RegeneratorRegenBioSteelL3"/>
 <Behavior id="AP_VultureAutoRepair"/>
+<Behavior id="AP_StukovInfestedSiegeTankAmmo"/>
 <Model id="PingObjective"/>
 <Model id="GhostNukeIndicator"/>
 <Model id="BriefingUnitSelect"/>
 <Model id="BraxisAlphaSkyBox"/>
+<Race id="Terr"/>
+<Race id="Zerg"/>
+<Race id="Prot"/>
 <Sound id="Medivac_Unload" Variations="0"/>
 <Sound id="IncomingTransmission"/>
 <Sound id="UI_TechConsole_Purchase"/>
 <Sound id="TUI_StarmapMenuPopup"/>
+<Sound id="MarSaraFidgetsEvolutionofrevolution2Raynor00034"/>
 <Sound id="THorner02BriefingHorner00001"/>
 <Sound id="THorner02BriefingRaynor00002"/>
 <Sound id="THorner02BriefingHan00005"/>
@@ -81,6 +87,8 @@
 <Sound id="THorner02BriefingHorner00011"/>
 <Sound id="THorner02BriefingRaynor00013"/>
 <Sound id="THorner02BriefingRaynor00018"/>
+<Sound id="TValerian02ATychus00078"/>
+<Sound id="TZeratul01Zeratul00051"/>
 <Sound id="THorner02Raynor00001"/>
 <Sound id="THorner02Han00002"/>
 <Sound id="THorner02Han00003"/>
@@ -136,6 +144,7 @@
 <Unit id="Medivac"/>
 <Unit id="Raven"/>
 <Unit id="Battlecruiser"/>
+<Unit id="WarpPrism"/>
 <Unit id="MineralField" Variations="0,1,2,3,4,5,6,7,8,9"/>
 <Unit id="VespeneGeyser"/>
 <Unit id="SiegeBreakerSieged"/>
@@ -162,6 +171,9 @@
 <Unit id="Food1000"/>
 <Unit id="Medic"/>
 <Unit id="PortJunker"/>
+<Unit id="AP_Zergling"/>
+<Unit id="AP_Roach"/>
+<Unit id="AP_Hydralisk"/>
 <Unit id="AP_SiegeBreaker"/>
 <Unit id="AP_SupplyDepot"/>
 <Unit id="AP_BarracksFlying"/>
@@ -172,10 +184,28 @@
 <Unit id="AP_Factory"/>
 <Unit id="AP_FactoryFlying"/>
 <Unit id="AP_SCV"/>
-<Unit id="AP_CommandCenterFlying"/>
+<Unit id="AP_CommandCenter"/>
 <Unit id="AP_PlanetaryFortress"/>
+<Unit id="AP_Baneling"/>
+<Unit id="AP_CreepTumorUsed"/>
 <Unit id="AP_Diamondback"/>
 <Unit id="AP_Vulture"/>
+<Unit id="AP_RoboticsFacility"/>
+<Unit id="AP_PhotonCannon"/>
+<Unit id="AP_SporeCrawler"/>
+<Unit id="AP_Adept"/>
+<Unit id="AP_ZealotPurifier"/>
+<Unit id="AP_StalkerPurifier"/>
+<Unit id="AP_SentryPurifier"/>
+<Unit id="AP_Pylon"/>
+<Unit id="AP_Forge"/>
+<Unit id="AP_RoboticsBay"/>
+<Unit id="AP_CyberneticsCore"/>
+<Unit id="AP_KhaydarinMonolith"/>
+<Unit id="AP_WarpGate"/>
+<Unit id="AP_Overlord"/>
+<Unit id="AP_SIInfestedBunker"/>
+<Unit id="AP_SIMissileTurret"/>
 <Unit id="AP_WarPig"/>
 <Unit id="AP_SpartanCompany"/>
 <Unit id="AP_HammerSecurity"/>
@@ -185,4 +215,15 @@
 <Unit id="AP_Bunker"/>
 <Unit id="AP_MercCompound"/>
 <Unit id="AP_Armory"/>
+<Unit id="AP_SentryPhasing"/>
+<Unit id="AP_LurkerDen"/>
+<Unit id="AP_Queen"/>
+<Unit id="AP_SpawningPool"/>
+<Unit id="AP_EvolutionChamber"/>
+<Unit id="AP_InfestationPit"/>
+<Unit id="AP_BanelingNest"/>
+<Unit id="AP_RoachWarren"/>
+<Unit id="AP_ZergMercenaryCompound"/>
+<Unit id="AP_MercZergling"/>
+<Unit id="AP_Yggdrasil"/>
 </Preload>

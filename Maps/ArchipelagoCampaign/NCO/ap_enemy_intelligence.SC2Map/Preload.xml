@@ -7,6 +7,7 @@
 <Asset path="localizeddata\sounds\vo\briefing_nova03_reigel_002.ogg" Type="Sound"/>
 <Asset path="localizeddata\sounds\vo\briefing_nova03_reigel_008.ogg" Type="Sound"/>
 <Asset path="localizeddata\sounds\vo\briefing_nova03_nova_001.ogg" Type="Sound"/>
+<Asset path="ap\assets\textures\ap_icon.dds" Type="Image"/>
 <Asset path="localizeddata\sounds\vo\briefing_nova03_nova_007.ogg" Type="Sound"/>
 <Actor id="SYSTEM_ActorConfig"/>
 <Actor id="LightOmniGreenLarge"/>
@@ -162,11 +163,6 @@
 <Model id="PingArrow"/>
 <Model id="PingObjective"/>
 <Model id="PingBonus"/>
-<Objective id="Nova03Primary01"/>
-<Objective id="Nova03Primary03"/>
-<Objective id="Nova03Primary02"/>
-<Objective id="Nova03Bonus01"/>
-<Objective id="Nova03Primary04"/>
 <Sound id="Marine_Land"/>
 <Sound id="NydusWorm_Unload"/>
 <Sound id="NydusWorm_Birth"/>

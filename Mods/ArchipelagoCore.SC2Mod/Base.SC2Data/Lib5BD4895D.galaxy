@@ -18,6 +18,7 @@ void lib5BD4895D_InitVariables () {
     int init_i1;
     int init_j1;
     int init_i2;
+    int init_i3;
 
     if (lib5BD4895D_InitVariables_completed) {
         return;
@@ -41,25 +42,22 @@ void lib5BD4895D_InitVariables () {
     lib5BD4895D_gv_aP_Core_Faction_KERRIGAN_SWARM_SWITCHABLE_TO_PRIMAL_ZERG = "ks_pz";
     lib5BD4895D_gv_aP_Core_Faction_DAELAAM = "da";
     lib5BD4895D_gv_aP_Core_Faction_NOVA = "nova";
-    lib5BD4895D_gv_chatbox.lv_mainpanel = c_invalidDialogId;
-    lib5BD4895D_gv_chatbox.lv_chatpanel = c_invalidDialogId;
-    lib5BD4895D_gv_chatbox.lv_hiddenpanel = c_invalidDialogId;
-    lib5BD4895D_gv_chatbox.lv_chatlabel = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_scrollupbtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_scrolldownbtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_scrollbottonbtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_maxmessages = 50;
-    lib5BD4895D_gv_chatbox.lv_scrollstrength = 18;
-    lib5BD4895D_gv_chatbox.lv_sizeupbtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_sizedownbtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_size = 3;
-    lib5BD4895D_gv_chatbox.lv_countlabel = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_hidebtn = c_invalidDialogControlId;
-    lib5BD4895D_gv_chatbox.lv_showbtn = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_blackScreen_dialog = c_invalidDialogId;
+    lib5BD4895D_gv_aP_Core_blackScreen = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_maxmessages = 50;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_chatlabel = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_countlabel = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_showbutton = c_invalidDialogControlId;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_hidebutton = c_invalidDialogControlId;
+    for (init_i1 = 0; init_i1 <= 20; init_i1 += 1) {
+        lib5BD4895D_gv_aP_Core_chatbox.lv_hidden[init_i1] = true;
+    }
     for (init_i = 0; init_i <= 7; init_i += 1) {
         lib5BD4895D_gv_aP_Core_rainbowColors[init_i] = 1;
     }
-    lib5BD4895D_gv_aP_Core_objectiveUsedCategories = 2;
+    lib5BD4895D_gv_aP_Core_tradeFlavorName = "Void Trade";
+    lib5BD4895D_gv_aP_Core_objectiveUsedCategories = 4;
     lib5BD4895D_gv_aP_Core_objectiveDefaultTimer = TimerCreate();
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel = c_invalidDialogControlId;
     for (init_i1 = 0; init_i1 <= 8; init_i1 += 1) {
@@ -73,6 +71,9 @@ void lib5BD4895D_InitVariables () {
             lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[init_i1].lv_objectives[init_i2].lv_label = c_invalidDialogControlId;
             lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[init_i1].lv_objectives[init_i2].lv_counterSuffix = "";
             lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[init_i1].lv_objectives[init_i2].lv_timer = lib5BD4895D_gv_aP_Core_objectiveDefaultTimer;
+            for (init_i3 = 0; init_i3 <= lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP; init_i3 += 1) {
+                lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[init_i1].lv_objectives[init_i2].lv_locations[init_i3] = -1;
+            }
         }
     }
     for (init_i1 = 0; init_i1 <= 8; init_i1 += 1) {
@@ -82,7 +83,14 @@ void lib5BD4895D_InitVariables () {
     }
 }
 
+// Presets
 // Functions
+bool lib5BD4895D_gf_AP_Core_isLocationCollectable (int lp_locationIdLocal) {
+    // Automatic Variable Declarations
+    // Implementation
+    return lib5BD4895D_gv_aP_Core_locationCollectable[lp_locationIdLocal];
+}
+
 void lib5BD4895D_gf_AP_Core_MapConfig_setAffectedPlayers (playergroup lp_players) {
     // Automatic Variable Declarations
     // Implementation
@@ -136,6 +144,10 @@ void lib5BD4895D_gf_AP_Core_sendLocationLocal (int lp_locationIdLocal) {
     // Variable Initialization
 
     // Implementation
+    if ((lp_locationIdLocal >= 0)) {
+        lib5BD4895D_gv_aP_Core_locationCollectable[lp_locationIdLocal] = false;
+    }
+
     lv_value = lp_locationIdLocal + 1;;
     if ((lib5BD4895D_gv_aP_Core_initFinished == true)) {
         if ((lib5BD4895D_gf_AP_Core_IsControllerNotInitialized())) {
@@ -182,7 +194,7 @@ void lib5BD4895D_gf_AP_Core_refreshController () {
     UnitSetPropertyFixed(lib5BD4895D_gv_aP_Core_controller2, c_unitPropLife, (UnitGetPropertyInt(lib5BD4895D_gv_aP_Core_controller2, c_unitPropLife, c_unitPropCurrent) - lib5BD4895D_gv_aP_Core_controller2Status));
 }
 
-text lib5BD4895D_gf_getchatboxcontent () {
+text lib5BD4895D_gf_AP_Core_getChatboxContent () {
     // Variable Declarations
     int lv_index;
     text lv_tmptext;
@@ -190,17 +202,23 @@ text lib5BD4895D_gf_getchatboxcontent () {
     // Automatic Variable Declarations
     // Variable Initialization
     lv_index = 1;
-    lv_tmptext = lib5BD4895D_gv_chatbox.lv_chatmessage[0];
+    lv_tmptext = lib5BD4895D_gv_aP_Core_chatbox.lv_chatmessage[0];
 
     // Implementation
-    while ((lv_index < lib5BD4895D_gv_chatbox.lv_maxmessages)) {
-        lv_tmptext = (lib5BD4895D_gv_chatbox.lv_chatmessage[lv_index] + StringExternal("Param/Value/lib_5BD4895D_C38FCBB5") + lv_tmptext);
+    while ((lv_index < MinI(lib5BD4895D_gv_aP_Core_chatbox.lv_maxmessages, lib5BD4895D_gv_aP_Core_chatbox.lv_messagecount))) {
+        lv_tmptext = (lib5BD4895D_gv_aP_Core_chatbox.lv_chatmessage[lv_index] + StringExternal("Param/Value/lib_5BD4895D_C38FCBB5") + lv_tmptext);
         lv_index += 1;
     }
     return lv_tmptext;
 }
 
-void lib5BD4895D_gf_initchatbox (int lp_anchor, int lp_sizex, int lp_sizey, int lp_offsetx, int lp_offsety) {
+bool lib5BD4895D_gf_AP_Core_getChatboxHidden (int lp_player) {
+    // Automatic Variable Declarations
+    // Implementation
+    return lib5BD4895D_gv_aP_Core_chatbox.lv_hidden[lp_player];
+}
+
+void lib5BD4895D_gf_AP_Core_initChatbox (int lp_anchor, int lp_sizex, int lp_sizey, int lp_offsetx, int lp_offsety) {
     // Variable Declarations
     int lv_btnsize;
     int lv_btnxoffset;
@@ -213,40 +231,21 @@ void lib5BD4895D_gf_initchatbox (int lp_anchor, int lp_sizex, int lp_sizey, int 
     lv_chatlblsizex = (lp_sizex - 110);
 
     // Implementation
-    DialogCreate(lp_sizex, lp_sizey, lp_anchor, lp_offsetx, lp_offsety, true);
-    DialogSetTitle(DialogLastCreated(), StringExternal("Param/Value/lib_5BD4895D_DA943ABE"));
-    lib5BD4895D_gv_chatbox.lv_mainpanel = DialogLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorBottomRight, lv_btnxoffset, 30, StringExternal("Param/Value/lib_5BD4895D_63A08DA4"), StringExternal("Param/Value/lib_5BD4895D_5C0E7029"), "");
-    lib5BD4895D_gv_chatbox.lv_scrollbottonbtn = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorBottomRight, lv_btnxoffset, 65, StringExternal("Param/Value/lib_5BD4895D_01ECC464"), StringExternal("Param/Value/lib_5BD4895D_F3CCECCC"), "");
-    lib5BD4895D_gv_chatbox.lv_scrolldownbtn = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorBottomRight, lv_btnxoffset, 90, StringExternal("Param/Value/lib_5BD4895D_4C80D61A"), StringExternal("Param/Value/lib_5BD4895D_D418EF7A"), "");
-    lib5BD4895D_gv_chatbox.lv_scrollupbtn = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorTopRight, (lv_btnxoffset * 2), 65, StringExternal("Param/Value/lib_5BD4895D_1458BA0D"), StringExternal("Param/Value/lib_5BD4895D_6A6F1572"), "");
-    lib5BD4895D_gv_chatbox.lv_sizeupbtn = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorTopRight, (lv_btnxoffset * 3), 65, StringExternal("Param/Value/lib_5BD4895D_4534657D"), StringExternal("Param/Value/lib_5BD4895D_45A8E99F"), "");
-    lib5BD4895D_gv_chatbox.lv_sizedownbtn = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemLabel(DialogLastCreated(), lv_chatlblsizex, 30, c_anchorTopRight, (lv_btnxoffset * 5), 65, StringExternal("Param/Value/lib_5BD4895D_80AC2922"), ColorWithAlpha(0,0,0,0), false, 2.0);
-    libNtve_gf_SetDialogItemStyle(DialogControlLastCreated(), "AP_BottomRight", PlayerGroupAll());
-    lib5BD4895D_gv_chatbox.lv_countlabel = DialogControlLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorTopRight, (lv_btnxoffset / 2), (lv_btnxoffset / 2), StringExternal("Param/Value/lib_5BD4895D_EFEE213D"), StringExternal("Param/Value/lib_5BD4895D_C9546BEE"), "");
-    lib5BD4895D_gv_chatbox.lv_hidebtn = DialogControlLastCreated();
-    DialogCreate(lv_chatlblsizex, (lp_sizey - 136), lp_anchor, lp_offsetx, (lp_offsety - 18), true);
-    lib5BD4895D_gv_chatbox.lv_chatpanel = DialogLastCreated();
-    DialogSetImageVisible(DialogLastCreated(), false);
-    DialogSetPositionRelative(DialogLastCreated(), c_anchorBottomLeft, lib5BD4895D_gv_chatbox.lv_mainpanel, c_anchorBottomLeft, lv_btnxoffset, -36);
-    libNtve_gf_CreateDialogItemLabel(DialogLastCreated(), lv_chatlblsizex, 10000, c_anchorBottom, 0, 0, StringToText(""), ColorWithAlpha(0,0,0,0), false, 2.0);
-    libNtve_gf_SetDialogItemStyle(DialogControlLastCreated(), "AP_BottomLeft", PlayerGroupAll());
-    lib5BD4895D_gv_chatbox.lv_chatlabel = DialogControlLastCreated();
-    DialogCreate((lv_btnsize * 3), (lv_btnsize * 3), lp_anchor, lp_offsetx, lp_offsety, true);
-    DialogSetImageVisible(DialogLastCreated(), false);
-    DialogSetVisible(DialogLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_chatbox.lv_hiddenpanel = DialogLastCreated();
-    libNtve_gf_CreateDialogItemButton(DialogLastCreated(), lv_btnsize, lv_btnsize, c_anchorTopRight, (lv_btnxoffset / 2), (lv_btnxoffset / 2), StringExternal("Param/Value/lib_5BD4895D_15729E06"), StringExternal("Param/Value/lib_5BD4895D_D109326B"), "");
-    lib5BD4895D_gv_chatbox.lv_showbtn = DialogControlLastCreated();
+    DialogControlHookupStandard(c_triggerControlTypePanel, "$ap_Chatbox");
+    lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe = DialogControlLastCreated();
+    DialogControlSetPosition(lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe, PlayerGroupAll(), lp_anchor, lp_offsetx, lp_offsety);
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe, c_triggerControlTypeLabel, "ChatboxContainer/ScrollableFrame/ContainerFrame/Label");
+    lib5BD4895D_gv_aP_Core_chatbox.lv_chatlabel = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe, c_triggerControlTypeLabel, "ChatboxContainer/TotalLabel");
+    lib5BD4895D_gv_aP_Core_chatbox.lv_countlabel = DialogControlLastCreated();
+    DialogControlHookupStandard(c_triggerControlTypeButton, "$ap_Chatbox/$parent/VisibilityButtonContainer/ShowButton");
+    lib5BD4895D_gv_aP_Core_chatbox.lv_showbutton = DialogControlLastCreated();
+    DialogControlHookupStandard(c_triggerControlTypeButton, "$ap_Chatbox/$parent/VisibilityButtonContainer/HideButton");
+    lib5BD4895D_gv_aP_Core_chatbox.lv_hidebutton = DialogControlLastCreated();
+    DialogControlSetPosition(DialogControlLastCreated(), PlayerGroupAll(), lp_anchor, 15, 15);
 }
 
-void lib5BD4895D_gf_showhidechatbox (int lp_player, bool lp_visible) {
+void lib5BD4895D_gf_AP_Core_showHideChatbox (int lp_player, bool lp_visible) {
     // Variable Declarations
     playergroup lv_pg;
 
@@ -255,27 +254,28 @@ void lib5BD4895D_gf_showhidechatbox (int lp_player, bool lp_visible) {
     lv_pg = PlayerGroupSingle(lp_player);
 
     // Implementation
-    DialogSetVisible(lib5BD4895D_gv_chatbox.lv_mainpanel, lv_pg, lp_visible);
-    DialogSetVisible(lib5BD4895D_gv_chatbox.lv_chatpanel, lv_pg, lp_visible);
+    lib5BD4895D_gv_aP_Core_chatbox.lv_hidden[lp_player] = lp_visible;
+    DialogControlSetVisible(lib5BD4895D_gv_aP_Core_chatbox.lv_mainframe, lv_pg, lp_visible);
 }
 
-void lib5BD4895D_gf_sendchatmessage (int lp_fromplayer, string lp_message) {
+void lib5BD4895D_gf_AP_Core_sendChatMessage (int lp_fromplayer, string lp_message) {
     // Variable Declarations
     int lv_index;
 
     // Automatic Variable Declarations
     // Variable Initialization
-    lv_index = (lib5BD4895D_gv_chatbox.lv_maxmessages - 1);
+    lv_index = (lib5BD4895D_gv_aP_Core_chatbox.lv_maxmessages - 1);
 
     // Implementation
     while ((lv_index > 0)) {
-        lib5BD4895D_gv_chatbox.lv_chatmessage[lv_index] = lib5BD4895D_gv_chatbox.lv_chatmessage[(lv_index - 1)];
+        lib5BD4895D_gv_aP_Core_chatbox.lv_chatmessage[lv_index] = lib5BD4895D_gv_aP_Core_chatbox.lv_chatmessage[(lv_index - 1)];
         lv_index -= 1;
     }
-    lib5BD4895D_gv_chatbox.lv_messagecount += 1;
-    lib5BD4895D_gv_chatbox.lv_chatmessage[0] = StringToText(((IntToString(lib5BD4895D_gv_chatbox.lv_messagecount) + ": ") + lp_message));
-    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_chatbox.lv_chatlabel, lib5BD4895D_gf_getchatboxcontent(), PlayerGroupAll());
-    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_chatbox.lv_countlabel, StringToText((IntToString(lib5BD4895D_gv_chatbox.lv_messagecount) + " Total")), PlayerGroupAll());
+    lib5BD4895D_gv_aP_Core_chatbox.lv_messagecount += 1;
+    lib5BD4895D_gv_aP_Core_chatbox.lv_chatmessage[0] = StringToText(((IntToString(lib5BD4895D_gv_aP_Core_chatbox.lv_messagecount) + ": ") + lp_message));
+    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_aP_Core_chatbox.lv_chatlabel, lib5BD4895D_gf_AP_Core_getChatboxContent(), PlayerGroupAll());
+    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_aP_Core_chatbox.lv_countlabel, StringToText((IntToString(lib5BD4895D_gv_aP_Core_chatbox.lv_messagecount) + " Total")), PlayerGroupAll());
+    DialogControlSendAnimationEvent(lib5BD4895D_gv_aP_Core_chatbox.lv_chatlabel, PlayerGroupAll(), "TextChanged");
 }
 
 trigger auto_lib5BD4895D_gf_AP_Core_rainbowController_Trigger = null;
@@ -312,6 +312,27 @@ bool auto_lib5BD4895D_gf_AP_Core_rainbowController_TriggerFunc (bool testConds, 
         lv_colorIndex = ModI((lv_colorIndex + 1), 7);
     }
     return true;
+}
+
+void lib5BD4895D_gf_AP_Core_Trade_setTradeUnit (unit lp_unit) {
+    // Automatic Variable Declarations
+    // Implementation
+    lib5BD4895D_gv_aP_Core_tradeUnit = lp_unit;
+    lib5BD4895D_gf_AP_Core_Trade_updateTradeCharges();
+}
+
+void lib5BD4895D_gf_AP_Core_Trade_changeTradeCharges (int lp_amount) {
+    // Automatic Variable Declarations
+    // Implementation
+    lib5BD4895D_gv_aP_Core_tradeChargeCount = MaxI((lib5BD4895D_gv_aP_Core_tradeChargeCount + lp_amount), 0);
+    lib5BD4895D_gf_AP_Core_Trade_updateTradeCharges();
+}
+
+void lib5BD4895D_gf_AP_Core_Trade_updateTradeCharges () {
+    // Automatic Variable Declarations
+    // Implementation
+    libNtve_gf_SetBehaviorCount(lib5BD4895D_gv_aP_Core_tradeUnit, lib5BD4895D_gv_aP_Core_tradeChargeBehavior, lib5BD4895D_gv_aP_Core_tradeUnit, lib5BD4895D_gv_aP_Core_tradeChargeCount);
+    lib5BD4895D_gv_aP_Core_tradeChargeCount = MinI(lib5BD4895D_gv_aP_Core_tradeChargeCount, UnitBehaviorCount(lib5BD4895D_gv_aP_Core_tradeUnit, lib5BD4895D_gv_aP_Core_tradeChargeBehavior));
 }
 
 int lib5BD4895D_gf_AP_Core_getPlayerColorByIndex (int lp_colorIndex) {
@@ -354,11 +375,23 @@ void lib5BD4895D_gf_AP_Core_setFactionColor (string lp_faction, int lp_colorInde
     lv_color = 1;
 
     // Implementation
-    if ((lp_faction == lib5BD4895D_gv_aP_Core_Faction_PRIMAL_ZERG) && (lp_colorIndex <= 16)) {
+    if ((lp_faction == lib5BD4895D_gv_aP_Core_Faction_PRIMAL_ZERG) && (lp_colorIndex <= 21)) {
         lib5BD4895D_gv_aP_Core_primalZergColor = lp_colorIndex;
     }
 
-    if ((lp_colorIndex <= 15)) {
+    if ((lp_colorIndex == 16)) {
+        auto436127A7_g = PlayerGroupAll();
+        lv_currentPlayer = -1;
+        while (true) {
+            lv_currentPlayer = PlayerGroupNextPlayer(auto436127A7_g, lv_currentPlayer);
+            if (lv_currentPlayer < 0) { break; }
+            if ((lp_faction == (lib5BD4895D_gv_aP_Core_playerFactions[lv_currentPlayer]))) {
+                lib5BD4895D_gf_AP_Core_rainbowController(lv_currentPlayer);
+            }
+
+        }
+    }
+    else {
         lv_color = lib5BD4895D_gf_AP_Core_getPlayerColorByIndex(lp_colorIndex);
         autoC0E582B5_g = PlayerGroupAll();
         lv_currentPlayer = -1;
@@ -367,18 +400,6 @@ void lib5BD4895D_gf_AP_Core_setFactionColor (string lp_faction, int lp_colorInde
             if (lv_currentPlayer < 0) { break; }
             if ((lp_faction == (lib5BD4895D_gv_aP_Core_playerFactions[lv_currentPlayer]))) {
                 PlayerSetColorIndex(lv_currentPlayer, lv_color, true);
-            }
-
-        }
-    }
-    else if ((lp_colorIndex == 16)) {
-        auto436127A7_g = PlayerGroupAll();
-        lv_currentPlayer = -1;
-        while (true) {
-            lv_currentPlayer = PlayerGroupNextPlayer(auto436127A7_g, lv_currentPlayer);
-            if (lv_currentPlayer < 0) { break; }
-            if ((lp_faction == (lib5BD4895D_gv_aP_Core_playerFactions[lv_currentPlayer]))) {
-                lib5BD4895D_gf_AP_Core_rainbowController(lv_currentPlayer);
             }
 
         }
@@ -395,13 +416,13 @@ void lib5BD4895D_gf_AP_Core_onLoadFinished () {
     // Variable Initialization
 
     // Implementation
-    lib5BD4895D_gf_initchatbox(lib5BD4895D_gv_aP_Core_chatboxAnchor, lib5BD4895D_gv_aP_Core_chatbox_x, lib5BD4895D_gv_aP_Core_chatbox_y, lib5BD4895D_gv_aP_Core_chatbox_offsetX, lib5BD4895D_gv_aP_Core_chatbox_offsetY);
+    lib5BD4895D_gf_AP_Core_initChatbox(lib5BD4895D_gv_aP_Core_chatboxAnchor, lib5BD4895D_gv_aP_Core_chatbox_x, lib5BD4895D_gv_aP_Core_chatbox_y, lib5BD4895D_gv_aP_Core_chatbox_offsetX, lib5BD4895D_gv_aP_Core_chatbox_offsetY);
     auto78288737_g = lib5BD4895D_gv_aP_Core_affectedPlayers;
     lv_currentPlayer = -1;
     while (true) {
         lv_currentPlayer = PlayerGroupNextPlayer(auto78288737_g, lv_currentPlayer);
         if (lv_currentPlayer < 0) { break; }
-        lib5BD4895D_gf_showhidechatbox(lv_currentPlayer, true);
+        lib5BD4895D_gf_AP_Core_showHideChatbox(lv_currentPlayer, true);
     }
     TriggerExecute(lib5BD4895D_gv_aP_Core_mapInit, true, false);
     lib5BD4895D_gv_aP_Core_initFinished = true;
@@ -431,12 +452,12 @@ void lib5BD4895D_gf_AP_Core_SwitchKerriganSwarmToPrimalZerg () {
             lib5BD4895D_gv_aP_Core_rainbowKiller[lv_currentPlayer] = true;
             Wait(lib5BD4895D_gv_aP_Core_rainbowCyclePeriod, c_timeReal);
             Wait(lib5BD4895D_gv_aP_Core_rainbowCyclePeriod, c_timeReal);
-            if ((lib5BD4895D_gv_aP_Core_primalZergColor <= 15)) {
+            if ((lib5BD4895D_gv_aP_Core_primalZergColor == 16)) {
+                lib5BD4895D_gf_AP_Core_rainbowController(lv_currentPlayer);
+            }
+            else {
                 lv_color = lib5BD4895D_gf_AP_Core_getPlayerColorByIndex(lib5BD4895D_gv_aP_Core_primalZergColor);
                 PlayerSetColorIndex(lv_currentPlayer, lv_color, true);
-            }
-            else if ((lib5BD4895D_gv_aP_Core_primalZergColor == 16)) {
-                lib5BD4895D_gf_AP_Core_rainbowController(lv_currentPlayer);
             }
         }
 
@@ -452,25 +473,43 @@ void lib5BD4895D_gf_AP_Core_initObjectivePanel () {
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeLabel, "AP_PrimaryObjectivesLabel");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[0].lv_titleLabel = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Primary)].lv_titleLabel = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeImage, "AP_PrimaryObjectiveBackground");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[0].lv_titleBackground = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Primary)].lv_titleBackground = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypePanel, "AP_PrimaryObjectiveListBox");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[0].lv_listPanel = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Primary)].lv_listPanel = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeLabel, "AP_SecondaryObjectivesLabel");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[1].lv_titleLabel = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Secondary)].lv_titleLabel = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeImage, "AP_SecondaryObjectiveBackground");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[1].lv_titleBackground = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Secondary)].lv_titleBackground = DialogControlLastCreated();
     DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypePanel, "AP_SecondaryObjectiveListBox");
     DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
-    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[1].lv_listPanel = DialogControlLastCreated();
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Secondary)].lv_listPanel = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeLabel, "AP_ChallengeObjectivesLabel");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Challenge)].lv_titleLabel = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeImage, "AP_ChallengeObjectiveBackground");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Challenge)].lv_titleBackground = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypePanel, "AP_ChallengeObjectiveListBox");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Challenge)].lv_listPanel = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeLabel, "AP_MasteryObjectivesLabel");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Mastery)].lv_titleLabel = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypeImage, "AP_MasteryObjectiveBackground");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Mastery)].lv_titleBackground = DialogControlLastCreated();
+    DialogControlHookup(lib5BD4895D_gv_aP_Core_objectivePanel.lv_dialogPanel, c_triggerControlTypePanel, "AP_MasteryObjectiveListBox");
+    DialogControlSetVisible(DialogControlLastCreated(), PlayerGroupAll(), false);
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Mastery)].lv_listPanel = DialogControlLastCreated();
 }
 
-void lib5BD4895D_gf_AP_Core_addObjective (int lp_objective, bool lp_hasCounter, string lp_counterSuffix, int lp_counterValue, int lp_counterMax, bool lp_hasTimer, timer lp_timer) {
+void lib5BD4895D_gf_AP_Core_addObjective (int lp_objective, int lp_category, bool lp_hasCounter, string lp_counterSuffix, int lp_counterValue, int lp_counterMax, bool lp_hasTimer, timer lp_timer, bool lp_hideIfNoLocs) {
     // Variable Declarations
     int lv_new_panel;
     int lv_new_label;
@@ -483,12 +522,12 @@ void lib5BD4895D_gf_AP_Core_addObjective (int lp_objective, bool lp_hasCounter, 
     // Variable Initialization
     lv_new_panel = c_invalidDialogControlId;
     lv_new_label = c_invalidDialogControlId;
-    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lp_category);
     lv_rollingindex = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex;
     lv_visualrollingindex = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex;
 
     // Implementation
-    if ((lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective) != -1)) {
+    if ((lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex) != -1)) {
         return ;
     }
 
@@ -506,20 +545,23 @@ void lib5BD4895D_gf_AP_Core_addObjective (int lp_objective, bool lp_hasCounter, 
     DialogControlSetSize(DialogControlLastCreated(), PlayerGroupAll(), 700, 30);
     lv_new_panel = DialogControlLastCreated();
     DialogControlCreateInPanelFromTemplate(lv_new_panel, c_triggerControlTypeLabel, "ap_ObjectivePanel/AP_ObjectiveNameLabel");
-    libNtve_gf_SetDialogItemText(DialogControlLastCreated(), lib5BD4895D_gf_AP_Core_objectiveText(ObjectiveGetName(lp_objective), lp_hasCounter, lp_counterSuffix, lp_counterValue, lp_counterMax, lp_hasTimer, lp_timer, false), PlayerGroupAll());
+    libNtve_gf_SetDialogItemText(DialogControlLastCreated(), lib5BD4895D_gf_AP_Core_objectiveText(ObjectiveGetName(lp_objective), 0, lp_hasCounter, lp_counterSuffix, lp_counterValue, lp_counterMax, lp_hasTimer, lp_timer, false), PlayerGroupAll());
     DialogControlFadeTransparency(DialogControlLastCreated(), PlayerGroupAll(), 0.0, 100.0);
     lv_new_label = DialogControlLastCreated();
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_label = DialogControlLastCreated();
     DialogControlCreateInPanelFromTemplate(lv_new_panel, c_triggerControlTypeImage, "ObjectivePanel/ObjectivePanelListBoxItem/CheckboxActive");
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_checkbox = DialogControlLastCreated();
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_panel = lv_new_panel;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_category = lp_category;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_objective = lp_objective;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_checks = 0;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_hasCounter = lp_hasCounter;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_counterSuffix = lp_counterSuffix;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_counterValue = lp_counterValue;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_counterMax = lp_counterMax;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_hasTimer = lp_hasTimer;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_timer = lp_timer;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_hideIfNoLocs = lp_hideIfNoLocs;
     if ((ObjectiveGetState(lp_objective) == c_objectiveStateHidden)) {
         DialogControlSetVisible(lv_new_panel, PlayerGroupAll(), false);
     }
@@ -529,25 +571,25 @@ void lib5BD4895D_gf_AP_Core_addObjective (int lp_objective, bool lp_hasCounter, 
     lib5BD4895D_gf_AP_Core_objectiveThreadedWriteout(lv_categoryindex, lv_rollingindex, lp_hasTimer);
 }
 
-void lib5BD4895D_gf_AP_Core_addObjectiveSimple (int lp_objective) {
+void lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple (int lp_objective, int lp_category, bool lp_hideIfNoLocs) {
     // Automatic Variable Declarations
     // Implementation
-    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, false, "", 0, 0, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer);
+    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, lp_category, false, "", 0, 0, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer, lp_hideIfNoLocs);
 }
 
-void lib5BD4895D_gf_AP_Core_addObjectiveWithCounter (int lp_objective, string lp_counterSuffix, int lp_counterValue, int lp_counterMax) {
+void lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter (int lp_objective, int lp_category, string lp_counterSuffix, int lp_counterValue, int lp_counterMax, bool lp_hideIfNoLocs) {
     // Automatic Variable Declarations
     // Implementation
-    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, true, lp_counterSuffix, lp_counterValue, lp_counterMax, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer);
+    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, lp_category, true, lp_counterSuffix, lp_counterValue, lp_counterMax, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer, lp_hideIfNoLocs);
 }
 
-void lib5BD4895D_gf_AP_Core_addObjectiveWithTimer (int lp_objective, timer lp_timer) {
+void lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithTimer (int lp_objective, int lp_category, timer lp_timer, bool lp_hideIfNoLocs) {
     // Automatic Variable Declarations
     // Implementation
-    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, false, "", 0, 0, true, lp_timer);
+    lib5BD4895D_gf_AP_Core_addObjective(lp_objective, lp_category, false, "", 0, 0, true, lp_timer, lp_hideIfNoLocs);
 }
 
-void lib5BD4895D_gf_AP_Core_addObjectiveFromData (int lp_objective, string lp_data, string lp_counterSuffix, int lp_counterValue) {
+void lib5BD4895D_gf_AP_Core_addCategoryObjectiveFromData (int lp_objective, int lp_category, string lp_data, string lp_counterSuffix, int lp_counterValue, bool lp_hideIfNoLocs) {
     // Variable Declarations
     int lv_counterMax;
     text lv_name;
@@ -560,10 +602,10 @@ void lib5BD4895D_gf_AP_Core_addObjectiveFromData (int lp_objective, string lp_da
     // Implementation
     ObjectiveSetName(lp_objective, lv_name);
     if ((lv_counterMax > 1)) {
-        lib5BD4895D_gf_AP_Core_addObjective(lp_objective, true, lp_counterSuffix, lp_counterValue, lv_counterMax, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer);
+        lib5BD4895D_gf_AP_Core_addObjective(lp_objective, lp_category, true, lp_counterSuffix, lp_counterValue, lv_counterMax, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer, lp_hideIfNoLocs);
     }
     else {
-        lib5BD4895D_gf_AP_Core_addObjective(lp_objective, false, "", 0, 0, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer);
+        lib5BD4895D_gf_AP_Core_addObjective(lp_objective, lp_category, false, "", 0, 0, false, lib5BD4895D_gv_aP_Core_objectiveDefaultTimer, lp_hideIfNoLocs);
     }
 }
 
@@ -575,7 +617,7 @@ void lib5BD4895D_gf_AP_Core_enableObjectiveCounter (int lp_objective, string lp_
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -589,7 +631,25 @@ void lib5BD4895D_gf_AP_Core_enableObjectiveCounter (int lp_objective, string lp_
     lib5BD4895D_gf_AP_Core_objectiveThreadedUpdate(lv_categoryindex, lv_objectiveindex);
 }
 
-void lib5BD4895D_gf_AP_Core_setObjectiveCounter (int lp_objective, int lp_counterValue) {
+trigger auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_Trigger = null;
+int auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_objective;
+int auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_checks;
+
+void lib5BD4895D_gf_AP_Core_setObjectiveChecks (int lp_objective, int lp_checks) {
+    auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_objective = lp_objective;
+    auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_checks = lp_checks;
+
+    if (auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_Trigger == null) {
+        auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_Trigger = TriggerCreate("auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_Trigger, false, false);
+}
+
+bool auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_TriggerFunc (bool testConds, bool runActions) {
+    int lp_objective = auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_objective;
+    int lp_checks = auto_lib5BD4895D_gf_AP_Core_setObjectiveChecks_lp_checks;
+
     // Variable Declarations
     int lv_categoryindex;
     int lv_objectiveindex;
@@ -597,15 +657,129 @@ void lib5BD4895D_gf_AP_Core_setObjectiveCounter (int lp_objective, int lp_counte
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
-        return ;
+        return true;
+    }
+
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_checks = lp_checks;
+    lib5BD4895D_gf_AP_Core_objectiveThreadedUpdate(lv_categoryindex, lv_objectiveindex);
+    return true;
+}
+
+trigger auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_Trigger = null;
+int auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_lp_objective;
+
+void lib5BD4895D_gf_AP_Core_updateObjectiveChecks (int lp_objective) {
+    auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_lp_objective = lp_objective;
+
+    if (auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_Trigger == null) {
+        auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_Trigger = TriggerCreate("auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_Trigger, false, false);
+}
+
+bool auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_TriggerFunc (bool testConds, bool runActions) {
+    int lp_objective = auto_lib5BD4895D_gf_AP_Core_updateObjectiveChecks_lp_objective;
+
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
+
+    // Implementation
+    if ((lv_objectiveindex == -1)) {
+        return true;
+    }
+
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_checks = lib5BD4895D_gf_AP_Core_getNumOfObjectiveLocations(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective);
+    lib5BD4895D_gf_AP_Core_objectiveThreadedUpdate(lv_categoryindex, lv_objectiveindex);
+    return true;
+}
+
+trigger auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_Trigger = null;
+
+void lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks () {
+    if (auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_Trigger == null) {
+        auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_Trigger = TriggerCreate("auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_Trigger, false, false);
+}
+
+bool auto_lib5BD4895D_gf_AP_Core_updateAllObjectiveChecks_TriggerFunc (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+
+    // Automatic Variable Declarations
+    int auto1065C613_ae;
+    const int auto1065C613_ai = 1;
+    int auto31852837_ae;
+    const int auto31852837_ai = 1;
+
+    // Variable Initialization
+
+    // Implementation
+    auto1065C613_ae = (lib5BD4895D_gv_aP_Core_objectiveUsedCategories - 1);
+    lv_categoryindex = 0;
+    for ( ; ( (auto1065C613_ai >= 0 && lv_categoryindex <= auto1065C613_ae) || (auto1065C613_ai < 0 && lv_categoryindex >= auto1065C613_ae) ) ; lv_categoryindex += auto1065C613_ai ) {
+        auto31852837_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
+        lv_objectiveindex = 0;
+        for ( ; ( (auto31852837_ai >= 0 && lv_objectiveindex <= auto31852837_ae) || (auto31852837_ai < 0 && lv_objectiveindex >= auto31852837_ae) ) ; lv_objectiveindex += auto31852837_ai ) {
+            if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective != c_invalidObjectiveId)) {
+                lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_checks = lib5BD4895D_gf_AP_Core_getNumOfObjectiveLocations(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective);
+                lib5BD4895D_gf_AP_Core_objectiveThreadedUpdate(lv_categoryindex, lv_objectiveindex);
+            }
+
+        }
+    }
+    return true;
+}
+
+trigger auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_Trigger = null;
+int auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_objective;
+int auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_counterValue;
+
+void lib5BD4895D_gf_AP_Core_setObjectiveCounter (int lp_objective, int lp_counterValue) {
+    auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_objective = lp_objective;
+    auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_counterValue = lp_counterValue;
+
+    if (auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_Trigger == null) {
+        auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_Trigger = TriggerCreate("auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_Trigger, false, false);
+}
+
+bool auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_TriggerFunc (bool testConds, bool runActions) {
+    int lp_objective = auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_objective;
+    int lp_counterValue = auto_lib5BD4895D_gf_AP_Core_setObjectiveCounter_lp_counterValue;
+
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
+
+    // Implementation
+    if ((lv_objectiveindex == -1)) {
+        return true;
     }
 
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_counterValue = lp_counterValue;
     lib5BD4895D_gf_AP_Core_objectiveThreadedUpdate(lv_categoryindex, lv_objectiveindex);
+    return true;
 }
 
 void lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix (int lp_objective, string lp_counterSuffix) {
@@ -616,7 +790,7 @@ void lib5BD4895D_gf_AP_Core_setObjectiveCounterSuffix (int lp_objective, string 
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -635,7 +809,7 @@ void lib5BD4895D_gf_AP_Core_setObjectiveCounterMax (int lp_objective, int lp_cou
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -653,10 +827,14 @@ void lib5BD4895D_gf_AP_Core_updateObjectiveDescription (int lp_objective) {
 
     // Automatic Variable Declarations
     // Variable Initialization
-    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_deprecatedObjectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
+    if ((lv_objectiveindex == -1)) {
+        return ;
+    }
+
 }
 
 trigger auto_lib5BD4895D_gf_AP_Core_addObjectiveExtraLine_Trigger = null;
@@ -683,7 +861,7 @@ bool auto_lib5BD4895D_gf_AP_Core_addObjectiveExtraLine_TriggerFunc (bool testCon
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -711,7 +889,7 @@ void lib5BD4895D_gf_AP_Core_deleteObjective (int lp_objective) {
 
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -728,35 +906,40 @@ void lib5BD4895D_gf_AP_Core_deleteObjective (int lp_objective) {
     lib5BD4895D_gf_AP_Core_resizeObjectivePanel();
 }
 
-void lib5BD4895D_gf_AP_Core_showObjective (int lp_objective) {
+void lib5BD4895D_gf_AP_Core_setObjectiveVisibility (int lp_objective, bool lp_visibility) {
     // Variable Declarations
     int lv_categoryindex;
     int lv_objectiveindex;
     int lv_rollingindex;
     bool lv_hidecategory;
     int lv_visualrollingindex;
+    int lv_locationscount;
 
     // Automatic Variable Declarations
-    int auto05D885EE_ae;
-    const int auto05D885EE_ai = 1;
+    int autoBC92EBC7_ae;
+    const int autoBC92EBC7_ai = 1;
 
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
     lv_hidecategory = true;
+    lv_locationscount = lib5BD4895D_gf_AP_Core_getNumOfObjectiveLocations(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective);
 
     // Implementation
-    if ((lv_objectiveindex == -1)) {
+    if (((lv_objectiveindex == -1) || ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_hideIfNoLocs == true) && (lv_locationscount <= 0)))) {
         return ;
     }
 
-    if ((ObjectiveGetState(lp_objective) == c_objectiveStateHidden)) {
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_checks = lv_locationscount;
+    ObjectiveShow(lp_objective, PlayerGroupAll(), lp_visibility);
+    if ((lp_visibility == false)) {
         DialogControlSetVisible(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_panel, PlayerGroupAll(), false);
-        auto05D885EE_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
+        autoBC92EBC7_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
         lv_rollingindex = 0;
-        for ( ; ( (auto05D885EE_ai >= 0 && lv_rollingindex <= auto05D885EE_ae) || (auto05D885EE_ai < 0 && lv_rollingindex >= auto05D885EE_ae) ) ; lv_rollingindex += auto05D885EE_ai ) {
+        for ( ; ( (autoBC92EBC7_ai >= 0 && lv_rollingindex <= autoBC92EBC7_ae) || (autoBC92EBC7_ai < 0 && lv_rollingindex >= autoBC92EBC7_ae) ) ; lv_rollingindex += autoBC92EBC7_ai ) {
             if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_objective != c_invalidObjectiveId) && (ObjectiveGetState(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_rollingindex].lv_objective) != c_objectiveStateHidden)) {
                 lv_hidecategory = false;
+                break;
             }
 
         }
@@ -869,6 +1052,7 @@ void lib5BD4895D_gf_AP_Core_resizeObjectivePanel () {
     // Variable Declarations
     int lv_categoryindex;
     int lv_objectiveindex;
+    int lv_objectivecount;
     int lv_visualindex;
     int lv_extralines;
     int lv_hidden;
@@ -885,6 +1069,7 @@ void lib5BD4895D_gf_AP_Core_resizeObjectivePanel () {
     auto868030BA_ae = (lib5BD4895D_gv_aP_Core_objectiveUsedCategories - 1);
     lv_categoryindex = 0;
     for ( ; ( (auto868030BA_ai >= 0 && lv_categoryindex <= auto868030BA_ae) || (auto868030BA_ai < 0 && lv_categoryindex >= auto868030BA_ae) ) ; lv_categoryindex += auto868030BA_ai ) {
+        lv_objectivecount = 0;
         lv_extralines = 0;
         lv_hidden = 0;
         autoFD7B9CCE_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
@@ -895,6 +1080,7 @@ void lib5BD4895D_gf_AP_Core_resizeObjectivePanel () {
             }
             else {
                 lv_extralines += lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_extraLines;
+                lv_objectivecount += 1;
             }
             lv_visualindex = lv_objectiveindex;
             while ((lv_visualindex > 0) && (ObjectiveGetState(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[(lv_visualindex - 1)].lv_objective) == c_objectiveStateHidden)) {
@@ -904,34 +1090,89 @@ void lib5BD4895D_gf_AP_Core_resizeObjectivePanel () {
                 DialogControlSetPositionRelative(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_panel, PlayerGroupAll(), c_anchorTopLeft, lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[(lv_visualindex - 1)].lv_panel, c_anchorBottomLeft, 0, 5);
             }
             else {
-                DialogControlSetPositionRelative(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_panel, PlayerGroupAll(), c_anchorTopLeft, lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_listPanel, c_anchorTopLeft, 0, 0);
+                DialogControlSetPositionRelative(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_panel, PlayerGroupAll(), c_anchorTopLeft, lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_listPanel, c_anchorTopLeft, 0, 5);
             }
         }
-        DialogControlSetSize(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_listPanel, PlayerGroupAll(), 700, (35 * (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - lv_hidden) - 5 + 16 * lv_extralines));
+        if ((lv_objectivecount > 0)) {
+            DialogControlSetSize(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_listPanel, PlayerGroupAll(), 750, (35 * (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - lv_hidden) + (16 * lv_extralines) + 10));
+        }
+        else {
+            DialogControlSetSize(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_listPanel, PlayerGroupAll(), 750, -22);
+        }
     }
 }
 
-int lib5BD4895D_gf_AP_Core_objectiveIndex (int lp_objective) {
+int lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger (int lp_category) {
+    // Automatic Variable Declarations
+    int autoE03B3EA8_val;
+
+    // Implementation
+    autoE03B3EA8_val = lp_category;
+    if (autoE03B3EA8_val == lib5BD4895D_ge_APObjectiveCategory_Primary) {
+        return 0;
+    }
+    else if (autoE03B3EA8_val == lib5BD4895D_ge_APObjectiveCategory_Secondary) {
+        return 1;
+    }
+    else if (autoE03B3EA8_val == lib5BD4895D_ge_APObjectiveCategory_Extra) {
+        return 1;
+    }
+    else if (autoE03B3EA8_val == lib5BD4895D_ge_APObjectiveCategory_Challenge) {
+        return 2;
+    }
+    else if (autoE03B3EA8_val == lib5BD4895D_ge_APObjectiveCategory_Mastery) {
+        return 3;
+    }
+    else {
+    }
+    return 0;
+}
+
+int lib5BD4895D_gf_AP_Core_objectiveIntegerToCategory (int lp_category) {
+    // Automatic Variable Declarations
+    int autoB7FC5013_val;
+
+    // Implementation
+    autoB7FC5013_val = lp_category;
+    if (autoB7FC5013_val == 0) {
+        return lib5BD4895D_ge_APObjectiveCategory_Primary;
+    }
+    else if (autoB7FC5013_val == 1) {
+        return lib5BD4895D_ge_APObjectiveCategory_Secondary;
+    }
+    else if (autoB7FC5013_val == 2) {
+        return lib5BD4895D_ge_APObjectiveCategory_Challenge;
+    }
+    else if (autoB7FC5013_val == 3) {
+        return lib5BD4895D_ge_APObjectiveCategory_Mastery;
+    }
+    else {
+    }
+    return 0;
+}
+
+int lib5BD4895D_gf_AP_Core_objectiveIndex (int lp_objective, int lp_categoryIndex) {
     // Variable Declarations
     int lv_index;
-    int lv_categoryindex;
 
     // Automatic Variable Declarations
     int auto8ED4B630_ae;
     const int auto8ED4B630_ai = 1;
 
     // Variable Initialization
-    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
 
     // Implementation
-    auto8ED4B630_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
-    lv_index = 0;
-    for ( ; ( (auto8ED4B630_ai >= 0 && lv_index <= auto8ED4B630_ae) || (auto8ED4B630_ai < 0 && lv_index >= auto8ED4B630_ae) ) ; lv_index += auto8ED4B630_ai ) {
-        if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_index].lv_objective == lp_objective)) {
-            return lv_index;
-        }
+    if (((lp_categoryIndex >= 0) && (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_categoryIndex].lv_rollingIndex > 0))) {
+        auto8ED4B630_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_categoryIndex].lv_rollingIndex - 1);
+        lv_index = 0;
+        for ( ; ( (auto8ED4B630_ai >= 0 && lv_index <= auto8ED4B630_ae) || (auto8ED4B630_ai < 0 && lv_index >= auto8ED4B630_ae) ) ; lv_index += auto8ED4B630_ai ) {
+            if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_categoryIndex].lv_objectives[lv_index].lv_objective == lp_objective)) {
+                return lv_index;
+            }
 
+        }
     }
+
     return -1;
 }
 
@@ -940,14 +1181,19 @@ void lib5BD4895D_gf_AP_Core_copyObjectiveData (int lp_category, int lp_from, int
     bool lv_previoustimer;
     int lv_timerindex;
     int lv_timerrollingindex;
+    int lv_locationsindex;
 
     // Automatic Variable Declarations
+    const int auto46C95F9A_ae = lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP;
+    const int auto46C95F9A_ai = 1;
     int auto9DE4E82E_ae;
     const int auto9DE4E82E_ai = 1;
     int autoC1E1AF7F_ae;
     const int autoC1E1AF7F_ai = 1;
     int autoAE91E7AF_ae;
     const int autoAE91E7AF_ai = 1;
+    const int autoAD4F72F2_ae = lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP;
+    const int autoAD4F72F2_ai = 1;
 
     // Variable Initialization
     lv_previoustimer = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_hasTimer;
@@ -955,6 +1201,8 @@ void lib5BD4895D_gf_AP_Core_copyObjectiveData (int lp_category, int lp_from, int
     // Implementation
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_panel = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_panel;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_label = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_label;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_category = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_category;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_checks = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_checks;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_checkbox = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_checkbox;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_objective = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_objective;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_hasCounter = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_hasCounter;
@@ -966,6 +1214,11 @@ void lib5BD4895D_gf_AP_Core_copyObjectiveData (int lp_category, int lp_from, int
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_extraLines = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_extraLines;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_waiting = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_waiting;
     lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_finished = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_finished;
+    lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_hideIfNoLocs = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_hideIfNoLocs;
+    lv_locationsindex = 0;
+    for ( ; ( (auto46C95F9A_ai >= 0 && lv_locationsindex <= auto46C95F9A_ae) || (auto46C95F9A_ai < 0 && lv_locationsindex >= auto46C95F9A_ae) ) ; lv_locationsindex += auto46C95F9A_ai ) {
+        lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_to].lv_locations[lv_locationsindex] = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_locations[lv_locationsindex];
+    }
     if ((lv_previoustimer == true)) {
         auto9DE4E82E_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_timerRollingIndex - 1);
         lv_timerindex = 0;
@@ -1003,8 +1256,10 @@ void lib5BD4895D_gf_AP_Core_copyObjectiveData (int lp_category, int lp_from, int
     if ((lp_cleanFrom == true)) {
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_panel = c_invalidDialogControlId;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_label = c_invalidDialogControlId;
+        lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_category = lib5BD4895D_ge_APObjectiveCategory_Primary;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_checkbox = c_invalidDialogControlId;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_objective = c_invalidObjectiveId;
+        lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_checks = 0;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_hasCounter = false;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_counterSuffix = "";
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_counterValue = 0;
@@ -1014,23 +1269,59 @@ void lib5BD4895D_gf_AP_Core_copyObjectiveData (int lp_category, int lp_from, int
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_extraLines = 0;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_waiting = false;
         lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_finished = false;
+        lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_hideIfNoLocs = false;
+        lv_locationsindex = 0;
+        for ( ; ( (autoAD4F72F2_ai >= 0 && lv_locationsindex <= autoAD4F72F2_ae) || (autoAD4F72F2_ai < 0 && lv_locationsindex >= autoAD4F72F2_ae) ) ; lv_locationsindex += autoAD4F72F2_ai ) {
+            lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_from].lv_locations[lv_locationsindex] = -1;
+        }
     }
 
 }
 
 int lib5BD4895D_gf_AP_Core_objectiveCategoryIndex (int lp_objective) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+    int lv_category;
+
+    // Automatic Variable Declarations
+    int auto52960805_ae;
+    const int auto52960805_ai = 1;
+    int auto5F9B6870_ae;
+    const int auto5F9B6870_ai = 1;
+
+    // Variable Initialization
+
+    // Implementation
+    auto52960805_ae = (lib5BD4895D_gv_aP_Core_objectiveUsedCategories - 1);
+    lv_categoryindex = 0;
+    for ( ; ( (auto52960805_ai >= 0 && lv_categoryindex <= auto52960805_ae) || (auto52960805_ai < 0 && lv_categoryindex >= auto52960805_ae) ) ; lv_categoryindex += auto52960805_ai ) {
+        auto5F9B6870_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
+        lv_objectiveindex = 0;
+        for ( ; ( (auto5F9B6870_ai >= 0 && lv_objectiveindex <= auto5F9B6870_ae) || (auto5F9B6870_ai < 0 && lv_objectiveindex >= auto5F9B6870_ae) ) ; lv_objectiveindex += auto5F9B6870_ai ) {
+            if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective == lp_objective)) {
+                return lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_category);
+            }
+
+        }
+    }
+    return -1;
+}
+
+int lib5BD4895D_gf_AP_Core_deprecatedObjectiveCategoryIndex (int lp_objective) {
     // Automatic Variable Declarations
     // Implementation
     if ((ObjectiveGetPrimary(lp_objective) == true)) {
-        return 0;
+        return lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Primary);
     }
     else {
-        return 1;
+        return lib5BD4895D_gf_AP_Core_objectiveCategoryToInteger(lib5BD4895D_ge_APObjectiveCategory_Secondary);
     }
 }
 
-text lib5BD4895D_gf_AP_Core_objectiveText (text lp_text, bool lp_hasCounter, string lp_counterSuffix, int lp_counterValue, int lp_counterMax, bool lp_hasTimer, timer lp_timer, bool lp_finished) {
+text lib5BD4895D_gf_AP_Core_objectiveText (text lp_text, int lp_checks, bool lp_hasCounter, string lp_counterSuffix, int lp_counterValue, int lp_counterMax, bool lp_hasTimer, timer lp_timer, bool lp_finished) {
     // Variable Declarations
+    text lv_checkstext;
     text lv_countertext;
     text lv_countersuffix;
     text lv_countermax;
@@ -1039,6 +1330,7 @@ text lib5BD4895D_gf_AP_Core_objectiveText (text lp_text, bool lp_hasCounter, str
 
     // Automatic Variable Declarations
     // Variable Initialization
+    lv_checkstext = StringToText("");
     lv_countertext = StringToText("");
     lv_countersuffix = StringToText("");
     lv_countermax = StringToText("");
@@ -1046,6 +1338,22 @@ text lib5BD4895D_gf_AP_Core_objectiveText (text lp_text, bool lp_hasCounter, str
     lv_finishedstrip = StringToText("");
 
     // Implementation
+    if ((lp_checks > 0)) {
+        if ((lp_checks == 1)) {
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_9D1F97B6", "style_start", StringExternal("Param/Value/lib_5BD4895D_E71C1AAC"));
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_9D1F97B6", "text", StringExternal("Param/Value/lib_5BD4895D_E339DF85"));
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_9D1F97B6", "style_end", StringExternal("Param/Value/lib_5BD4895D_CF8E4FDB"));
+            lv_checkstext = (TextExpressionAssemble("Param/Expression/lib_5BD4895D_9D1F97B6"));
+        }
+        else {
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_AA94B924", "style_start", StringExternal("Param/Value/lib_5BD4895D_0BF8E2A4"));
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_AA94B924", "checks", IntToText(lp_checks));
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_AA94B924", "text", StringExternal("Param/Value/lib_5BD4895D_08B14846"));
+            TextExpressionSetToken("Param/Expression/lib_5BD4895D_AA94B924", "style_end", StringExternal("Param/Value/lib_5BD4895D_89711AAB"));
+            lv_checkstext = (TextExpressionAssemble("Param/Expression/lib_5BD4895D_AA94B924"));
+        }
+    }
+
     if ((lp_hasCounter == true)) {
         if ((StringLength(lp_counterSuffix) > 0)) {
             if ((StringFind(lp_counterSuffix, ")", c_stringCase) == 1)) {
@@ -1083,12 +1391,171 @@ text lib5BD4895D_gf_AP_Core_objectiveText (text lp_text, bool lp_hasCounter, str
     TextExpressionSetToken("Param/Expression/lib_5BD4895D_C0906947", "text", lp_text);
     TextExpressionSetToken("Param/Expression/lib_5BD4895D_C0906947", "counter_text", lv_countertext);
     TextExpressionSetToken("Param/Expression/lib_5BD4895D_C0906947", "timer_text", lv_timer);
+    TextExpressionSetToken("Param/Expression/lib_5BD4895D_C0906947", "checks_text", lv_checkstext);
     return (TextExpressionAssemble("Param/Expression/lib_5BD4895D_C0906947"));
+}
+
+int lib5BD4895D_gf_AP_Core_getNumOfObjectiveLocations (int lp_objective) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+    int lv_index;
+    int lv_count;
+
+    // Automatic Variable Declarations
+    int auto16908517_ae;
+    const int auto16908517_ai = 1;
+
+    // Variable Initialization
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
+
+    // Implementation
+    if ((lv_objectiveindex == -1)) {
+        return 0;
+    }
+
+    auto16908517_ae = (lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP - 1);
+    lv_index = 0;
+    for ( ; ( (auto16908517_ai >= 0 && lv_index <= auto16908517_ae) || (auto16908517_ai < 0 && lv_index >= auto16908517_ae) ) ; lv_index += auto16908517_ai ) {
+        if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_index] != -1)) {
+            lv_count += 1;
+        }
+
+    }
+    return lv_count;
+}
+
+int lib5BD4895D_gf_AP_Core_locationToObjective (int lp_locationID) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+    int lv_locationindex;
+
+    // Automatic Variable Declarations
+    int auto23B4A4BE_ae;
+    const int auto23B4A4BE_ai = 1;
+    int autoF9E8AC3D_ae;
+    const int autoF9E8AC3D_ai = 1;
+    int auto33CF2460_ae;
+    const int auto33CF2460_ai = 1;
+
+    // Variable Initialization
+
+    // Implementation
+    auto23B4A4BE_ae = (lib5BD4895D_gv_aP_Core_objectiveUsedCategories - 1);
+    lv_categoryindex = 0;
+    for ( ; ( (auto23B4A4BE_ai >= 0 && lv_categoryindex <= auto23B4A4BE_ae) || (auto23B4A4BE_ai < 0 && lv_categoryindex >= auto23B4A4BE_ae) ) ; lv_categoryindex += auto23B4A4BE_ai ) {
+        autoF9E8AC3D_ae = (lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_rollingIndex - 1);
+        lv_objectiveindex = 0;
+        for ( ; ( (autoF9E8AC3D_ai >= 0 && lv_objectiveindex <= autoF9E8AC3D_ae) || (autoF9E8AC3D_ai < 0 && lv_objectiveindex >= autoF9E8AC3D_ae) ) ; lv_objectiveindex += autoF9E8AC3D_ai ) {
+            auto33CF2460_ae = (lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP - 1);
+            lv_locationindex = 0;
+            for ( ; ( (auto33CF2460_ai >= 0 && lv_locationindex <= auto33CF2460_ae) || (auto33CF2460_ai < 0 && lv_locationindex >= auto33CF2460_ae) ) ; lv_locationindex += auto33CF2460_ai ) {
+                if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_locationindex] == lp_locationID)) {
+                    return lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_objective;
+                }
+
+            }
+        }
+    }
+    return c_invalidObjectiveId;
+}
+
+void lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation (int lp_objective, int lp_locationID) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+    int lv_locationindex;
+
+    // Automatic Variable Declarations
+    int autoFF749E50_ae;
+    const int autoFF749E50_ai = 1;
+
+    // Variable Initialization
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
+
+    // Implementation
+    if (((lv_objectiveindex == -1) || (lp_locationID <= -1) || (lib5BD4895D_gv_aP_Core_locationCollectable[lp_locationID] == false))) {
+        return ;
+    }
+
+    autoFF749E50_ae = (lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP - 1);
+    lv_locationindex = 0;
+    for ( ; ( (autoFF749E50_ai >= 0 && lv_locationindex <= autoFF749E50_ae) || (autoFF749E50_ai < 0 && lv_locationindex >= autoFF749E50_ae) ) ; lv_locationindex += autoFF749E50_ai ) {
+        if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_locationindex] == -1)) {
+            lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_locationindex] = lp_locationID;
+            return ;
+        }
+
+    }
+    TextExpressionSetToken("Param/Expression/lib_5BD4895D_C3A5CCFD", "A", IntToText(lp_locationID));
+    UIDisplayMessage(PlayerGroupAll(), c_messageAreaError, TextExpressionAssemble("Param/Expression/lib_5BD4895D_C3A5CCFD"));
+}
+
+void lib5BD4895D_gf_AP_Core_disassociateLocationFromObjective (int lp_objective, int lp_locationID) {
+    // Variable Declarations
+    int lv_categoryindex;
+    int lv_objectiveindex;
+    int lv_locationindex;
+
+    // Automatic Variable Declarations
+    int autoF187F783_ae;
+    const int autoF187F783_ai = 1;
+
+    // Variable Initialization
+    lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
+
+    // Implementation
+    if (((lp_locationID <= -1) || (lv_objectiveindex == -1))) {
+        return ;
+    }
+
+    autoF187F783_ae = (lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP - 1);
+    lv_locationindex = 0;
+    for ( ; ( (autoF187F783_ai >= 0 && lv_locationindex <= autoF187F783_ae) || (autoF187F783_ai < 0 && lv_locationindex >= autoF187F783_ae) ) ; lv_locationindex += autoF187F783_ai ) {
+        if ((lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_locationindex] == lp_locationID)) {
+            lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lv_categoryindex].lv_objectives[lv_objectiveindex].lv_locations[lv_locationindex] = -1;
+            return ;
+        }
+
+    }
+}
+
+void lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective (int lp_locationID) {
+    // Variable Declarations
+    int lv_objective;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_objective = c_invalidObjectiveId;
+
+    // Implementation
+    if (((lp_locationID <= -1))) {
+        return ;
+    }
+
+    if ((lib5BD4895D_gv_aP_Core_locationCollectable[lp_locationID] == true)) {
+        lv_objective = lib5BD4895D_gf_AP_Core_locationToObjective(lp_locationID);
+        if ((lv_objective != c_invalidObjectiveId)) {
+            lib5BD4895D_gf_AP_Core_disassociateLocationFromObjective(lv_objective, lp_locationID);
+            lib5BD4895D_gf_AP_Core_updateObjectiveChecks(lv_objective);
+        }
+
+    }
+
+    if ((lib5BD4895D_gf_AP_Core_isLocationSent(lp_locationID) == false)) {
+        lib5BD4895D_gf_AP_Core_sendLocationLocal(lp_locationID);
+    }
+
 }
 
 void lib5BD4895D_gf_AP_Core_updateObjectiveText (int lp_category, int lp_index) {
     // Variable Declarations
     int lv_objective;
+    int lv_checks;
     bool lv_hascounter;
     int lv_countervalue;
     int lv_countermax;
@@ -1100,6 +1567,7 @@ void lib5BD4895D_gf_AP_Core_updateObjectiveText (int lp_category, int lp_index) 
     // Automatic Variable Declarations
     // Variable Initialization
     lv_objective = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_objective;
+    lv_checks = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_checks;
     lv_hascounter = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_hasCounter;
     lv_countervalue = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_counterValue;
     lv_countermax = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_counterMax;
@@ -1109,7 +1577,7 @@ void lib5BD4895D_gf_AP_Core_updateObjectiveText (int lp_category, int lp_index) 
     lv_finished = lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_finished;
 
     // Implementation
-    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_label, lib5BD4895D_gf_AP_Core_objectiveText(ObjectiveGetName(lv_objective), lv_hascounter, lv_countersuffix, lv_countervalue, lv_countermax, lv_hastimer, lv_timer, lv_finished), PlayerGroupAll());
+    libNtve_gf_SetDialogItemText(lib5BD4895D_gv_aP_Core_objectivePanel.lv_categories[lp_category].lv_objectives[lp_index].lv_label, lib5BD4895D_gf_AP_Core_objectiveText(ObjectiveGetName(lv_objective), lv_checks, lv_hascounter, lv_countersuffix, lv_countervalue, lv_countermax, lv_hastimer, lv_timer, lv_finished), PlayerGroupAll());
 }
 
 void lib5BD4895D_gf_AP_Core_setObjectiveCompleted (int lp_objective) {
@@ -1120,7 +1588,7 @@ void lib5BD4895D_gf_AP_Core_setObjectiveCompleted (int lp_objective) {
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -1141,7 +1609,7 @@ void lib5BD4895D_gf_AP_Core_setObjectiveFailed (int lp_objective) {
     // Automatic Variable Declarations
     // Variable Initialization
     lv_categoryindex = lib5BD4895D_gf_AP_Core_objectiveCategoryIndex(lp_objective);
-    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective);
+    lv_objectiveindex = lib5BD4895D_gf_AP_Core_objectiveIndex(lp_objective, lv_categoryindex);
 
     // Implementation
     if ((lv_objectiveindex == -1)) {
@@ -1178,7 +1646,86 @@ bool auto_lib5BD4895D_gf_AP_Core_objectiveFadeHelper_TriggerFunc (bool testConds
     return true;
 }
 
+void lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap (int lp_player) {
+    // Automatic Variable Declarations
+    // Implementation
+    PlayerModifyPropertyFixed(lp_player, c_playerPropSuppliesLimit, c_playerPropOperSetTo, (200 + lib5BD4895D_gv_aP_Core_BonusMaxSupply));
+}
+
 // Triggers
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_mapLoadStart
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_mapLoadStart_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    DialogCreate(4000, 3000, c_anchorCenter, 0, 0, true);
+    lib5BD4895D_gv_aP_Core_blackScreen_dialog = DialogLastCreated();
+    DialogSetImageVisible(lib5BD4895D_gv_aP_Core_blackScreen_dialog, false);
+    DialogControlCreate(lib5BD4895D_gv_aP_Core_blackScreen_dialog, c_triggerControlTypeImage);
+    lib5BD4895D_gv_aP_Core_blackScreen = DialogControlLastCreated();
+    DialogControlSetFullDialog(lib5BD4895D_gv_aP_Core_blackScreen, PlayerGroupAll(), true);
+    libNtve_gf_SetDialogItemImage(lib5BD4895D_gv_aP_Core_blackScreen, "Assets\\Textures\\ui_ingame_blackmask.dds", PlayerGroupAll());
+    libNtve_gf_SetDialogItemBlendMode(lib5BD4895D_gv_aP_Core_blackScreen, c_triggerBlendModeAlpha, PlayerGroupAll());
+    DialogSetVisible(lib5BD4895D_gv_aP_Core_blackScreen_dialog, PlayerGroupAll(), true);
+    if ((GameIsTestMap(false) == true)) {
+        Wait(0.0625, c_timeGame);
+        TriggerExecute(lib5BD4895D_gt_AP_Core_loadFinished, true, false);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_mapLoadStart_Init () {
+    lib5BD4895D_gt_AP_Core_mapLoadStart = TriggerCreate("lib5BD4895D_gt_AP_Core_mapLoadStart_Func");
+    TriggerAddEventMapInit(lib5BD4895D_gt_AP_Core_mapLoadStart);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_mapLoadEnd
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_mapLoadEnd_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    fixed lv_duration;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_duration = 0.25;
+
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_initFinished == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    DialogControlFadeTransparency(lib5BD4895D_gv_aP_Core_blackScreen, PlayerGroupAll(), lv_duration, 0.0);
+    Wait(lv_duration, c_timeReal);
+    DialogDestroy(lib5BD4895D_gv_aP_Core_blackScreen_dialog);
+    if ((GameIsTestMap(false) == true)) {
+        TriggerDebugOutput(1, StringExternal("Param/Value/lib_5BD4895D_FD3A182F"), true);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_mapLoadEnd_Init () {
+    lib5BD4895D_gt_AP_Core_mapLoadEnd = TriggerCreate("lib5BD4895D_gt_AP_Core_mapLoadEnd_Func");
+    TriggerAddEventTimePeriodic(lib5BD4895D_gt_AP_Core_mapLoadEnd, 0.1, c_timeGame);
+}
+
 //--------------------------------------------------------------------------------------------------
 // Trigger: AP_Core_controllerInit
 //--------------------------------------------------------------------------------------------------
@@ -1265,46 +1812,20 @@ void lib5BD4895D_gt_AP_Core_keepControllerAlive_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: update chatbox
+// Trigger: AP_Core_hideChatboxCinematic
 //--------------------------------------------------------------------------------------------------
-bool lib5BD4895D_gt_updatechatbox_Func (bool testConds, bool runActions) {
-    // Automatic Variable Declarations
-    // Actions
-    if (!runActions) {
-        return true;
-    }
-
-    lib5BD4895D_gf_sendchatmessage(EventPlayer(), StringSub(EventChatMessage(false), 13, StringLength(EventChatMessage(false))));
-    return true;
-}
-
-//--------------------------------------------------------------------------------------------------
-void lib5BD4895D_gt_updatechatbox_Init () {
-    lib5BD4895D_gt_updatechatbox = TriggerCreate("lib5BD4895D_gt_updatechatbox_Func");
-    TriggerAddEventChatMessage(lib5BD4895D_gt_updatechatbox, c_playerAny, "?SendMessage", false);
-}
-
-//--------------------------------------------------------------------------------------------------
-// Trigger: chatbox buttons
-//--------------------------------------------------------------------------------------------------
-bool lib5BD4895D_gt_chatboxbuttons_Func (bool testConds, bool runActions) {
+bool lib5BD4895D_gt_AP_Core_hideChatboxCinematic_Func (bool testConds, bool runActions) {
     // Variable Declarations
-    int lv_sizex;
-    int lv_sizey;
-    int lv_chatlblsizex;
-    int lv_chatlblsizey;
-    int lv_currentoffsety;
+    int lv_indexPlayer;
 
     // Automatic Variable Declarations
+    playergroup autoA10F8744_g;
+
     // Variable Initialization
-    lv_sizex = 500;
-    lv_sizey = 350;
-    lv_chatlblsizex = (lv_sizex - 110);
-    lv_chatlblsizey = (lv_sizey - 100);
 
     // Conditions
     if (testConds) {
-        if (!((DialogControlGetDialog(EventDialogControl()) == lib5BD4895D_gv_chatbox.lv_mainpanel))) {
+        if (!((lib5BD4895D_gv_aP_Core_initFinished == true))) {
             return false;
         }
     }
@@ -1314,94 +1835,113 @@ bool lib5BD4895D_gt_chatboxbuttons_Func (bool testConds, bool runActions) {
         return true;
     }
 
-    if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_scrollbottonbtn)) {
-        DialogControlSetPosition(lib5BD4895D_gv_chatbox.lv_chatlabel, PlayerGroupSingle(EventPlayer()), c_anchorBottom, 0, 0);
+    if ((GameGetMissionTime() >= 600.0)) {
+        TriggerEnable(TriggerGetCurrent(), false);
     }
-    else {
-        lv_currentoffsety = DialogControlGetOffsetY(lib5BD4895D_gv_chatbox.lv_chatlabel, EventPlayer());
-        if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_scrolldownbtn)) {
-            if ((lv_currentoffsety < 0)) {
-                DialogControlSetPosition(lib5BD4895D_gv_chatbox.lv_chatlabel, PlayerGroupSingle(EventPlayer()), c_anchorBottom, 0, (lv_currentoffsety + lib5BD4895D_gv_chatbox.lv_scrollstrength));
-            }
 
+    autoA10F8744_g = PlayerGroupActive();
+    lv_indexPlayer = -1;
+    while (true) {
+        lv_indexPlayer = PlayerGroupNextPlayer(autoA10F8744_g, lv_indexPlayer);
+        if (lv_indexPlayer < 0) { break; }
+        if ((PlayerType(lv_indexPlayer) != c_playerTypeUser)) {
+            return true;
         }
-        else {
-            if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_scrollupbtn)) {
-                DialogControlSetPosition(lib5BD4895D_gv_chatbox.lv_chatlabel, PlayerGroupSingle(EventPlayer()), c_anchorBottom, 0, (lv_currentoffsety - lib5BD4895D_gv_chatbox.lv_scrollstrength));
+
+        if ((libNtve_gf_PlayerInCinematicMode(lv_indexPlayer) == true) && (lib5BD4895D_gv_aP_Core_chatbox.lv_enteredcinematicmode[lv_indexPlayer] == false)) {
+            lib5BD4895D_gv_aP_Core_chatbox.lv_enteredcinematicmode[lv_indexPlayer] = true;
+            if ((lib5BD4895D_gf_AP_Core_getChatboxHidden(lv_indexPlayer) == true)) {
+                lib5BD4895D_gv_aP_Core_chatbox.lv_toggled[lv_indexPlayer] = true;
+                lib5BD4895D_gf_AP_Core_showHideChatbox(lv_indexPlayer, false);
             }
             else {
-                if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_sizedownbtn)) {
-                    if ((lib5BD4895D_gv_chatbox.lv_size > -1)) {
-                        lib5BD4895D_gv_chatbox.lv_size -= 1;
-                        lv_sizey = (242 + (36 * lib5BD4895D_gv_chatbox.lv_size));
-                        lv_chatlblsizey = (lv_sizey - 136);
-                        DialogSetSize(lib5BD4895D_gv_chatbox.lv_mainpanel, lv_sizex, lv_sizey);
-                        DialogSetSize(lib5BD4895D_gv_chatbox.lv_chatpanel, lv_chatlblsizex, lv_chatlblsizey);
-                    }
-
-                }
-                else {
-                    if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_sizeupbtn)) {
-                        if ((lib5BD4895D_gv_chatbox.lv_size < 10)) {
-                            lib5BD4895D_gv_chatbox.lv_size += 1;
-                            lv_sizey = (242 + (36 * lib5BD4895D_gv_chatbox.lv_size));
-                            lv_chatlblsizey = (lv_sizey - 136);
-                            DialogSetSize(lib5BD4895D_gv_chatbox.lv_mainpanel, lv_sizex, lv_sizey);
-                            DialogSetSize(lib5BD4895D_gv_chatbox.lv_chatpanel, lv_chatlblsizex, lv_chatlblsizey);
-                        }
-
-                    }
-                    else {
-                        if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_hidebtn)) {
-                            DialogSetVisible(lib5BD4895D_gv_chatbox.lv_mainpanel, PlayerGroupSingle(EventPlayer()), false);
-                            DialogSetVisible(lib5BD4895D_gv_chatbox.lv_chatpanel, PlayerGroupSingle(EventPlayer()), false);
-                            DialogSetVisible(lib5BD4895D_gv_chatbox.lv_hiddenpanel, PlayerGroupSingle(EventPlayer()), true);
-                        }
-
-                    }
-                }
+                lib5BD4895D_gv_aP_Core_chatbox.lv_toggled[lv_indexPlayer] = false;
             }
         }
+
+        if ((libNtve_gf_PlayerInCinematicMode(lv_indexPlayer) == false) && (lib5BD4895D_gv_aP_Core_chatbox.lv_enteredcinematicmode[lv_indexPlayer] == true)) {
+            lib5BD4895D_gv_aP_Core_chatbox.lv_enteredcinematicmode[lv_indexPlayer] = false;
+            if ((lib5BD4895D_gv_aP_Core_chatbox.lv_toggled[lv_indexPlayer] == true) && (lib5BD4895D_gf_AP_Core_getChatboxHidden(lv_indexPlayer) == false)) {
+                lib5BD4895D_gf_AP_Core_showHideChatbox(lv_indexPlayer, true);
+                lib5BD4895D_gv_aP_Core_chatbox.lv_toggled[lv_indexPlayer] = false;
+            }
+
+        }
+
     }
     return true;
 }
 
 //--------------------------------------------------------------------------------------------------
-void lib5BD4895D_gt_chatboxbuttons_Init () {
-    lib5BD4895D_gt_chatboxbuttons = TriggerCreate("lib5BD4895D_gt_chatboxbuttons_Func");
-    TriggerAddEventDialogControl(lib5BD4895D_gt_chatboxbuttons, c_playerAny, c_invalidDialogControlId, c_triggerControlEventTypeClick);
+void lib5BD4895D_gt_AP_Core_hideChatboxCinematic_Init () {
+    lib5BD4895D_gt_AP_Core_hideChatboxCinematic = TriggerCreate("lib5BD4895D_gt_AP_Core_hideChatboxCinematic_Func");
+    TriggerAddEventTimePeriodic(lib5BD4895D_gt_AP_Core_hideChatboxCinematic, 0.0625, c_timeGame);
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: chatbox show
+// Trigger: AP_Core_onHideButtonChatbox
 //--------------------------------------------------------------------------------------------------
-bool lib5BD4895D_gt_chatboxshow_Func (bool testConds, bool runActions) {
+bool lib5BD4895D_gt_AP_Core_onHideButtonChatbox_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
-    // Conditions
-    if (testConds) {
-        if (!((DialogControlGetDialog(EventDialogControl()) == lib5BD4895D_gv_chatbox.lv_hiddenpanel))) {
-            return false;
-        }
-    }
-
     // Actions
     if (!runActions) {
         return true;
     }
 
-    if ((EventDialogControl() == lib5BD4895D_gv_chatbox.lv_showbtn)) {
-        DialogSetVisible(lib5BD4895D_gv_chatbox.lv_hiddenpanel, PlayerGroupSingle(EventPlayer()), false);
-        DialogSetVisible(lib5BD4895D_gv_chatbox.lv_mainpanel, PlayerGroupSingle(EventPlayer()), true);
-        DialogSetVisible(lib5BD4895D_gv_chatbox.lv_chatpanel, PlayerGroupSingle(EventPlayer()), true);
+    if ((EventDialogControl() == lib5BD4895D_gv_aP_Core_chatbox.lv_hidebutton)) {
+        lib5BD4895D_gv_aP_Core_chatbox.lv_hidden[EventPlayer()] = false;
     }
 
     return true;
 }
 
 //--------------------------------------------------------------------------------------------------
-void lib5BD4895D_gt_chatboxshow_Init () {
-    lib5BD4895D_gt_chatboxshow = TriggerCreate("lib5BD4895D_gt_chatboxshow_Func");
-    TriggerAddEventDialogControl(lib5BD4895D_gt_chatboxshow, c_playerAny, c_invalidDialogControlId, c_triggerControlEventTypeClick);
+void lib5BD4895D_gt_AP_Core_onHideButtonChatbox_Init () {
+    lib5BD4895D_gt_AP_Core_onHideButtonChatbox = TriggerCreate("lib5BD4895D_gt_AP_Core_onHideButtonChatbox_Func");
+    TriggerAddEventDialogControl(lib5BD4895D_gt_AP_Core_onHideButtonChatbox, c_playerAny, c_invalidDialogControlId, c_triggerControlEventTypeClick);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_onShowButtonChatbox
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_onShowButtonChatbox_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((EventDialogControl() == lib5BD4895D_gv_aP_Core_chatbox.lv_showbutton)) {
+        lib5BD4895D_gv_aP_Core_chatbox.lv_hidden[EventPlayer()] = true;
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_onShowButtonChatbox_Init () {
+    lib5BD4895D_gt_AP_Core_onShowButtonChatbox = TriggerCreate("lib5BD4895D_gt_AP_Core_onShowButtonChatbox_Func");
+    TriggerAddEventDialogControl(lib5BD4895D_gt_AP_Core_onShowButtonChatbox, c_playerAny, c_invalidDialogControlId, c_triggerControlEventTypeClick);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_updateChatbox
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_updateChatbox_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), StringSub(EventChatMessage(false), 13, StringLength(EventChatMessage(false))));
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_updateChatbox_Init () {
+    lib5BD4895D_gt_AP_Core_updateChatbox = TriggerCreate("lib5BD4895D_gt_AP_Core_updateChatbox_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_updateChatbox, c_playerAny, "?SendMessage", false);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1431,10 +1971,179 @@ void lib5BD4895D_gt_AP_Core_rainbowColorsInit_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_tradeStart
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_tradeStart_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((lib5BD4895D_gv_aP_Core_tradeUnit != null))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((libNtve_gf_TriggeringProgressUnitType() == lib5BD4895D_gv_aP_Core_tradeSendUnitType)) {
+        if ((UnitGroupCount(UnitCargoGroup(lib5BD4895D_gv_aP_Core_tradeUnit), c_unitCountAlive) == 0)) {
+            UnitIssueOrder(lib5BD4895D_gv_aP_Core_tradeUnit, Order(AbilityCommand("stop", 0)), c_orderQueueReplace);
+        }
+
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_tradeStart_Init () {
+    lib5BD4895D_gt_AP_Core_tradeStart = TriggerCreate("lib5BD4895D_gt_AP_Core_tradeStart_Func");
+    TriggerAddEventUnitTrainProgress(lib5BD4895D_gt_AP_Core_tradeStart, UnitRefFromVariable("lib5BD4895D_gv_aP_Core_tradeUnit"), c_unitProgressStageStart);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_tradeFail
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_tradeFail_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    string lv_message;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_message = StringSub(EventChatMessage(false), 11, StringLength(EventChatMessage(false)));
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), StringSub(EventChatMessage(false), 11, StringLength(EventChatMessage(false))));
+    if ((lib5BD4895D_gv_aP_Core_tradeUnit != null) && (UnitIsAlive(lib5BD4895D_gv_aP_Core_tradeUnit) == true) && (UnitOrder(lib5BD4895D_gv_aP_Core_tradeUnit, 0) != null)) {
+        UnitIssueOrder(lib5BD4895D_gv_aP_Core_tradeUnit, Order(AbilityCommand("stop", 0)), c_orderQueueReplace);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_tradeFail_Init () {
+    lib5BD4895D_gt_AP_Core_tradeFail = TriggerCreate("lib5BD4895D_gt_AP_Core_tradeFail_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_tradeFail, c_playerAny, "?TradeFail", false);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_tradeSendSuccess
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_tradeSendSuccess_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    fixed lv_totalsupply;
+
+    // Automatic Variable Declarations
+    unitgroup autoE5F28EA7_g;
+    int autoE5F28EA7_u;
+    unit autoE5F28EA7_var;
+
+    // Variable Initialization
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), StringSub(EventChatMessage(false), 14, StringLength(EventChatMessage(false))));
+    if ((lib5BD4895D_gv_aP_Core_tradeUnit != null) && (UnitIsAlive(lib5BD4895D_gv_aP_Core_tradeUnit) == true) && (UnitOrder(lib5BD4895D_gv_aP_Core_tradeUnit, 0) != null)) {
+        autoE5F28EA7_g = UnitCargoGroup(lib5BD4895D_gv_aP_Core_tradeUnit);
+        autoE5F28EA7_u = UnitGroupCount(autoE5F28EA7_g, c_unitCountAll);
+        for (;; autoE5F28EA7_u -= 1) {
+            autoE5F28EA7_var = UnitGroupUnitFromEnd(autoE5F28EA7_g, autoE5F28EA7_u);
+            if (autoE5F28EA7_var == null) { break; }
+            lv_totalsupply = (lv_totalsupply + UnitGetPropertyFixed(autoE5F28EA7_var, c_unitPropSuppliesUsed, c_unitPropCurrent));
+            UnitRemove(autoE5F28EA7_var);
+        }
+        lib5BD4895D_gf_AP_Core_Trade_changeTradeCharges(FloorI(lv_totalsupply));
+        UnitIssueOrder(lib5BD4895D_gv_aP_Core_tradeUnit, Order(AbilityCommand("stop", 0)), c_orderQueueReplace);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_tradeSendSuccess_Init () {
+    lib5BD4895D_gt_AP_Core_tradeSendSuccess = TriggerCreate("lib5BD4895D_gt_AP_Core_tradeSendSuccess_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_tradeSendSuccess, c_playerAny, "?TradeSuccess", false);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_tradeReceiveSuccess
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_tradeReceiveSuccess_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_refunds;
+    int lv_word;
+    string lv_unitType;
+    int lv_unitCount;
+    int lv_totalCount;
+    int lv_mineralCost;
+    int lv_vespeneCost;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_refunds = StringToInt(StringWord(EventChatMessage(false), 2));
+    lv_word = 3;
+    lv_mineralCost = UnitTypeGetCost(lib5BD4895D_gv_aP_Core_tradeReceiveUnitType, c_unitCostMinerals);
+    lv_vespeneCost = UnitTypeGetCost(lib5BD4895D_gv_aP_Core_tradeReceiveUnitType, c_unitCostVespene);
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((lib5BD4895D_gv_aP_Core_tradeUnit != null) && (UnitIsAlive(lib5BD4895D_gv_aP_Core_tradeUnit) == true) && (UnitOrder(lib5BD4895D_gv_aP_Core_tradeUnit, 0) != null)) {
+        UnitIssueOrder(lib5BD4895D_gv_aP_Core_tradeUnit, Order(AbilityCommand("stop", 0)), c_orderQueueReplace);
+        while ((StringWord(EventChatMessage(false), lv_word) != null)) {
+            lv_unitType = (StringWord(EventChatMessage(false), lv_word));
+            lv_unitCount = StringToInt(StringWord(EventChatMessage(false), (lv_word + 1)));
+            lv_totalCount = (lv_totalCount + lv_unitCount);
+            UnitCargoCreate(lib5BD4895D_gv_aP_Core_tradeUnit, lv_unitType, lv_unitCount);
+            lv_word = (lv_word + 2);
+        }
+        PlayerModifyPropertyInt(UnitGetOwner(lib5BD4895D_gv_aP_Core_tradeUnit), c_playerPropMinerals, c_playerPropOperSubtract, (lv_mineralCost * lv_totalCount));
+        PlayerModifyPropertyInt(UnitGetOwner(lib5BD4895D_gv_aP_Core_tradeUnit), c_playerPropVespene, c_playerPropOperSubtract, (lv_vespeneCost * lv_totalCount));
+        lib5BD4895D_gf_AP_Core_Trade_changeTradeCharges((0 - lv_totalCount));
+        if ((lv_totalCount == 0)) {
+            lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), (lib5BD4895D_gv_aP_Core_tradeFlavorName + " failed: No units were found. Trade cost refunded."));
+        }
+        else {
+            if ((lv_refunds > 0)) {
+                lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), (lib5BD4895D_gv_aP_Core_tradeFlavorName + " partially successful: " + IntToString(lv_totalCount) + " units received, " + IntToString(lv_refunds) + " refunded."));
+            }
+            else {
+                lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), (lib5BD4895D_gv_aP_Core_tradeFlavorName + " successful: Units received!"));
+            }
+        }
+    }
+    else {
+        lib5BD4895D_gf_AP_Core_sendChatMessage(EventPlayer(), (lib5BD4895D_gv_aP_Core_tradeFlavorName + " successful, but the trading structure couldn't be found. The received units are lost to the void..."));
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_tradeReceiveSuccess_Init () {
+    lib5BD4895D_gt_AP_Core_tradeReceiveSuccess = TriggerCreate("lib5BD4895D_gt_AP_Core_tradeReceiveSuccess_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_tradeReceiveSuccess, c_playerAny, "?Trade ", false);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: AP_Core_giveStartingResources
 //--------------------------------------------------------------------------------------------------
 bool lib5BD4895D_gt_AP_Core_giveStartingResources_Func (bool testConds, bool runActions) {
     // Variable Declarations
+    int lv_oldStartingMinerals;
+    int lv_oldStartingVespene;
+    int lv_oldBonusMaxSupply;
     int lv_supplyAmount;
     int lv_currentPlayer;
 
@@ -1448,17 +2157,22 @@ bool lib5BD4895D_gt_AP_Core_giveStartingResources_Func (bool testConds, bool run
         return true;
     }
 
+    lv_oldStartingMinerals = lib5BD4895D_gv_aP_Core_BonusMinerals;
+    lv_oldStartingVespene = lib5BD4895D_gv_aP_Core_BonusVespene;
+    lv_oldBonusMaxSupply = lib5BD4895D_gv_aP_Core_BonusMaxSupply;
     lib5BD4895D_gv_aP_Core_BonusMinerals = StringToInt(StringWord(EventChatMessage(false), 2));
     lib5BD4895D_gv_aP_Core_BonusVespene = StringToInt(StringWord(EventChatMessage(false), 3));
     lv_supplyAmount = StringToInt(StringWord(EventChatMessage(false), 4));
+    lib5BD4895D_gv_aP_Core_BonusMaxSupply = StringToInt(StringWord(EventChatMessage(false), 5));
     autoED0BFB0D_g = lib5BD4895D_gv_aP_Core_affectedPlayers;
     lv_currentPlayer = -1;
     while (true) {
         lv_currentPlayer = PlayerGroupNextPlayer(autoED0BFB0D_g, lv_currentPlayer);
         if (lv_currentPlayer < 0) { break; }
-        PlayerModifyPropertyInt(lv_currentPlayer, c_playerPropMinerals, c_playerPropOperAdd, lib5BD4895D_gv_aP_Core_BonusMinerals);
-        PlayerModifyPropertyInt(lv_currentPlayer, c_playerPropVespene, c_playerPropOperAdd, lib5BD4895D_gv_aP_Core_BonusVespene);
+        PlayerModifyPropertyInt(lv_currentPlayer, c_playerPropMinerals, c_playerPropOperAdd, (lib5BD4895D_gv_aP_Core_BonusMinerals - lv_oldStartingMinerals));
+        PlayerModifyPropertyInt(lv_currentPlayer, c_playerPropVespene, c_playerPropOperAdd, (lib5BD4895D_gv_aP_Core_BonusVespene - lv_oldStartingVespene));
         lib5BD4895D_gf_AP_Core_giveBonusSupplies(lv_currentPlayer, lv_supplyAmount);
+        PlayerModifyPropertyInt(lv_currentPlayer, c_playerPropSuppliesLimit, c_playerPropOperAdd, (lib5BD4895D_gv_aP_Core_BonusMaxSupply - lv_oldBonusMaxSupply));
     }
     return true;
 }
@@ -1499,9 +2213,9 @@ void lib5BD4895D_gt_AP_Core_setFactionColorHandler_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: AP_Triggers_loadFinished
+// Trigger: AP_Core_loadFinished
 //--------------------------------------------------------------------------------------------------
-bool lib5BD4895D_gt_AP_Triggers_loadFinished_Func (bool testConds, bool runActions) {
+bool lib5BD4895D_gt_AP_Core_loadFinished_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
     // Actions
     if (!runActions) {
@@ -1513,9 +2227,52 @@ bool lib5BD4895D_gt_AP_Triggers_loadFinished_Func (bool testConds, bool runActio
 }
 
 //--------------------------------------------------------------------------------------------------
-void lib5BD4895D_gt_AP_Triggers_loadFinished_Init () {
-    lib5BD4895D_gt_AP_Triggers_loadFinished = TriggerCreate("lib5BD4895D_gt_AP_Triggers_loadFinished_Func");
-    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Triggers_loadFinished, c_playerAny, "?LoadFinished", false);
+void lib5BD4895D_gt_AP_Core_loadFinished_Init () {
+    lib5BD4895D_gt_AP_Core_loadFinished = TriggerCreate("lib5BD4895D_gt_AP_Core_loadFinished_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_loadFinished, c_playerAny, "?LoadFinished", false);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: AP_Core_uncollectedLocations
+//--------------------------------------------------------------------------------------------------
+bool lib5BD4895D_gt_AP_Core_uncollectedLocations_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_index;
+    string lv_word;
+    int lv_locationIdLocal;
+
+    // Automatic Variable Declarations
+    int auto515366FE_ae;
+    const int auto515366FE_ai = 1;
+
+    // Variable Initialization
+    lv_word = "";
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    auto515366FE_ae = (2 + lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP);
+    lv_index = 2;
+    for ( ; ( (auto515366FE_ai >= 0 && lv_index <= auto515366FE_ae) || (auto515366FE_ai < 0 && lv_index >= auto515366FE_ae) ) ; lv_index += auto515366FE_ai ) {
+        lv_word = StringWord(EventChatMessage(false), lv_index);
+        if ((lv_word != null) && (lv_word != "") && (lv_word != " ")) {
+            lv_locationIdLocal = StringToInt(lv_word);
+            if ((lv_locationIdLocal <= lib5BD4895D_gv_aP_Core_LOCATIONS_PER_MAP)) {
+                lib5BD4895D_gv_aP_Core_locationCollectable[lv_locationIdLocal] = true;
+            }
+
+        }
+
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib5BD4895D_gt_AP_Core_uncollectedLocations_Init () {
+    lib5BD4895D_gt_AP_Core_uncollectedLocations = TriggerCreate("lib5BD4895D_gt_AP_Core_uncollectedLocations_Func");
+    TriggerAddEventChatMessage(lib5BD4895D_gt_AP_Core_uncollectedLocations, c_playerAny, "?UncollectedLocations", false);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1582,16 +2339,24 @@ void lib5BD4895D_gt_AP_Core_objectiveTimerUpdate_Init () {
 }
 
 void lib5BD4895D_InitTriggers () {
+    lib5BD4895D_gt_AP_Core_mapLoadStart_Init();
+    lib5BD4895D_gt_AP_Core_mapLoadEnd_Init();
     lib5BD4895D_gt_AP_Core_controllerInit_Init();
     lib5BD4895D_gt_AP_Core_dontHideController_Init();
     lib5BD4895D_gt_AP_Core_keepControllerAlive_Init();
-    lib5BD4895D_gt_updatechatbox_Init();
-    lib5BD4895D_gt_chatboxbuttons_Init();
-    lib5BD4895D_gt_chatboxshow_Init();
+    lib5BD4895D_gt_AP_Core_hideChatboxCinematic_Init();
+    lib5BD4895D_gt_AP_Core_onHideButtonChatbox_Init();
+    lib5BD4895D_gt_AP_Core_onShowButtonChatbox_Init();
+    lib5BD4895D_gt_AP_Core_updateChatbox_Init();
     lib5BD4895D_gt_AP_Core_rainbowColorsInit_Init();
+    lib5BD4895D_gt_AP_Core_tradeStart_Init();
+    lib5BD4895D_gt_AP_Core_tradeFail_Init();
+    lib5BD4895D_gt_AP_Core_tradeSendSuccess_Init();
+    lib5BD4895D_gt_AP_Core_tradeReceiveSuccess_Init();
     lib5BD4895D_gt_AP_Core_giveStartingResources_Init();
     lib5BD4895D_gt_AP_Core_setFactionColorHandler_Init();
-    lib5BD4895D_gt_AP_Triggers_loadFinished_Init();
+    lib5BD4895D_gt_AP_Core_loadFinished_Init();
+    lib5BD4895D_gt_AP_Core_uncollectedLocations_Init();
     lib5BD4895D_gt_AP_Core_clearChat_Init();
     lib5BD4895D_gt_AP_Core_objectiveTimerUpdate_Init();
 }

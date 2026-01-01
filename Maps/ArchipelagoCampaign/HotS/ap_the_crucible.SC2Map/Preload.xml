@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Preload>
 <Asset path="assets\textures\cinematic_swarm08.ogv" Type="Movie"/>
+<Asset path="assets\textures\cinematic_swarm08_low.ogv" Type="Movie"/>
 <Actor id="SYSTEM_ActorConfig"/>
 <Actor id="BirdDriftSeekerZerus"/>
 <Actor id="Bonepile" Variations="0,1,2,3,5,6,7,8"/>
@@ -62,12 +63,12 @@
 <Actor id="BrokenGroundEdgingWide" Variations="0,1,2,3"/>
 <Behavior id="KerriganWalk"/>
 <Behavior id="SuppressCollision"/>
+<Behavior id="AP_ImmortalShakurasAntiAirMissileDisableAttack"/>
 <Light id="AiurFlashback"/>
 <Light id="Zerus"/>
-<Objective id="ZZerus02Objective01"/>
-<Objective id="ZZerus02Objective3"/>
-<Objective id="ZZerus02Objective02"/>
-<Objective id="ZZerus02Objective04"/>
+<Race id="Terr"/>
+<Race id="Zerg"/>
+<Race id="Prot"/>
 <Sound id="Ambience_rain_quad_loop"/>
 <Sound id="UI_ActionButtonSelect"/>
 <Sound id="TUILavaRising"/>
@@ -182,20 +183,42 @@
 <Unit id="SpaceCowSmall"/>
 <Unit id="Zerus02Chrysalis"/>
 <Unit id="ZerusAlienTreeHover"/>
+<Unit id="AP_Drone"/>
+<Unit id="AP_Liberator"/>
+<Unit id="AP_WidowMine"/>
+<Unit id="AP_SupplyDepot"/>
+<Unit id="AP_Barracks"/>
+<Unit id="AP_PerditionTurret"/>
+<Unit id="AP_Factory"/>
 <Unit id="AP_Extractor"/>
 <Unit id="AP_CreepTumorUsed"/>
+<Unit id="AP_Starport"/>
 <Unit id="AP_SwarmHost"/>
+<Unit id="AP_PhoenixTaldarim"/>
+<Unit id="AP_RoboticsFacility"/>
+<Unit id="AP_Reaver"/>
+<Unit id="AP_PhotonCannon"/>
 <Unit id="AP_SpineCrawlerUprooted"/>
 <Unit id="AP_SpineCrawler"/>
 <Unit id="AP_SporeCrawler"/>
-<Unit id="AP_Drone"/>
+<Unit id="AP_Adept"/>
+<Unit id="AP_Gateway"/>
+<Unit id="AP_Pylon"/>
+<Unit id="AP_Forge"/>
+<Unit id="AP_Stargate"/>
+<Unit id="AP_RoboticsBay"/>
 <Unit id="AP_Overlord"/>
 <Unit id="AP_Mutalisk"/>
 <Unit id="AP_K5Kerrigan"/>
+<Unit id="AP_ValkyrieSCBW"/>
+<Unit id="AP_EngineeringBay"/>
+<Unit id="AP_MissileTurret"/>
+<Unit id="AP_MercCompound"/>
 <Unit id="AP_Queen"/>
 <Unit id="AP_Lair"/>
 <Unit id="AP_SpawningPool"/>
 <Unit id="AP_EvolutionChamber"/>
 <Unit id="AP_Spire"/>
 <Unit id="AP_InfestationPit"/>
+<Unit id="AP_ZergMercenaryCompound"/>
 </Preload>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Catalog>
+    <CBehaviorBuff id="AP_PsionicLiftStun">
+        <!-- Override -->
+        <Modification>
+            <AbilLinkDisableArray value="MengskMedicHeal"/>
+        </Modification>
+    </CBehaviorBuff>
+    <CBehaviorBuff id="ZerglingRespawnPrimary">
+        <!-- Override -->
+        <Modification SubgroupPriority="0"/>
+    </CBehaviorBuff>
+</Catalog>

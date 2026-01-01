@@ -67,10 +67,17 @@
 <Actor id="TempleBricksLarge" Variations="1,3,4"/>
 <Actor id="Vines" Variations="0,1,4,6"/>
 <Model id="PingSimple"/>
+<Model id="QueenPortrait"/>
 <Model id="PylonPlacement"/>
+<Model id="ArtanisPortrait"/>
+<Model id="TychusPortrait"/>
+<Model id="KerriganPortrait"/>
+<Model id="RaynorMarinePortrait"/>
 <Model id="ProtossGenericWarpInOut"/>
-<Objective id="PAiur03Bonus01"/>
-<Objective id="PAiur03Primary01"/>
+<Model id="ArtanisPortraitAiur01"/>
+<Race id="Terr"/>
+<Race id="Zerg"/>
+<Race id="Prot"/>
 <Sound id="WarpGate_TrainStart"/>
 <Sound id="WarpGate_TrainFinish"/>
 <Sound id="NydusWorm_Unload"/>
@@ -96,6 +103,8 @@
 <Sound id="PAiur03_PlatformFinish"/>
 <Sound id="PAiur03_PlatformEngage"/>
 <Sound id="PAiur03_ArmsInitiate"/>
+<Sound id="pCutscene_Aiur04Before_Artanis_001"/>
+<Sound id="Mission_Epilogue02_Raynor_107"/>
 <Sound id="pMission_Aiur03_Smith_033"/>
 <Sound id="pMission_Aiur03_Artanis_034"/>
 <Sound id="pMission_Aiur03_Smith_035"/>
@@ -147,6 +156,16 @@
 <Sound id="pMission_Aiur03_Artanis_113"/>
 <Sound id="pMission_Aiur03_Smith_114"/>
 <Sound id="pMission_Aiur03_Smith_115"/>
+<Sound id="pMission_Ulnar02_Artanis_128"/>
+<Sound id="ArtanisBuilding00001"/>
+<Sound id="KerriganBuilding00003"/>
+<Sound id="QueenBuilding00001"/>
+<Sound id="KerriganBuilding00002"/>
+<Sound id="RaynorIntro00001"/>
+<Sound id="ArtanisIntro00002"/>
+<Sound id="KerriganBuilding00001"/>
+<Sound id="TychusIntro00001"/>
+<Sound id="KerriganIntro00001"/>
 <Soundtrack id="Music_Silence"/>
 <Soundtrack id="PAiur03_Music_Intro"/>
 <Soundtrack id="PAiur03_Music_LastObjective"/>
@@ -197,6 +216,7 @@
 <Unit id="KarakFemale"/>
 <Unit id="MineralField" Variations="0,1,2,3,4,5,6,7,8,9"/>
 <Unit id="VespeneGeyser"/>
+<Unit id="CreepBlocker1x1"/>
 <Unit id="InvisiblePylon"/>
 <Unit id="HybridReaver"/>
 <Unit id="SuperWarpGate"/>
@@ -211,11 +231,18 @@
 <Unit id="AiurTempleBridgeDestructibleNE10Out"/>
 <Unit id="AiurTempleBridgeDestructibleSW10Out"/>
 <Unit id="Dragoon"/>
+<Unit id="CreepBlocker13x13"/>
 <Unit id="AdunGenerator"/>
 <Unit id="Aiur03MechanismDisabler"/>
+<Unit id="AP_SupplyDepot"/>
+<Unit id="AP_Barracks"/>
+<Unit id="AP_PerditionTurret"/>
 <Unit id="AP_Assimilator"/>
+<Unit id="AP_Factory"/>
+<Unit id="AP_Starport"/>
 <Unit id="AP_PhotonCannon"/>
 <Unit id="AP_Probe"/>
+<Unit id="AP_SpineCrawlerUprooted"/>
 <Unit id="AP_ZealotAiur"/>
 <Unit id="AP_StalkerShakuras"/>
 <Unit id="AP_Gateway"/>
@@ -224,4 +251,19 @@
 <Unit id="AP_Forge"/>
 <Unit id="AP_ShieldBattery"/>
 <Unit id="AP_WarpGate"/>
+<Unit id="AP_Overlord"/>
+<Unit id="AP_SIInfestedBunkerUprooted"/>
+<Unit id="AP_WarPig"/>
+<Unit id="AP_EngineeringBay"/>
+<Unit id="AP_Bunker"/>
+<Unit id="AP_MercCompound"/>
+<Unit id="AP_Armory"/>
+<Unit id="AP_Queen"/>
+<Unit id="AP_SpawningPool"/>
+<Unit id="AP_EvolutionChamber"/>
+<Unit id="AP_HydraliskDen"/>
+<Unit id="AP_InfestationPit"/>
+<Unit id="AP_BanelingNest"/>
+<Unit id="AP_RoachWarren"/>
+<Unit id="AP_ZergMercenaryCompound"/>
 </Preload>

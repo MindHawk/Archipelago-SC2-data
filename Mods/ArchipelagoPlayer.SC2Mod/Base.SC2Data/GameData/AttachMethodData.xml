@@ -34,9 +34,9 @@
         <Keyword value="Weapon"/>
         <Driver value="AP_DuskWingBansheeLaunchMissile"/>
     </CAttachMethodPattern>
-    <CAttachMethodPattern id="AP_AMPatternInfestedBanshee">
+    <CAttachMethodPattern id="AP_AMPatternInfestedDuskWing">
         <Keyword value="Weapon"/>
-        <Driver value="AP_InfestedBansheeLaunchMissile"/>
+        <Driver value="AP_InfestedDuskWingLaunchMissile"/>
     </CAttachMethodPattern>
     <CAttachMethodPattern id="AP_AMPatternWreckingCrew">
         <Keyword value="Weapon"/>
@@ -80,6 +80,18 @@
         <Multiplier value="2"/>
         <Driver value="AP_GoliathALM"/>
     </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternGoliathMengsk">
+        <Keyword value="SetB"/>
+        <Base value="::RollingIndex"/>
+        <Multiplier value="2"/>
+        <Driver value="AP_GoliathMengskALM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternGoliathMengskLockdown">
+        <Keyword value="SetB"/>
+        <Base value="::RollingIndex"/>
+        <Multiplier value="2"/>
+        <Driver value="AP_GoliathMengskALMLockdown"/>
+    </CAttachMethodPattern>
     <CAttachMethodFilter id="AP_AMFilterDRCannons">
         <Logic value="OR"/>
         <Keys Keyword="Weapon" Index="10"/>
@@ -104,6 +116,11 @@
         <Driver value="AP_LanceMissileLaunchersDamage"/>
         <Base value="::RollingIndex"/>
     </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternThorMengskAALance">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_LanceMissileLaunchersMengskDamageSwitch"/>
+        <Base value="::RollingIndex"/>
+    </CAttachMethodPattern>
     <CAttachMethodPattern id="AP_MercAMPatternThorAALance">
         <Keyword value="Weapon"/>
         <Driver value="AP_MercLanceMissileLaunchersDamage"/>
@@ -126,6 +143,10 @@
         <Keyword value="Weapon"/>
         <Driver value="AP_ThorsHammerDamage"/>
     </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternThorMengsk">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_ThorsHammerMengskDamage"/>
+    </CAttachMethodPattern>
     <CAttachMethodPattern id="AP_MercAMPatternThor">
         <Keyword value="Weapon"/>
         <Driver value="AP_MercThorsHammerDamage"/>
@@ -133,5 +154,69 @@
     <CAttachMethodPattern id="AP_AMPatternLeviathanAir">
         <Keyword value="Weapon"/>
         <Driver value="AP_HotSLeviathanAirAttackLaunchMissile"/>
+    </CAttachMethodPattern>
+    <CAttachMethodFilter id="AP_AMFilterTurretY">
+        <Keys Keyword="TurretY"/>
+    </CAttachMethodFilter>
+    <CAttachMethodPattern id="AP_AMPatternStukovInfestedDiamondBackBileStream">
+        <Driver value="AP_StukovInfestedDiamondBackBileStreamSprayLaunchMissile"/>
+    </CAttachMethodPattern>
+    <CAttachMethodFilter id="AP_FilterWeapon0102">
+        <Keys Keyword="Weapon" Index="1"/>
+        <Keys Keyword="Weapon" Index="2"/>
+        <Logic value="OR"/>
+    </CAttachMethodFilter>
+    <CAttachMethodPattern id="AP_AMPatternStukovInfestedBanshee">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_StukovInfestedBacklashRocketsLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternVikingMengskFighter">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_LanzerTorpedoesMengskLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternVikingMengskFighterMassive">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_VikingMengskAirMassiveLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodFilter id="AP_FilterForearmLeft">
+        <Keys Keyword="Forearm"/>
+        <Keys Keyword="Left"/>
+    </CAttachMethodFilter>
+    <CAttachMethodFilter id="AP_FilterForearmRight">
+        <Keys Keyword="Forearm"/>
+        <Keys Keyword="Right"/>
+    </CAttachMethodFilter>
+    <CAttachMethodPattern id="AP_AMPatternThorMengskAA">
+        <Keyword value="Weapon"/>
+        <Driver value="AP_JavelinMissileLaunchersMengskLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_ThorMengskPattern">
+        <Keyword value="Weapon"/>
+        <Base value="::RollingIndex"/>
+        <Driver value="AP_ThorMengskSiegedLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodFilter id="AP_FilterWeapon01Thru04">
+        <Keys Keyword="Weapon" Index="1"/>
+        <Keys Keyword="Weapon" Index="2"/>
+        <Keys Keyword="Weapon" Index="3"/>
+        <Keys Keyword="Weapon" Index="4"/>
+        <Logic value="OR"/>
+    </CAttachMethodFilter>
+    <CAttachMethodPattern id="AP_TrooperMengskRocketPattern">
+        <Keyword value="Weapon"/>
+        <Base value="::RollingIndex"/>
+        <Driver value="AP_TrooperMengskRocketLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternSIMissileTurret">
+        <Keyword value="Weapon"/>
+        <Base value="::RollingIndex"/>
+        <Multiplier value="2"/>
+        <Driver value="AP_SILongboltMissileLM"/>
+    </CAttachMethodPattern>
+    <CAttachMethodPattern id="AP_AMPatternSIMissileTurretAcidSporeVents">
+        <Keyword value="TurretZ"/>
+        <Base value="::RollingIndex"/>
+        <Multiplier value="2"/>
+        <Driver value="AP_AcidSporeVentsLM"/>
     </CAttachMethodPattern>
 </Catalog>

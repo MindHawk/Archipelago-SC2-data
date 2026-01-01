@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="us-ascii"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Catalog>
     <CActorDoodad id="ShowAndTellWall"/>
     <CActorDoodad id="BraxisAlphaGenerator"/>
@@ -8,4 +8,47 @@
     <CActorUnit id="WreckedBunker" unitName="Bogus">
         <Model value="WreckedBarracks"/>
     </CActorUnit>
+    <CActorSimple id="Exp03StasisAnimFreeze">
+        <On Terms="Behavior.Exp03StasisLongTerm.On" Send="Create"/>
+        <On Terms="Behavior.Exp03StasisLongTerm.On" Target="_Unit" Send="AnimSetPaused ::Baseline"/>
+        <On Terms="Behavior.Exp03StasisEnding.Off" Target="_Unit" Send="AnimSetPaused ::Baseline 0"/>
+        <On Terms="Behavior.Exp03StasisEnding.Off" Send="Destroy"/>
+        <On Terms="Behavior.Exp03StasisLongTerm.Off" Target="_Unit" Send="AnimSetPaused ::Baseline 0"/>
+        <On Terms="Behavior.Exp03StasisLongTerm.Off" Send="Destroy"/>
+    </CActorSimple>
+    <CActorSound id="Doodad_ProtossWarpInPad_Alert" parent="SoundOneShot">
+        <On Terms="Behavior.Exp03StasisEnding.On" Send="Create"/>
+        <On Terms="Effect.Exp03StasisPulse.Start" Send="Create"/>
+    </CActorSound>
+    <CActorSound id="Doodad_ProtossWarpInPad_WarpIn" parent="SoundOneShot">
+        <On Terms="Behavior.Exp03StasisEnding.Off" Send="Create"/>
+    </CActorSound>
+    <CActorRegionCircle id="ProtossWarpInPadFlatOff">
+        <Radius value="0.250000"/>
+        <On Terms="Behavior.Exp03StasisLongTerm.Off" Send="Create"/>
+        <On Terms="Behavior.Exp03StasisEnding.Off" Send="Create"/>
+        <On Terms="ActorCreation" Send="QueryRegion ::Self ProtossWarpInPadFlatOffQuery AgainstCenter"/>
+    </CActorRegionCircle>
+    <CActorRegionCircle id="ProtossWarpInPadFlatPowerDown">
+        <Radius value="0.250000"/>
+        <On Terms="Behavior.Exp03StasisEnding.On" Send="Create"/>
+        <On Terms="ActorCreation" Send="QueryRegion ::Self ProtossWarpInPadFlatPowerDownQuery AgainstCenter"/>
+    </CActorRegionCircle>
+    <CActorRegionCircle id="ProtossWarpInPadFlatOn">
+        <Radius value="0.250000"/>
+        <On Terms="Behavior.Exp03StasisLongTerm.On" Send="Create"/>
+        <On Terms="ActorCreation" Send="QueryRegion ::Self ProtossWarpInPadFlatOnQuery AgainstCenter"/>
+    </CActorRegionCircle>
+    <CActorQueryResponse id="ProtossWarpInPadFlatOffQuery">
+        <Subject Filters="Doodad" Terms="ScopeContains _WarpInPad"/>
+        <OnResponse Target="_WarpInPad" Send="Signal PadOff"/>
+    </CActorQueryResponse>
+    <CActorQueryResponse id="ProtossWarpInPadFlatPowerDownQuery">
+        <Subject Filters="Doodad" Terms="ScopeContains _WarpInPad"/>
+        <OnResponse Target="_WarpInPad" Send="Signal PadPowerDown"/>
+    </CActorQueryResponse>
+    <CActorQueryResponse id="ProtossWarpInPadFlatOnQuery">
+        <Subject Filters="Doodad" Terms="ScopeContains _WarpInPad"/>
+        <OnResponse Target="_WarpInPad" Send="Signal PadOn"/>
+    </CActorQueryResponse>
 </Catalog>

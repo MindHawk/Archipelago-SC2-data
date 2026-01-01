@@ -1,5 +1,65 @@
-<?xml version="1.0" encoding="us-ascii"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Catalog>
+    <CSound id="GhostVictory00001" parent="VO">
+        <EditorCategories value="Race:Terran"/>
+        <AssetArray index="0">
+            <File value="LocalizedData\Sounds\TerranUnitVO\GhostFemale\GhostFemale_GhostFemale_031.ogg"/>
+            <FacialAnim value=""/>
+            <FacialGroup value=""/>
+            <PortraitAnim value="Talk"/>
+            <FacialFile value=""/>
+            <PortraitModel value=""/>
+            <PortraitActor value=""/>
+            <Speaker value="Character/Name/Ghost"/>
+            <Subtitle value="Conversation/GhostVictory/Line00001"/>
+        </AssetArray>
+    </CSound>
+    <CSound id="GhostVictory00002" parent="VO">
+        <EditorCategories value="Race:Terran"/>
+        <AssetArray index="0">
+            <File value="LocalizedData\Sounds\TerranUnitVO\GhostFemale\GhostFemale_GhostFemale_039.ogg"/>
+            <FacialAnim value=""/>
+            <FacialGroup value=""/>
+            <PortraitAnim value="Talk"/>
+            <FacialFile value=""/>
+            <PortraitModel value=""/>
+            <PortraitActor value=""/>
+            <Speaker value="Character/Name/Ghost"/>
+            <Subtitle value="Conversation/GhostVictory/Line00002"/>
+        </AssetArray>
+    </CSound>
+    <CSound id="InfestorVictory00001" parent="VO">
+        <EditorCategories value="Race:Zerg"/>
+        <AssetArray index="0">
+            <File value="Assets\Sounds\Zerg\Infestor\Infestor_What1.ogg"/>
+            <FacialAnim value=""/>
+            <FacialGroup value=""/>
+            <PortraitAnim value="Talk"/>
+            <FacialFile value=""/>
+            <PortraitModel value=""/>
+            <PortraitActor value=""/>
+            <Speaker value="Character/Name/Infestor"/>
+            <Subtitle value="Conversation/InfestorVictory/Line00001"/>
+        </AssetArray>
+        <LoopCount value="2"/>
+        <Select value="Sequential"/>
+    </CSound>
+    <CSound id="InfestorVictory00002" parent="VO">
+        <EditorCategories value="Race:Zerg"/>
+        <AssetArray index="0">
+            <File value="Assets\Sounds\Zerg\Infestor\Infestor_Yes0.ogg"/>
+            <FacialAnim value=""/>
+            <FacialGroup value=""/>
+            <PortraitAnim value="Talk"/>
+            <FacialFile value=""/>
+            <PortraitModel value=""/>
+            <PortraitActor value=""/>
+            <Speaker value="Character/Name/Infestor"/>
+            <Subtitle value="Conversation/InfestorVictory/Line00002"/>
+        </AssetArray>
+        <LoopCount value="2"/>
+        <Select value="Sequential"/>
+    </CSound>
     <CSound id="Prologue_KorhalWall_Explode_SoundLink" parent="Death">
         <AssetArray File="Assets\Sounds\Terran_KorhalWall_Explode2.wav" FacialGroup=""/>
         <Category value="Other"/>

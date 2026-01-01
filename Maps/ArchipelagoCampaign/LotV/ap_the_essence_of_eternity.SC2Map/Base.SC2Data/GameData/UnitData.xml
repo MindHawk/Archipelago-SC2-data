@@ -13,6 +13,7 @@
         <LifeArmor value="3"/>
         <LifeRegenRate value="3"/>
         <EnergyRegenRate value="15"/>
+        <BehaviorArray Link="AP_CreepFrenzy13Crawler"/>
     </CUnit>
     <CUnit id="ZaGaraBurrowed">
         <FlagArray index="Hero" value="1"/>
@@ -21,6 +22,7 @@
         <LifeArmor value="3"/>
         <LifeRegenRate value="3"/>
         <EnergyRegenRate value="15"/>
+        <BehaviorArray Link="AP_CreepFrenzy13Crawler"/>
     </CUnit>
     <CUnit id="ArtanisVoid">
         <FlagArray index="Hero" value="1"/>

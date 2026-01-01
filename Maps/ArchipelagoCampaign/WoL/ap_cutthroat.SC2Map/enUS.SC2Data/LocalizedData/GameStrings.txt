@@ -26,7 +26,7 @@ Param/Value/16EA3C4A=<c val="00FF00">Orlan Command Center</c>
 Param/Value/1B75B417=/
 Param/Value/2A2F1DEC=
 Param/Value/2A95D303=Orlan Command Center
-Param/Value/2FBEBEEB=Destroying Orlan's Command Centers slow down his progress of buying the contract gibing us more time for ourselves.
+Param/Value/2FBEBEEB=Destroying Orlan's Command Centers slow down his progress of buying the contract giving us more time for ourselves.
 Param/Value/306B371C=Mira Han's forces have been destroyed.
 Param/Value/31A856E3=Destroy to slow Orlan's mineral-<n/>harvesting rate.
 Param/Value/332D48ED=Shredders will generate more salvage every few minutes.
@@ -64,7 +64,6 @@ Param/Value/92B49FB8=Orlan's Minerals:
 Param/Value/994D0392=Destroy to make Scrap Salvage.
 Param/Value/9D3B121D=
 Param/Value/9FFE53DF=Destroy Orlan's Mercenary Fortress
-Param/Value/A0D4A53F=
 Param/Value/A41B1BD8=
 Param/Value/A79B6B3E=Orlan's Minerals: 
 Param/Value/A8244073=Minerals Harvested by SCVs

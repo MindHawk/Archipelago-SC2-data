@@ -11,6 +11,7 @@ include "TriggerLibs/SwarmLib"
 include "TriggerLibs/VoidLib"
 include "TriggerLibs/VoidCampaignLib"
 include "TriggerLibs/VoidCampaignMissionLib"
+include "Lib15EF4C78"
 include "Lib30B9E51A"
 include "Lib5BD4895D"
 include "LibABFE498B"
@@ -28,6 +29,7 @@ void InitLibs () {
     libLotv_InitLib();
     libVoiC_InitLib();
     libVCMI_InitLib();
+    lib15EF4C78_InitLib();
     lib30B9E51A_InitLib();
     lib5BD4895D_InitLib();
     libABFE498B_InitLib();
@@ -36,6 +38,14 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_LOCATION_ID_SOUTHEAST_VOID_SHARD = 1;
+const int gv_LOCATION_ID_SOUTH_VOID_SHARD = 2;
+const int gv_LOCATION_ID_SOUTHWEST_VOID_SHARD = 3;
+const int gv_LOCATION_ID_NORTH_VOID_SHARD = 4;
+const int gv_LOCATION_ID_NORTHWEST_VOID_SHARD = 5;
+const int gv_LOCATION_ID_NERAZIM_WARP_IN_ZONE = 6;
+const int gv_LOCATION_ID_TALDARIM_WARP_IN_ZONE = 7;
+const int gv_LOCATION_ID_PURIFIER_WARP_IN_ZONE = 8;
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_PROTOSS_BULLIES = 2;
 const int gv_pLAYER_03_ZERG_BULLIES = 3;
@@ -92,7 +102,7 @@ timer gv_achievement_ShardComboTimer;
 timer gv_mastery_SpeedRunTimer;
 int gv_achievement_VoidShardKills;
 int gv_objectiveDestroyVoidShards;
-int gv_objectiveRescueStalkers;
+int gv_objectiveClearWarpInZones;
 int gv_objectiveClearWarpInZonesCount;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicPausedUnits;
@@ -121,7 +131,7 @@ void InitGlobals () {
     gv_achievement_ShardComboTimer = TimerCreate();
     gv_mastery_SpeedRunTimer = TimerCreate();
     gv_objectiveDestroyVoidShards = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers = c_invalidObjectiveId;
+    gv_objectiveClearWarpInZones = c_invalidObjectiveId;
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicPausedUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
@@ -153,6 +163,7 @@ void gf_IntroVoidRiftEventSpawning (string lp_unitType);
 //--------------------------------------------------------------------------------------------------
 // Trigger Variables
 //--------------------------------------------------------------------------------------------------
+trigger gt_FactionSwapInit;
 trigger gt_onDifficultyCasual;
 trigger gt_onDifficultyNormal;
 trigger gt_onDifficultyHard;
@@ -588,7 +599,7 @@ void gf_VoidShardAbilityDeathGripUnit (unit lp_casterUnit, region lp_targetRegio
         for (;; autoC20E9EDC_u -= 1) {
             autoC20E9EDC_var = UnitGroupUnitFromEnd(autoC20E9EDC_g, autoC20E9EDC_u);
             if (autoC20E9EDC_var == null) { break; }
-            if (((UnitGetType(autoC20E9EDC_var) == "Interceptor") || (UnitGetType(autoC20E9EDC_var) == "InterceptorAiur") || (UnitGetType(autoC20E9EDC_var) == "CarrierRepairDrone") || (UnitGetType(autoC20E9EDC_var) == "FenixSOA") || (UnitGetType(autoC20E9EDC_var) == "Flagship") || (UnitHasBehavior2(autoC20E9EDC_var, "VoidTendrilDeathGripStun") == true) || (UnitHasBehavior2(autoC20E9EDC_var, "VoidTendrilDeathGripWarningDebuff") == true))) {
+            if (((UnitGetType(autoC20E9EDC_var) == "Interceptor") || (UnitGetType(autoC20E9EDC_var) == "InterceptorAiur") || (UnitGetType(autoC20E9EDC_var) == "CarrierRepairDrone") || (UnitGetType(autoC20E9EDC_var) == "FenixSOA") || (UnitGetType(autoC20E9EDC_var) == "Flagship") || (UnitHasBehavior2(autoC20E9EDC_var, "VoidTendrilDeathGripStun") == true) || (UnitHasBehavior2(autoC20E9EDC_var, "VoidTendrilDeathGripWarningDebuff") == true) || (UnitGetType(autoC20E9EDC_var) == "AP_CarrierRepairDrone") || (UnitGetType(autoC20E9EDC_var) == "AP_Interceptor") || (UnitGetType(autoC20E9EDC_var) == "AP_InterceptorPurifier") || (UnitGetType(autoC20E9EDC_var) == "AP_InterceptorTaldarim") || (UnitGetType(autoC20E9EDC_var) == "AP_CarrierPurifierBomber") || (UnitGetType(autoC20E9EDC_var) == "AP_BroodlingEscort"))) {
                 UnitGroupRemove(lv_enemyGroup, autoC20E9EDC_var);
             }
 
@@ -636,7 +647,7 @@ void gf_VoidShardAbilityShockwave (unit lp_voidShard, region lp_targetRegion) {
     for (;; auto160C49C9_u -= 1) {
         auto160C49C9_var = UnitGroupUnitFromEnd(auto160C49C9_g, auto160C49C9_u);
         if (auto160C49C9_var == null) { break; }
-        if (((UnitGetType(auto160C49C9_var) == "Interceptor") || (UnitGetType(auto160C49C9_var) == "InterceptorAiur") || (UnitGetType(auto160C49C9_var) == "CarrierRepairDrone"))) {
+        if (((UnitGetType(auto160C49C9_var) == "Interceptor") || (UnitGetType(auto160C49C9_var) == "InterceptorAiur") || (UnitGetType(auto160C49C9_var) == "CarrierRepairDrone") || (UnitGetType(auto160C49C9_var) == "AP_CarrierRepairDrone") || (UnitGetType(auto160C49C9_var) == "AP_Interceptor") || (UnitGetType(auto160C49C9_var) == "AP_InterceptorPurifier") || (UnitGetType(auto160C49C9_var) == "AP_InterceptorTaldarim") || (UnitGetType(auto160C49C9_var) == "AP_CarrierPurifierBomber") || (UnitGetType(auto160C49C9_var) == "AP_BroodlingEscort"))) {
             UnitGroupRemove(lv_enemyGroup, auto160C49C9_var);
         }
 
@@ -1037,6 +1048,46 @@ bool auto_gf_IntroVoidRiftEventSpawning_TriggerFunc (bool testConds, bool runAct
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Faction Swap Init
+//--------------------------------------------------------------------------------------------------
+bool gt_FactionSwapInit_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(7), "Prot", false);
+    }
+    else {
+        libABFE498B_gv_aP_Triggers_skipCutscenes = true;
+        lib15EF4C78_gf_RemoveUnusedStartingUnits(UnitGroupFromId(7), libABFE498B_gv_aP_Triggers_Option_overridePlayerRace, true);
+        if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Terr")) {
+            PlayerSetRace(gv_pLAYER_01_USER, "Terr");
+            lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_RAYNORS_RAIDERS);
+        }
+        else {
+            if ((libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Zerg")) {
+                PlayerSetRace(gv_pLAYER_01_USER, "Zerg");
+                lib5BD4895D_gf_AP_Core_MapConfig_setPlayerFaction(gv_pLAYER_01_USER, lib5BD4895D_gv_aP_Core_Faction_KERRIGAN_SWARM);
+            }
+
+        }
+        lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap(gv_pLAYER_01_USER);
+        libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionEntireMap(), gv_pLAYER_01_USER);
+        lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_FactionSwapInit_Init () {
+    gt_FactionSwapInit = TriggerCreate("gt_FactionSwapInit_Func");
+    TriggerAddEventGeneric(gt_FactionSwapInit, lib5BD4895D_gv_aP_Core_LOAD_FINISHED_EVENT);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: onDifficultyCasual
 //--------------------------------------------------------------------------------------------------
 bool gt_onDifficultyCasual_Func (bool testConds, bool runActions) {
@@ -1210,7 +1261,7 @@ bool gt_SoutheastVoidShard_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTHEAST_VOID_SHARD);
     return true;
 }
 
@@ -1231,7 +1282,7 @@ bool gt_SouthVoidShard_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(2);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTH_VOID_SHARD);
     return true;
 }
 
@@ -1252,7 +1303,7 @@ bool gt_SouthwestVoidShard_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(3);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_SOUTHWEST_VOID_SHARD);
     return true;
 }
 
@@ -1273,7 +1324,7 @@ bool gt_NorthVoidShard_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(4);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NORTH_VOID_SHARD);
     return true;
 }
 
@@ -1294,7 +1345,7 @@ bool gt_NorthwestVoidShard_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(5);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NORTHWEST_VOID_SHARD);
     return true;
 }
 
@@ -1922,6 +1973,7 @@ bool gt_StartGameQ_Func (bool testConds, bool runActions) {
 
     TimerStart(gv_mastery_SpeedRunTimer, 1440.0, false, c_timeAI);
     UIAlertPoint("Trigger", gv_pLAYER_01_USER, StringExternal("Param/Value/976F43A0"), null, PointFromId(70));
+    lib15EF4C78_gf_AP_Player_UtilTownHallAutoRally(gv_pLAYER_01_USER);
     libVCMI_gf_StartingWorkersAutoHarvest(RegionFromId(17), null);
     lv_i = 1;
     for ( ; ( (auto07AA8B2B_ai >= 0 && lv_i <= auto07AA8B2B_ae) || (auto07AA8B2B_ai < 0 && lv_i >= auto07AA8B2B_ae) ) ; lv_i += auto07AA8B2B_ai ) {
@@ -2750,7 +2802,7 @@ bool gt_EstablishWarpInZone01_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(6);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_NERAZIM_WARP_IN_ZONE);
     AIToggleBulliesInRegion(gv_pLAYER_08_NERAZIM, RegionFromId(12), true);
     AIToggleBulliesInRegion(gv_pLAYER_04_INFESTED_BULLIES, RegionFromId(12), false);
     gf_SetUpWarpPrism(PointFromId(1454), PointFromId(1477), gv_pLAYER_08_NERAZIM);
@@ -2856,7 +2908,7 @@ bool gt_EstablishWarpInZone02_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(7);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_TALDARIM_WARP_IN_ZONE);
     AIToggleBulliesInRegion(gv_pLAYER_09_TALDARIM, RegionFromId(42), true);
     AIToggleBulliesInRegion(gv_pLAYER_02_PROTOSS_BULLIES, RegionFromId(42), false);
     gf_SetUpWarpPrism(PointFromId(1455), PointFromId(1479), gv_pLAYER_09_TALDARIM);
@@ -2960,7 +3012,7 @@ bool gt_EstablishWarpInZone03_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(8);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_LOCATION_ID_PURIFIER_WARP_IN_ZONE);
     AIToggleBulliesInRegion(gv_pLAYER_10_PURIFIER, RegionFromId(41), true);
     AIToggleBulliesInRegion(gv_pLAYER_03_ZERG_BULLIES, RegionFromId(41), false);
     gf_SetUpWarpPrism(PointFromId(1456), PointFromId(1481), gv_pLAYER_10_PURIFIER);
@@ -4268,7 +4320,7 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     libVCMI_gf_GameOver(libVCMI_ge_CampaignMissionGameResultType_Victory);
     if ((libLotv_gf_DifficultyValueInt2(0, 0, 1, 1) == 1)) {
         TimerPause(gv_mastery_SpeedRunTimer, true);
@@ -4642,7 +4694,16 @@ bool gt_ObjectiveDestroyVoidShardsCreate_Func (bool testConds, bool runActions) 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("PAiur05Primary01");
     gv_objectiveDestroyVoidShards = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PAiur05Primary01", "", gf_NumberofDestroyedVoidShards());
+    ObjectiveSetName(gv_objectiveDestroyVoidShards, libVoiC_gf_MissionObjectiveName("PAiur05Primary01"));
+    ObjectiveShow(gv_objectiveDestroyVoidShards, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveDestroyVoidShards, lib5BD4895D_ge_APObjectiveCategory_Primary, "", gf_NumberofDestroyedVoidShards(), libVoiC_gf_MissionObjectiveItemCount("PAiur05Primary01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, gv_LOCATION_ID_SOUTHEAST_VOID_SHARD);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, gv_LOCATION_ID_SOUTH_VOID_SHARD);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, gv_LOCATION_ID_SOUTHWEST_VOID_SHARD);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, gv_LOCATION_ID_NORTH_VOID_SHARD);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, gv_LOCATION_ID_NORTHWEST_VOID_SHARD);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidShards, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyVoidShards, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -4740,7 +4801,13 @@ void gt_ObjectiveDestroyVoidShardsFailed_Init () {
 // Trigger: Objective Clear Warp In Zones Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveClearWarpInZonesCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Secondary;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -4758,8 +4825,14 @@ bool gt_ObjectiveClearWarpInZonesCreate_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     libVCMI_gf_CreateObjectiveCampaign("PAiur05Bonus01");
-    gv_objectiveRescueStalkers = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "PAiur05Bonus01", "", gv_objectiveClearWarpInZonesCount);
+    gv_objectiveClearWarpInZones = ObjectiveLastCreated();
+    ObjectiveSetName(gv_objectiveClearWarpInZones, libVoiC_gf_MissionObjectiveName("PAiur05Bonus01"));
+    ObjectiveShow(gv_objectiveClearWarpInZones, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveClearWarpInZones, lv_category, "", gv_objectiveClearWarpInZonesCount, libVoiC_gf_MissionObjectiveItemCount("PAiur05Bonus01"), false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveClearWarpInZones, gv_LOCATION_ID_NERAZIM_WARP_IN_ZONE);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveClearWarpInZones, gv_LOCATION_ID_TALDARIM_WARP_IN_ZONE);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveClearWarpInZones, gv_LOCATION_ID_PURIFIER_WARP_IN_ZONE);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveClearWarpInZones, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -4788,7 +4861,7 @@ bool gt_ObjectiveClearWarpInZonesComplete_Func (bool testConds, bool runActions)
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveClearWarpInZonesCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveClearWarpInZones);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -4812,7 +4885,7 @@ bool gt_ObjectiveClearWarpInZonesUpdate_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveClearWarpInZonesCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveRescueStalkers, gv_objectiveClearWarpInZonesCount);
+    lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveClearWarpInZones, gv_objectiveClearWarpInZonesCount);
     return true;
 }
 
@@ -4843,7 +4916,7 @@ bool gt_ObjectiveClearWarpInZonesFailed_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveClearWarpInZonesCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveClearWarpInZones);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -4873,7 +4946,7 @@ bool gt_IntroQ_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerQueueEnter();
     TriggerExecute(gt_IntroSetup, true, true);
-    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
+    if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false) && (libABFE498B_gv_aP_Triggers_Option_overridePlayerRace == "Neut")) {
         TriggerExecute(gt_IntroCinematic, true, true);
         TriggerExecute(gt_IntroCinematicEnd, true, true);
     }
@@ -5622,6 +5695,7 @@ void gt_VictoryAmonBeamController_Init () {
 // Trigger Initialization
 //--------------------------------------------------------------------------------------------------
 void InitTriggers () {
+    gt_FactionSwapInit_Init();
     gt_onDifficultyCasual_Init();
     gt_onDifficultyNormal_Init();
     gt_onDifficultyHard_Init();

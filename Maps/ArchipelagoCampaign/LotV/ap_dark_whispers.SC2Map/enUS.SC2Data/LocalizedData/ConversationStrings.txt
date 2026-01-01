@@ -1,0 +1,6 @@
+﻿Character/Name/Ghost=Ghost
+Character/Name/Infestor=Infestor
+Conversation/GhostVictory/Line00001=Have we met? My memory is... not the best.
+Conversation/GhostVictory/Line00002=Ever hear the one about the mind-wiped Ghost? I would tell it to you,... but I forgot how it ends.
+Conversation/InfestorVictory/Line00001=(unintelligible)
+Conversation/InfestorVictory/Line00002=(unintelligible)

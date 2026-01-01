@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Catalog>
+<Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../schemas/SchemaUpgradeData.xsd">
     <CUpgrade id="AP_SOAUIFreezePrevent">
         <EffectArray Reference="Behavior,IceWaveFrozen,Modification.TimeScale" Value="0.1"/>
         <EffectArray Reference="Behavior,PurifierStasisLongTerm,Modification.TimeScale" Value="0.1"/>
@@ -138,6 +138,54 @@
         <EffectArray Operation="Set" Reference="Weapon,ServitorStrike,Icon" Value="Assets\Textures\btn-upgrade-protoss-groundweaponslevel3.dds"/>
         <EffectArray Operation="Set" Reference="Weapon,DarkTemplarChampionWeapon,Icon" Value="Assets\Textures\btn-upgrade-protoss-groundweaponslevel3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_ProtossGroundWeaponsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,PrologueZeratul,Level" Value="1"/>
+        <EffectArray Reference="Effect,PrologueZeratul,Amount" Value="5"/>
+        <EffectArray Reference="Weapon,ServitorStrike,Level" Value="1"/>
+        <EffectArray Reference="Effect,ServitorStrikeDamageA,Amount" Value="2"/>
+        <EffectArray Reference="Effect,ServitorStrikeDamageB,Amount" Value="2"/>
+        <EffectArray Reference="Weapon,DarkArchonChampionWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,AlarakBaneBladesDamage,Amount" Value="2"/>
+        <EffectArray Reference="Weapon,FenixWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,FenixSOAWeaponDamage,Amount" Value="6"/>
+        <EffectArray Reference="Effect,FenixSOAWeaponDamage,AttributeBonus[Armored]" Value="4"/>
+        <EffectArray Reference="Weapon,FenixChampionWhirlwind,Level" Value="1"/>
+        <EffectArray Reference="Effect,FenixChampionDamage,Amount" Value="4"/>
+        <EffectArray Reference="Weapon,DarkTemplarChampionWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,DarkTemplarChampionDamage,Amount" Value="10"/>
+        <EffectArray Reference="Weapon,ArtanisMeleeVoidUlnar,Level" Value="1"/>
+        <EffectArray Reference="Weapon,ArtanisVoidUlnar,Level" Value="1"/>
+        <EffectArray Reference="Effect,ArtanisVoidUlnarDamage,Amount" Value="2"/>
+
+        <EffectArray Operation="Set" Reference="Weapon,PrologueZeratul,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,ServitorStrike,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,DarkTemplarChampionWeapon,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ProtossGroundWeaponsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,PrologueZeratul,Level" Value="1"/>
+        <EffectArray Reference="Effect,PrologueZeratul,Amount" Value="5"/>
+        <EffectArray Reference="Weapon,ServitorStrike,Level" Value="1"/>
+        <EffectArray Reference="Effect,ServitorStrikeDamageA,Amount" Value="2"/>
+        <EffectArray Reference="Effect,ServitorStrikeDamageB,Amount" Value="2"/>
+        <EffectArray Reference="Weapon,DarkArchonChampionWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,AlarakBaneBladesDamage,Amount" Value="2"/>
+        <EffectArray Reference="Weapon,FenixWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,FenixSOAWeaponDamage,Amount" Value="6"/>
+        <EffectArray Reference="Effect,FenixSOAWeaponDamage,AttributeBonus[Armored]" Value="4"/>
+        <EffectArray Reference="Weapon,FenixChampionWhirlwind,Level" Value="1"/>
+        <EffectArray Reference="Effect,FenixChampionDamage,Amount" Value="4"/>
+        <EffectArray Reference="Weapon,DarkTemplarChampionWeapon,Level" Value="1"/>
+        <EffectArray Reference="Effect,DarkTemplarChampionDamage,Amount" Value="10"/>
+        <EffectArray Reference="Weapon,ArtanisMeleeVoidUlnar,Level" Value="1"/>
+        <EffectArray Reference="Weapon,ArtanisVoidUlnar,Level" Value="1"/>
+        <EffectArray Reference="Effect,ArtanisVoidUlnarDamage,Amount" Value="2"/>
+
+        <EffectArray Operation="Set" Reference="Weapon,PrologueZeratul,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,ServitorStrike,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,DarkTemplarChampionWeapon,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundweaponslevel5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_BaseProtossGroundArmors">
         <!-- Override -->
         <EffectArray Reference="Unit,PrologueZeratul,LifeArmor" Value="1.000000"/>
@@ -249,6 +297,50 @@
         <EffectArray Operation="Set" Reference="Actor,VorazunChampion,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-groundarmorlevel3.dds"/>
         <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-groundarmorlevel3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_ProtossGroundArmorsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Unit,PrologueZeratul,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,PrologueZeratul,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,KaraxChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,KaraxChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,AlarakChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,AlarakChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,FenixChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,FenixChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,VorazunChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,VorazunChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,ArtanisVoid,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,ArtanisVoid,LifeArmorLevel" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,PrologueZeratul,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,KaraxChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,AlarakChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,FenixChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,VorazunChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ProtossGroundArmorsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Unit,PrologueZeratul,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,PrologueZeratul,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,KaraxChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,KaraxChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,AlarakChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,AlarakChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,FenixChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,FenixChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,VorazunChampion,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,VorazunChampion,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,ArtanisVoid,LifeArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,ArtanisVoid,LifeArmorLevel" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,PrologueZeratul,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,KaraxChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,AlarakChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,FenixChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,VorazunChampion,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-groundarmorlevel5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_BaseProtossShields">
         <!-- Override -->
         <EffectArray Reference="Unit,PrologueZeratul,ShieldArmor" Value="1.000000"/>
@@ -359,6 +451,48 @@
         <EffectArray Operation="Set" Reference="Actor,VorazunChampion,ShieldArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-shieldslevel3.dds"/>
         <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,ShieldArmorIcon" Value="Assets\Textures\btn-upgrade-protoss-shieldslevel3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_ProtossShieldsLevel4">
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldArmorLevel" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,PrologueZeratul,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,KaraxChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,AlarakChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,FenixChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,VorazunChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ProtossShieldsLevel5">
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldArmor" Value="1.000000"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldArmorLevel" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,PrologueZeratul,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,KaraxChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,AlarakChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,FenixChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,VorazunChampion,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,ArtanisVoid,ShieldArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-protoss-shieldslevel5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_BaseZergGroundArmors">
         <!-- Override -->
         <EffectArray Reference="Unit,Brutalisk,LifeArmorLevel" Value="1"/>
@@ -438,6 +572,38 @@
         <EffectArray Operation="Set" Reference="Actor,StukovInfestedTerran,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-zerg-groundcarapace-level3.dds"/>
         <EffectArray Operation="Set" Reference="Actor,InfestedStukov,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-zerg-groundcarapace-level3.dds"/>
     </CUpgrade>
+    <CUpgrade id="AP_ZergGroundArmorsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Unit,Brutalisk,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,Brutalisk,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,StukovInfestedTerran,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,StukovInfestedTerran,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,Dehaka,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,Dehaka,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,InfestedStukov,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,InfestedStukov,LifeArmor" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,Dehaka,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,Brutalisk,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,StukovInfestedTerran,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,InfestedStukov,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ZergGroundArmorsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Unit,Brutalisk,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,Brutalisk,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,StukovInfestedTerran,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,StukovInfestedTerran,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,Dehaka,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,Dehaka,LifeArmor" Value="1"/>
+        <EffectArray Reference="Unit,InfestedStukov,LifeArmorLevel" Value="1"/>
+        <EffectArray Reference="Unit,InfestedStukov,LifeArmor" Value="1"/>
+
+        <EffectArray Operation="Set" Reference="Actor,Dehaka,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,Brutalisk,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,StukovInfestedTerran,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Actor,InfestedStukov,LifeArmorIcon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-groundcarapace-level5.dds"/>
+    </CUpgrade>
     <CUpgrade id="AP_ZergMeleeWeaponsLevel1">
         <!-- Override -->
         <EffectArray Reference="Weapon,Brutalize,Level" Value="1"/>
@@ -470,6 +636,28 @@
 
         <EffectArray Operation="Set" Reference="Weapon,Dehaka,Icon" Value="Assets\Textures\btn-upgrade-zerg-meleeattacks-level3.dds"/>
         <EffectArray Operation="Set" Reference="Weapon,Brutalize,Icon" Value="Assets\Textures\btn-upgrade-zerg-meleeattacks-level3.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ZergMeleeWeaponsLevel4">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,Brutalize,Level" Value="1"/>
+        <EffectArray Reference="Effect,BrutalizeDamage,Amount" Value="5"/>
+        <EffectArray Reference="Weapon,Dehaka,Level" Value="1"/>
+        <EffectArray Reference="Effect,Dehaka,Amount" Value="2"/>
+        <EffectArray Reference="Effect,Dehaka,AttributeBonus[Structure]" Value="2"/>
+
+        <EffectArray Operation="Set" Reference="Weapon,Dehaka,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-meleeattacks-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,Brutalize,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-meleeattacks-level4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ZergMeleeWeaponsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Weapon,Brutalize,Level" Value="1"/>
+        <EffectArray Reference="Effect,BrutalizeDamage,Amount" Value="5"/>
+        <EffectArray Reference="Weapon,Dehaka,Level" Value="1"/>
+        <EffectArray Reference="Effect,Dehaka,Amount" Value="2"/>
+        <EffectArray Reference="Effect,Dehaka,AttributeBonus[Structure]" Value="2"/>
+
+        <EffectArray Operation="Set" Reference="Weapon,Dehaka,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-meleeattacks-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,Brutalize,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-meleeattacks-level5.dds"/>
     </CUpgrade>
     <CUpgrade id="AP_ZergMissileWeaponsLevel1">
         <!-- Override -->
@@ -522,33 +710,56 @@
         <EffectArray Operation="Set" Reference="Weapon,FerociousSpew,Icon" Value="Assets\Textures\btn-upgrade-zerg-missileattacks-level3.dds"/>
         <EffectArray Operation="Set" Reference="Weapon,StukovInfestedTerran,Icon" Value="Assets\Textures\btn-upgrade-zerg-missileattacks-level3.dds"/>
     </CUpgrade>
-    <CUpgrade id="AP_K5CreepBonuses">
+    <CUpgrade id="AP_ZergMissileWeaponsLevel4">
         <!-- Override -->
-        <EffectArray Reference="Unit,InfestedStukov,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,StukovInfestedTerran,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,InfestedTerranCampaign,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,InfestedCivilian,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,Dehaka,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,DehakaMirrorImage,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,SwarmQueen,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,LargeSwarmQueen,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,HugeSwarmQueen,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,Locust,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,Brutalisk,AttackSpeedMultiplierCreep" Value="0.3"/>
-        <EffectArray Reference="Unit,InfestedStukov,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,StukovInfestedTerran,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,InfestedTerranCampaign,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,InfestedCivilian,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,Dehaka,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,DehakaBurrowed,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,DehakaMirrorImage,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,DehakaMirrorImageBurrowed,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,SwarmQueen,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,SwarmQueenBurrowed,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,LargeSwarmQueen,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,LargeSwarmQueenBurrowed,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,HugeSwarmQueen,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,HugeSwarmQueenBurrowed,LifeRegenRateCreep" Value="0.820200"/>
-        <EffectArray Reference="Unit,Brutalisk,LifeRegenRateCreep" Value="0.820200"/>
+        <EffectArray Reference="Effect,DehakaAirDamage,Amount" Value="5"/>
+        <EffectArray Reference="Effect,DehakaAirDamage,AttributeBonus[Structure]" Value="2"/>
+        <EffectArray Reference="Weapon,DehakaAir,Level" Value="1"/>
+        <EffectArray Reference="Weapon,FerociousSpew,Level" Value="1"/>
+        <EffectArray Reference="Effect,FerociousSpewDamage,Amount" Value="4"/>
+        <EffectArray Reference="Effect,StukovInfestedTerran,Amount" Value="1"/>
+        <EffectArray Reference="Weapon,StukovInfestedTerran,Level" Value="1"/>
+        <EffectArray Reference="Effect,InfestedStukovDamage,Amount" Value="3"/>
+        <EffectArray Reference="Weapon,InfestedStukov,Level" Value="1"/>
+
+
+        <EffectArray Operation="Set" Reference="Weapon,DehakaAir,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,FerociousSpew,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level4.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,StukovInfestedTerran,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level4.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ZergMissileWeaponsLevel5">
+        <!-- Override -->
+        <EffectArray Reference="Effect,DehakaAirDamage,Amount" Value="5"/>
+        <EffectArray Reference="Effect,DehakaAirDamage,AttributeBonus[Structure]" Value="2"/>
+        <EffectArray Reference="Weapon,DehakaAir,Level" Value="1"/>
+        <EffectArray Reference="Weapon,FerociousSpew,Level" Value="1"/>
+        <EffectArray Reference="Effect,FerociousSpewDamage,Amount" Value="4"/>
+        <EffectArray Reference="Effect,StukovInfestedTerran,Amount" Value="1"/>
+        <EffectArray Reference="Weapon,StukovInfestedTerran,Level" Value="1"/>
+        <EffectArray Reference="Effect,InfestedStukovDamage,Amount" Value="3"/>
+        <EffectArray Reference="Weapon,InfestedStukov,Level" Value="1"/>
+
+
+        <EffectArray Operation="Set" Reference="Weapon,DehakaAir,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,FerociousSpew,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level5.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,StukovInfestedTerran,Icon" Value="AP\Assets\Custom\Textures\btn-upgrade-zerg-missileattacks-level5.dds"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ShieldRegenBonus">
+        <!--  Override -->
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldRegenRate" Value="0.05"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldRegenRate" Value="0.05"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldRegenRate" Value="0.05"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldRegenRate" Value="0.05"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldRegenRate" Value="0.05"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldRegenRate" Value="0.05"/>
+    </CUpgrade>
+    <CUpgrade id="AP_ShieldRegenBonus100Stack">
+        <!--  Override -->
+        <EffectArray Reference="Unit,PrologueZeratul,ShieldRegenRate" Value="5"/>
+        <EffectArray Reference="Unit,KaraxChampion,ShieldRegenRate" Value="5"/>
+        <EffectArray Reference="Unit,AlarakChampion,ShieldRegenRate" Value="5"/>
+        <EffectArray Reference="Unit,VorazunChampion,ShieldRegenRate" Value="5"/>
+        <EffectArray Reference="Unit,FenixChampion,ShieldRegenRate" Value="5"/>
+        <EffectArray Reference="Unit,ArtanisVoid,ShieldRegenRate" Value="5"/>
     </CUpgrade>
 </Catalog>

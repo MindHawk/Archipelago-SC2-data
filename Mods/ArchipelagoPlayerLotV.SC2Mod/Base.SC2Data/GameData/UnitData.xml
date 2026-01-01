@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Catalog>
+    <CUnit id="InfestedStukov">
+        <!-- Override -->
+        <BehaviorArray Link="AP_CreepFrenzy13Crawler"/>
+    </CUnit>
+    <CUnit id="StukovInfestedTerran">
+        <!-- Override -->
+        <BehaviorArray Link="AP_CreepFrenzy13Crawler"/>
+    </CUnit>
     <CUnit id="SuperWarpGate">
         <!-- Override -->
         <!-- WoL Protoss warp in reinforcements -->
@@ -19,5 +27,10 @@
             <LayoutButtons index="5" Face="AP_Stim" Type="AbilCmd" AbilCmd="AP_Stimpack,0" Row="2" Column="0"/>
             <LayoutButtons Face="AP_SuperStimpackSmall" Type="AbilCmd" AbilCmd="AP_SuperStimpackMarine,0" Row="2" Column="0"/>
         </CardLayouts>
+    </CUnit>
+    <CUnit id="ArtanisVoid">
+        <!-- Override -->
+        <!-- Set higher than AP_K5Kerrigan for vanilla relationship in Infinite Cycle -->
+        <SubgroupPriority value="100"/>
     </CUnit>
 </Catalog>

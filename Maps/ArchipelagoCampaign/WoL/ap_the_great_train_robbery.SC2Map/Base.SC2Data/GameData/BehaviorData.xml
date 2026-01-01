@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CBehaviorBuff id="Exp03StasisLongTerm">
+        <EditorCategories value="Race:Zerg,AbilityorEffectType:Units"/>
+        <Modification TimeScale="0.01">
+            <ModifyFlags index="SuppressMoving" value="1"/>
+            <StateFlags index="Invulnerable" value="1"/>
+            <StateFlags index="Stun" value="1"/>
+        </Modification>
+        <TimeScaleSource Value="Global"/>
+        <BehaviorCategories index="Slow" value="1"/>
+    </CBehaviorBuff>
+    <CBehaviorBuff id="Exp03StasisEnding">
+        <EditorCategories value="Race:Zerg,AbilityorEffectType:Units"/>
+        <Modification>
+            <StateFlags index="Invulnerable" value="1"/>
+            <StateFlags index="Stun" value="1"/>
+        </Modification>
+        <Period value="1"/>
+        <PeriodicEffect value="Exp03StasisPulse"/>
+        <TimeScaleSource Value="Global"/>
+    </CBehaviorBuff>
+</Catalog>

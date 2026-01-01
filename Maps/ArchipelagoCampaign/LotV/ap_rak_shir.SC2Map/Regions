@@ -482,4 +482,10 @@
             <radius value="7.483"/>
         </shape>
     </region>
+    <region id="15">
+        <name value="NorthResourceNodes"/>
+        <shape type="rect">
+            <quad value="104.2216,115.405,189.3608,165.8247"/>
+        </shape>
+    </region>
 </Regions>

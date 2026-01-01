@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CActorModel id="AP_NexusFlying" parent="ModelAddition">
+        <EditorCategories value=""/>
+        <On Terms="ActorCreation" Target="_Selectable" Send="ModelSwap Nexus"/>
+        <On Terms="Behavior.AP_NexusFlying.On" Send="Create"/>
+        <On Terms="Behavior.AP_NexusFlying.Off" Send="Destroy"/>
+        <On Terms="ActorCreation" Target="_Selectable" Send="HostSiteOpsRemove ::Host SOpBankerUnitBuilding"/>
+        <On Terms="ActorCreation" Target="_Selectable" Send="HostSiteOpsAdd ::Host AP_NexusFlyingRotator"/>
+        <On Terms="UnitBirth.AP_CommandCenterFlying.EditorPlaced" Send="Create"/>
+        <HostSiteOps Ops="AP_NexusFlyingRotation"/>
+        <Model value="PurifierPlanetCrackerBeam"/>
+        <Scale value="0.500000"/>
+    </CActorModel>
+    <CActorSiteOpRotationExplicit id="AP_NexusFlyingRotation">
+        <EditorCategories value=""/>
+        <Forward value="0.000000,0.000000,-1.000000"/>
+        <Up value="0.000000,1.000000,0.000000"/>
+        <IsLocal value="1"/>
+    </CActorSiteOpRotationExplicit>
+    <CActorSiteOpRotator id="AP_NexusFlyingRotator">
+        <EditorCategories value=""/>
+        <LocalAxis value="0.000000,0.000000,1.000000"/>
+        <Rate value="30.000000"/>
+    </CActorSiteOpRotator>
+</Catalog>

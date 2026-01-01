@@ -1,0 +1,6 @@
+Character/Name/Swann=Swann
+Character/Name/Raynor=Raynor
+Character/Name/Tychus=Tychus
+Conversation/zMission_Expedition01/Line00456=I got something new for ya, Cowboy! Marauders - the latest word in big badda boom hardware.
+Conversation/zMission_Expedition01/Line00457=Now ain't the time, Swann.
+Conversation/zMission_Expedition01/Line00458=Thanks for the advice, son. Now shut up.

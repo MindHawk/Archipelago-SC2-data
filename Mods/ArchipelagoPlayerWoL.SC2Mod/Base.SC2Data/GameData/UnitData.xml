@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Catalog>
+    <CUnit id="ForceField">
+        <AbilArray Link="AP_Shatter"/>
+        <!-- Do not give this unit a footprint because that can allow units to walk into unpathable areas -->
+    </CUnit>
     <CUnit id="TechReactor">
         <!-- Override -->
         <!-- Add-on stealing -->
@@ -55,5 +59,22 @@
             <LayoutButtons Face="AP_SuperStimpackSmall" Type="AbilCmd" AbilCmd="AP_SuperStimpackMarine,0" Row="2" Column="0"/>
             <LayoutButtons Face="AP_MagrailMunitions" Type="AbilCmd" AbilCmd="AP_MagrailMunitionsMarine,Execute" Row="2" Column="1"/>
         </CardLayouts>
+    </CUnit>
+    <CUnit id="Odin">
+        <!-- Override -->
+        <BehaviorArray Link="AP_RegeneratorRegenBioSteelL1L2"/>
+        <BehaviorArray Link="AP_RegeneratorRegenBioSteelL3"/>
+    </CUnit>
+    <CUnit id="HybridDestroyer">
+        <!-- Override -->
+        <BehaviorArray Link="AP_MindControlImmune"/>
+    </CUnit>
+    <CUnit id="HybridReaver">
+        <!-- Override -->
+        <BehaviorArray Link="AP_MindControlImmune"/>
+    </CUnit>
+    <CUnit id="TalDarimMothership">
+        <!-- Override -->
+        <BehaviorArray Link="AP_MindControlImmune"/>
     </CUnit>
 </Catalog>

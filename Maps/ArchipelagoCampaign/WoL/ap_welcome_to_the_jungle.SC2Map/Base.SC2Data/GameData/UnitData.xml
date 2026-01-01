@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CUnit id="AP_Drone">
+        <AbilArray Link="CancelTerrazineHarvest"/>
+    </CUnit>
+    <CUnit id="AP_ElderProbe">
+        <AbilArray index="5" Link="Warpable"/>
+        <AbilArray index="7" Link="CancelTerrazineHarvest"/>
+    </CUnit>
+    <CUnit id="AP_Probe">
+        <AbilArray Link="CancelTerrazineHarvest"/>
+    </CUnit>
+</Catalog>

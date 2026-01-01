@@ -40,6 +40,12 @@ void InitLibs () {
 //--------------------------------------------------------------------------------------------------
 // Constants
 //--------------------------------------------------------------------------------------------------
+const int gv_lOCATION_ID_VOID_THRASHER_WAVE_INITIAL = 1;
+const int gv_lOCATION_ID_VOID_THRASHER_WAVE_1 = 2;
+const int gv_lOCATION_ID_VOID_THRASHER_WAVE_2 = 3;
+const int gv_lOCATION_ID_VOID_THRASHER_WAVE_3 = 4;
+const int gv_lOCATION_ID_VOID_THRASHER_WAVE_4 = 5;
+const int gv_lOCATION_ID_KERRIGAN_KILLS = 6;
 const int gv_pLAYER_01_USER = 1;
 const int gv_pLAYER_02_DOMINION = 2;
 const int gv_pLAYER_02_DOMINION2 = 3;
@@ -49,6 +55,8 @@ const int gv_pLAYER_02_DOMINION5 = 6;
 const int gv_pLAYER_02_DOMINION6 = 7;
 const int gv_pLAYER_02_DOMINION7 = 8;
 const int gv_pLAYER_02_DOMINION8 = 9;
+const int gv_objectiveDestroyVoidThrashersMax = 8;
+const int gv_kerriganKillsMax = 15;
 
 //--------------------------------------------------------------------------------------------------
 // Global Variables
@@ -89,12 +97,15 @@ bool gv_celestialAchievementAwarded;
 unitgroup gv_resourcePickups;
 int gv_resourcePickupsCollected;
 int gv_resourcePickupsTotal;
-int gv_objectiveDestroyZergBase2;
-int gv_objectiveDestroyZergBase3;
-int gv_objectiveDestroyZergBase;
-int gv_objectiveDestroyZergBase4;
-int gv_objectiveRescueStalkers;
-int gv_objectiveRescueStalkers2;
+int gv_objectiveDestroyVoidForces;
+int gv_objectiveKerriganMustSurvive;
+int gv_objectiveDefendKerrigan;
+int gv_objectiveKerriganMustSurvive2;
+int gv_objectiveDestroyVoidThrasherWaves;
+int gv_voidThrasherCount;
+int gv_objectiveProtossSurvival;
+int gv_objectiveZergSurvival;
+int gv_objectiveKerriganKills;
 unitgroup gv_cinematicHiddenUnits;
 unitgroup gv_cinematicPausedUnits;
 unitgroup gv_cinematicTempUnits;
@@ -137,12 +148,14 @@ void InitGlobals () {
     gv_voidThrasherTerrainHideRegion = RegionFromId(30);
     gv_kerriganLifeAchievementThreshold = 1500.0;
     gv_resourcePickups = UnitGroupEmpty();
-    gv_objectiveDestroyZergBase2 = c_invalidObjectiveId;
-    gv_objectiveDestroyZergBase3 = c_invalidObjectiveId;
-    gv_objectiveDestroyZergBase = c_invalidObjectiveId;
-    gv_objectiveDestroyZergBase4 = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers = c_invalidObjectiveId;
-    gv_objectiveRescueStalkers2 = c_invalidObjectiveId;
+    gv_objectiveDestroyVoidForces = c_invalidObjectiveId;
+    gv_objectiveKerriganMustSurvive = c_invalidObjectiveId;
+    gv_objectiveDefendKerrigan = c_invalidObjectiveId;
+    gv_objectiveKerriganMustSurvive2 = c_invalidObjectiveId;
+    gv_objectiveDestroyVoidThrasherWaves = c_invalidObjectiveId;
+    gv_objectiveProtossSurvival = c_invalidObjectiveId;
+    gv_objectiveZergSurvival = c_invalidObjectiveId;
+    gv_objectiveKerriganKills = c_invalidObjectiveId;
     gv_cinematicHiddenUnits = UnitGroupEmpty();
     gv_cinematicPausedUnits = UnitGroupEmpty();
     gv_cinematicTempUnits = UnitGroupEmpty();
@@ -298,12 +311,20 @@ trigger gt_ObjectiveDefendKerriganFailed;
 trigger gt_ObjectiveKerriganMustSurviveCreate2;
 trigger gt_ObjectiveKerriganMustSurviveComplete2;
 trigger gt_ObjectiveKerriganMustSurviveFailed2;
+trigger gt_ObjectiveDestroyVoidThrashersCreate;
+trigger gt_ObjectiveDestroyVoidThrashersUpdate;
+trigger gt_ObjectiveDestroyVoidThrashersComplete;
 trigger gt_ObjectiveProtossSurvivalCreate;
 trigger gt_ObjectiveProtossSurvivalComplete;
 trigger gt_ObjectiveProtossSurvivalFailedQ;
 trigger gt_ObjectiveZergSurvivalCreate;
 trigger gt_ObjectiveZergSurvivalComplete;
 trigger gt_ObjectiveZergSurvivalFailedQ;
+trigger gt_ObjectiveKerriganKillsCreate;
+trigger gt_ObjectiveKerriganKillsVisible;
+trigger gt_ObjectiveKerriganKillsUpdate;
+trigger gt_ObjectiveKerriganKillsComplete;
+trigger gt_ObjectiveKerriganKillsFail;
 trigger gt_IntroQ;
 trigger gt_IntroSetup;
 trigger gt_IntroCinematic;
@@ -963,6 +984,7 @@ bool gt_TransferZergControlToPlayer_Func (bool testConds, bool runActions) {
         lib15EF4C78_gf_AP_Player_ReapplyDefaultBehaviorsToUnit(lv_unit);
     }
     PlayerModifyPropertyInt(gv_pLAYER_01_USER, c_playerPropSuppliesLimit, c_playerPropOperAdd, 200);
+    lib15EF4C78_gf_StartingWorkersAutoHarvest(gv_pLAYER_01_USER, RegionFromId(12), RegionFromId(13));
     UnitGroupAddUnitGroup(lv_unitGroup, UnitGroup("AP_Hive", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
     UnitGroupAddUnitGroup(lv_unitGroup, UnitGroup("AP_Lair", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
     UnitGroupAddUnitGroup(lv_unitGroup, UnitGroup("AP_Hatchery", gv_pLAYER_01_USER, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0));
@@ -1030,6 +1052,7 @@ bool gt_TransferZergControlToPlayer_Func (bool testConds, bool runActions) {
         libNtve_gf_RescueUnit(lv_unit, gv_pLAYER_01_USER, true);
         lib15EF4C78_gf_AP_Player_ReapplyDefaultBehaviorsToUnit(lv_unit);
     }
+    Wait(1.0, c_timeAI);
     return true;
 }
 
@@ -1090,6 +1113,7 @@ bool gt_TransferProtossControlToPlayer_Func (bool testConds, bool runActions) {
         lib15EF4C78_gf_AP_Player_ReapplyDefaultBehaviorsToUnit(lv_unit);
     }
     PlayerModifyPropertyInt(gv_pLAYER_01_USER, c_playerPropSuppliesLimit, c_playerPropOperAdd, 200);
+    lib15EF4C78_gf_StartingWorkersAutoHarvest(gv_pLAYER_01_USER, RegionFromId(10), RegionFromId(11));
     Wait(1.0, c_timeAI);
     auto57B017CB_g = UnitGroup(null, gv_pLAYER_02_DOMINION2, RegionPlayableMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
     auto57B017CB_u = UnitGroupCount(auto57B017CB_g, c_unitCountAll);
@@ -1809,6 +1833,7 @@ bool gt_StartGameStage01Q_Func (bool testConds, bool runActions) {
         return true;
     }
 
+    libABFE498B_gf_AP_Triggers_startNoBuild(gv_pLAYER_01_USER);
     UIAlertPoint("Trigger", gv_pLAYER_01_USER, StringExternal("Param/Value/4427C835"), null, UnitGetPosition(gv_kERRIGAN));
     UnitControlGroupAddUnit(gv_pLAYER_01_USER, 1, gv_kERRIGAN);
     libVCUI_gf_SetHeroPanelUnit(1, gv_kERRIGAN);
@@ -1838,6 +1863,7 @@ bool gt_StartGameStage01Q_Func (bool testConds, bool runActions) {
     Wait(2.0, c_timeReal);
     TriggerQueueEnter();
     TriggerExecute(gt_ObjectiveDestroyVoidForcesCreate, true, false);
+    TriggerExecute(gt_ObjectiveKerriganKillsCreate, true, false);
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate, true, true);
     if ((UnitIsSelected(gv_kERRIGAN, gv_pLAYER_01_USER) == false)) {
         libVCMI_gf_AttachReticleEffectAndTextTagOnUnit(libVCMI_ge_CampaginReticleType_ZergMainObjective, libVCMI_ge_CampaginReticleSize_Medium, StringExternal("Param/Value/8EFFCA6B"), gv_kERRIGAN, "Ref_Head");
@@ -1874,8 +1900,6 @@ bool gt_StartGameStage02Q_Func (bool testConds, bool runActions) {
     VisRevealerCreate(gv_pLAYER_01_USER, RegionFromId(5));
     VisRevealerCreate(gv_pLAYER_01_USER, RegionFromId(14));
     VisRevealerCreate(gv_pLAYER_01_USER, RegionFromId(15));
-    libLbty_gf_OrderWorkerstoGatherNearbyResources(RegionPlayableMap(), gv_pLAYER_01_USER);
-    UnitIssueOrder(UnitFromId(28), OrderTargetingUnit(AbilityCommand("RallyCommand", 0), UnitFromId(8)), c_orderQueueReplace);
     TriggerExecute(gt_S2_ProtossBullies_Activate, true, false);
     TriggerExecute(gt_S2_ZergBullies_Activate, true, false);
     TriggerExecute(gt_S2_VoidForcesCloseInController, true, false);
@@ -1883,6 +1907,7 @@ bool gt_StartGameStage02Q_Func (bool testConds, bool runActions) {
     TriggerEnable(gt_S2_TransmissionKerriganAttackedQ, true);
     TriggerEnable(gt_S2_TransmissionKerriganHealthLowQ, true);
     TriggerEnable(gt_S2_TransmissionKerriganHealthCriticalQ, true);
+    TriggerEnable(gt_ObjectiveDestroyVoidThrashersUpdate, true);
     if ((libABFE498B_gv_aP_Triggers_Option_takeOverAIAllies == false)) {
         TriggerEnable(gt_S2_ZergDeadQ, true);
         TriggerEnable(gt_S2_ProtossDeadQ, true);
@@ -1910,6 +1935,7 @@ bool gt_StartGameStage02Q_Func (bool testConds, bool runActions) {
     Wait(2.0, c_timeReal);
     TriggerQueueExit();
     Wait(30.0, c_timeGame);
+    TriggerExecute(gt_ObjectiveKerriganKillsVisible, true, false);
     TriggerExecute(gt_TipReadyQ, true, false);
     return true;
 }
@@ -6062,6 +6088,7 @@ bool gt_S2_VoidThrasherSpawn01_Func (bool testConds, bool runActions) {
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_S2_TransmissionThrasherSpawn01Q, true, false);
     gf_CreateVoidThrasher(RegionGetCenter(RegionFromId(24)), 8.0, 8.0);
+    TriggerExecute(gt_ObjectiveDestroyVoidThrashersCreate, true, false);
     return true;
 }
 
@@ -6588,6 +6615,7 @@ bool gt_AchievementUnitsKilledwithBeam_Func (bool testConds, bool runActions) {
     }
 
     gv_celestialBeamKills += 1;
+    TriggerExecute(gt_ObjectiveKerriganKillsUpdate, true, false);
     if ((libLotv_gf_DifficultyValueInt2(0, 1, 1, 1) == 1) && (gv_celestialBeamKills >= 60) && (gv_celestialAchievementAwarded == false)) {
         gv_celestialAchievementAwarded = true;
         libVoiC_gf_CampaignAwardAchievement("SC2Epilogue02_3", gv_pLAYER_01_USER);
@@ -6714,7 +6742,7 @@ bool gt_DefeatKerriganDied_Func (bool testConds, bool runActions) {
     TriggerQueuePause(true);
     TriggerQueueClear(c_triggerQueueRemove);
     Wait(2.0, c_timeReal);
-    if ((ObjectiveVisible(gv_objectiveDestroyZergBase3, gv_pLAYER_01_USER) == true)) {
+    if ((ObjectiveVisible(gv_objectiveKerriganMustSurvive, gv_pLAYER_01_USER) == true)) {
         TriggerExecute(gt_ObjectiveKerriganMustSurviveFailed, true, false);
     }
     else {
@@ -6783,13 +6811,14 @@ bool gt_VictorySequence_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(lib5BD4895D_gv_aP_Core_locationVictory);
     libVCMI_gf_GameOver(libVCMI_ge_CampaignMissionGameResultType_Victory);
     Wait(2.0, c_timeReal);
     TriggerExecute(gt_ObjectiveProtossSurvivalComplete, true, true);
     TriggerExecute(gt_ObjectiveZergSurvivalComplete, true, true);
     TriggerExecute(gt_ObjectiveDefendKerriganComplete, true, true);
     TriggerExecute(gt_ObjectiveKerriganMustSurviveComplete2, true, true);
+    TriggerExecute(gt_ObjectiveKerriganKillsComplete, true, true);
     libVCMI_gf_RunMissionVictorySequence(gt_VictoryQ);
     return true;
 }
@@ -7015,10 +7044,12 @@ bool gt_ObjectiveDestroyVoidForcesCreate_Func (bool testConds, bool runActions) 
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Primary01");
-    gv_objectiveDestroyZergBase2 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 3);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Primary01", "", 0);
-    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    gv_objectiveDestroyVoidForces = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objectiveDestroyVoidForces, 3);
+    ObjectiveShow(gv_objectiveDestroyVoidForces, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveDestroyVoidForces, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidForces, gv_lOCATION_ID_VOID_THRASHER_WAVE_INITIAL);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyVoidForces, true);
     return true;
 }
 
@@ -7049,7 +7080,8 @@ bool gt_ObjectiveDestroyVoidForcesComplete_Func (bool testConds, bool runActions
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDestroyVoidForcesCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase2);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyVoidForces);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_VOID_THRASHER_WAVE_INITIAL);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7081,7 +7113,7 @@ bool gt_ObjectiveDestroyVoidForcesFailed_Func (bool testConds, bool runActions) 
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDestroyVoidForcesCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase2);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyVoidForces);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7110,9 +7142,11 @@ bool gt_ObjectiveKerriganMustSurviveCreate_Func (bool testConds, bool runActions
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Primary02");
-    gv_objectiveDestroyZergBase3 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 3);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Primary02", "", 0);
+    gv_objectiveKerriganMustSurvive = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objectiveKerriganMustSurvive, 2);
+    ObjectiveShow(gv_objectiveKerriganMustSurvive, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveKerriganMustSurvive, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveKerriganMustSurvive, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7144,7 +7178,7 @@ bool gt_ObjectiveKerriganMustSurviveComplete_Func (bool testConds, bool runActio
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase3);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveKerriganMustSurvive);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7176,7 +7210,7 @@ bool gt_ObjectiveKerriganMustSurviveFailed_Func (bool testConds, bool runActions
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase3);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveKerriganMustSurvive);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7205,9 +7239,12 @@ bool gt_ObjectiveDefendKerriganCreate_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Primary03");
-    gv_objectiveDestroyZergBase = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 3);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Primary03", "", 0);
+    gv_objectiveDefendKerrigan = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objectiveDefendKerrigan, 3);
+    ObjectiveShow(gv_objectiveDefendKerrigan, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveDefendKerrigan, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDefendKerrigan, lib5BD4895D_gv_aP_Core_locationVictory);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDefendKerrigan, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7239,7 +7276,7 @@ bool gt_ObjectiveDefendKerriganComplete_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDefendKerriganCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDefendKerrigan);
     return true;
 }
 
@@ -7270,7 +7307,7 @@ bool gt_ObjectiveDefendKerriganFailed_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveDefendKerriganCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDefendKerrigan);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7299,9 +7336,11 @@ bool gt_ObjectiveKerriganMustSurviveCreate2_Func (bool testConds, bool runAction
 
     TriggerEnable(TriggerGetCurrent(), false);
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Primary02");
-    gv_objectiveDestroyZergBase4 = ObjectiveLastCreated();
-    ObjectiveSetPriority(ObjectiveLastCreated(), 3);
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Primary02", "", 0);
+    gv_objectiveKerriganMustSurvive2 = ObjectiveLastCreated();
+    ObjectiveSetPriority(gv_objectiveKerriganMustSurvive2, 2);
+    ObjectiveShow(gv_objectiveKerriganMustSurvive2, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveKerriganMustSurvive2, lib5BD4895D_ge_APObjectiveCategory_Primary, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveKerriganMustSurvive2, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7333,7 +7372,7 @@ bool gt_ObjectiveKerriganMustSurviveComplete2_Func (bool testConds, bool runActi
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate2, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyZergBase4);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveKerriganMustSurvive2);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7365,7 +7404,7 @@ bool gt_ObjectiveKerriganMustSurviveFailed2_Func (bool testConds, bool runAction
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveKerriganMustSurviveCreate2, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveDestroyZergBase4);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveKerriganMustSurvive2);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7376,9 +7415,9 @@ void gt_ObjectiveKerriganMustSurviveFailed2_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: Objective Protoss Survival Create
+// Trigger: Objective Destroy Void Thrashers Create
 //--------------------------------------------------------------------------------------------------
-bool gt_ObjectiveProtossSurvivalCreate_Func (bool testConds, bool runActions) {
+bool gt_ObjectiveDestroyVoidThrashersCreate_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
     // Conditions
     if (testConds) {
@@ -7396,9 +7435,160 @@ bool gt_ObjectiveProtossSurvivalCreate_Func (bool testConds, bool runActions) {
     while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
         Wait(1.0, c_timeGame);
     }
-    gv_objectiveRescueStalkers = ObjectiveLastCreated();
+    ObjectiveCreate(StringExternal("Param/Value/C9B1CB13"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveDestroyVoidThrasherWaves = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveDestroyVoidThrasherWaves, lib5BD4895D_ge_APObjectiveCategory_Extra, "Waves", 0, 4, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidThrasherWaves, gv_lOCATION_ID_VOID_THRASHER_WAVE_1);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidThrasherWaves, gv_lOCATION_ID_VOID_THRASHER_WAVE_2);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidThrasherWaves, gv_lOCATION_ID_VOID_THRASHER_WAVE_3);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveDestroyVoidThrasherWaves, gv_lOCATION_ID_VOID_THRASHER_WAVE_4);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyVoidThrasherWaves, true);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyVoidThrashersCreate_Init () {
+    gt_ObjectiveDestroyVoidThrashersCreate = TriggerCreate("gt_ObjectiveDestroyVoidThrashersCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Destroy Void Thrashers Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyVoidThrashersUpdate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    int autoF06E9341_val;
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+
+        if (!((UnitGetType(EventUnit()) == "VoidThrasher"))) {
+            return false;
+        }
+
+        if (!((gv_voidThrasherCount < gv_objectiveDestroyVoidThrashersMax))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerExecute(gt_ObjectiveDestroyVoidThrashersCreate, true, false);
+    gv_voidThrasherCount = (gv_voidThrasherCount + 1);
+    autoF06E9341_val = gv_voidThrasherCount;
+    if (autoF06E9341_val == 1) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_VOID_THRASHER_WAVE_1);
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyVoidThrasherWaves, 1);
+    }
+    else if (autoF06E9341_val == 2) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_VOID_THRASHER_WAVE_2);
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyVoidThrasherWaves, 2);
+    }
+    else if (autoF06E9341_val == 4) {
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_VOID_THRASHER_WAVE_3);
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyVoidThrasherWaves, 3);
+    }
+    else if (autoF06E9341_val == 6) {
+        TriggerEnable(TriggerGetCurrent(), false);
+        lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_VOID_THRASHER_WAVE_4);
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveDestroyVoidThrasherWaves, 4);
+        TriggerExecute(gt_ObjectiveDestroyVoidThrashersComplete, true, false);
+    }
+    else {
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyVoidThrashersUpdate_Init () {
+    gt_ObjectiveDestroyVoidThrashersUpdate = TriggerCreate("gt_ObjectiveDestroyVoidThrashersUpdate_Func");
+    TriggerEnable(gt_ObjectiveDestroyVoidThrashersUpdate, false);
+    TriggerAddEventUnitDied(gt_ObjectiveDestroyVoidThrashersUpdate, null);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Destroy Void Thrashers Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveDestroyVoidThrashersComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveDestroyVoidThrashersCreate, true, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveDestroyVoidThrasherWaves);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveDestroyVoidThrashersComplete_Init () {
+    gt_ObjectiveDestroyVoidThrashersComplete = TriggerCreate("gt_ObjectiveDestroyVoidThrashersComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Protoss Survival Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveProtossSurvivalCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Challenge;
+
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+        Wait(1.0, c_timeGame);
+    }
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Bonus02");
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Bonus02", "", 0);
+    gv_objectiveProtossSurvival = ObjectiveLastCreated();
+    ObjectiveShow(gv_objectiveProtossSurvival, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveProtossSurvival, lv_category, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveProtossSurvival, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7427,7 +7617,7 @@ bool gt_ObjectiveProtossSurvivalComplete_Func (bool testConds, bool runActions) 
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveProtossSurvivalCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveProtossSurvival);
     return true;
 }
 
@@ -7454,12 +7644,13 @@ bool gt_ObjectiveProtossSurvivalFailedQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveProtossSurvivalComplete, false);
     while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveProtossSurvivalCreate, true, false);
     TriggerQueueEnter();
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveRescueStalkers);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveProtossSurvival);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     TriggerQueueExit();
     return true;
@@ -7474,7 +7665,13 @@ void gt_ObjectiveProtossSurvivalFailedQ_Init () {
 // Trigger: Objective Zerg Survival Create
 //--------------------------------------------------------------------------------------------------
 bool gt_ObjectiveZergSurvivalCreate_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_category;
+
     // Automatic Variable Declarations
+    // Variable Initialization
+    lv_category = lib5BD4895D_ge_APObjectiveCategory_Challenge;
+
     // Conditions
     if (testConds) {
         if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
@@ -7492,8 +7689,10 @@ bool gt_ObjectiveZergSurvivalCreate_Func (bool testConds, bool runActions) {
         Wait(1.0, c_timeGame);
     }
     libVCMI_gf_CreateObjectiveCampaign("SC2Epilogue02Bonus01");
-    gv_objectiveRescueStalkers2 = ObjectiveLastCreated();
-    lib5BD4895D_gf_AP_Core_addObjectiveFromData(ObjectiveLastCreated(), "SC2Epilogue02Bonus01", "", 0);
+    gv_objectiveZergSurvival = ObjectiveLastCreated();
+    ObjectiveShow(gv_objectiveZergSurvival, PlayerGroupAll(), false);
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveSimple(gv_objectiveZergSurvival, lv_category, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveZergSurvival, true);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     return true;
 }
@@ -7522,7 +7721,7 @@ bool gt_ObjectiveZergSurvivalComplete_Func (bool testConds, bool runActions) {
 
     TriggerEnable(TriggerGetCurrent(), false);
     TriggerExecute(gt_ObjectiveZergSurvivalCreate, true, false);
-    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveRescueStalkers2);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveZergSurvival);
     return true;
 }
 
@@ -7549,12 +7748,13 @@ bool gt_ObjectiveZergSurvivalFailedQ_Func (bool testConds, bool runActions) {
     }
 
     TriggerEnable(TriggerGetCurrent(), false);
+    TriggerEnable(gt_ObjectiveZergSurvivalComplete, false);
     while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
         Wait(1.0, c_timeGame);
     }
     TriggerExecute(gt_ObjectiveZergSurvivalCreate, true, false);
     TriggerQueueEnter();
-    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveRescueStalkers2);
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveZergSurvival);
     Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
     TriggerQueueExit();
     return true;
@@ -7563,6 +7763,180 @@ bool gt_ObjectiveZergSurvivalFailedQ_Func (bool testConds, bool runActions) {
 //--------------------------------------------------------------------------------------------------
 void gt_ObjectiveZergSurvivalFailedQ_Init () {
     gt_ObjectiveZergSurvivalFailedQ = TriggerCreate("gt_ObjectiveZergSurvivalFailedQ_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kerrigan Kills Create
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKerriganKillsCreate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    ObjectiveCreate(StringExternal("Param/Value/F9AA913A"), StringToText(""), c_objectiveStateHidden, false);
+    gv_objectiveKerriganKills = ObjectiveLastCreated();
+    lib5BD4895D_gf_AP_Core_addCategoryObjectiveWithCounter(gv_objectiveKerriganKills, lib5BD4895D_ge_APObjectiveCategory_Mastery, "", gv_celestialBeamKills, gv_kerriganKillsMax, true);
+    lib5BD4895D_gf_AP_Core_associateObjectiveWithLocation(gv_objectiveKerriganKills, gv_lOCATION_ID_KERRIGAN_KILLS);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKerriganKillsCreate_Init () {
+    gt_ObjectiveKerriganKillsCreate = TriggerCreate("gt_ObjectiveKerriganKillsCreate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kerrigan Kills Visible
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKerriganKillsVisible_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    while (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+        Wait(1.0, c_timeGame);
+    }
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveKerriganKills, true);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKerriganKillsVisible_Init () {
+    gt_ObjectiveKerriganKillsVisible = TriggerCreate("gt_ObjectiveKerriganKillsVisible_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kerrigan Kills Update
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKerriganKillsUpdate_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((libNtve_gf_PlayerInCinematicMode(gv_pLAYER_01_USER) == false))) {
+            return false;
+        }
+
+        if (!((libVCMI_gf_GameIsOver() == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((gv_celestialBeamKills <= gv_kerriganKillsMax)) {
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveKerriganKills, gv_celestialBeamKills);
+    }
+    else {
+        lib5BD4895D_gf_AP_Core_setObjectiveCounter(gv_objectiveKerriganKills, gv_celestialBeamKills);
+        lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveKerriganKills);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKerriganKillsUpdate_Init () {
+    gt_ObjectiveKerriganKillsUpdate = TriggerCreate("gt_ObjectiveKerriganKillsUpdate_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kerrigan Kills Complete
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKerriganKillsComplete_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((gv_celestialBeamKills <= gv_kerriganKillsMax))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveKerriganKillsCreate, true, false);
+    TriggerExecute(gt_ObjectiveKerriganKillsVisible, true, false);
+    lib5BD4895D_gf_AP_Core_collectLocationUpdateObjective(gv_lOCATION_ID_KERRIGAN_KILLS);
+    lib5BD4895D_gf_AP_Core_setObjectiveCompleted(gv_objectiveKerriganKills);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKerriganKillsComplete_Init () {
+    gt_ObjectiveKerriganKillsComplete = TriggerCreate("gt_ObjectiveKerriganKillsComplete_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Objective Kerrigan Kills Fail
+//--------------------------------------------------------------------------------------------------
+bool gt_ObjectiveKerriganKillsFail_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((TriggerIsEnabled(TriggerGetCurrent()) == true))) {
+            return false;
+        }
+
+        if (!((gv_celestialBeamKills > gv_kerriganKillsMax))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerEnable(TriggerGetCurrent(), false);
+    TriggerExecute(gt_ObjectiveKerriganKillsCreate, true, false);
+    TriggerExecute(gt_ObjectiveKerriganKillsVisible, true, false);
+    TriggerQueueEnter();
+    lib5BD4895D_gf_AP_Core_setObjectiveFailed(gv_objectiveKerriganKills);
+    Wait(libVCMI_gv_campaignObjectiveDelay, c_timeReal);
+    TriggerQueueExit();
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void gt_ObjectiveKerriganKillsFail_Init () {
+    gt_ObjectiveKerriganKillsFail = TriggerCreate("gt_ObjectiveKerriganKillsFail_Func");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -8396,6 +8770,7 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
     }
 
     libVCMI_gf_StopCinematicSounds();
+    libABFE498B_gf_AP_Triggers_resetBase(gv_pLAYER_01_USER);
     auto2DF2A228_g = gv_cinematicTempUnits;
     auto2DF2A228_u = UnitGroupCount(auto2DF2A228_g, c_unitCountAll);
     for (;; auto2DF2A228_u -= 1) {
@@ -8436,13 +8811,12 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
     GameTimeOfDayPause(false);
     PlayerSetState(gv_pLAYER_01_USER, c_playerStateXPGain, true);
     PlayerSetRace(gv_pLAYER_01_USER, "Terr");
+    lib5BD4895D_gf_AP_Core_Util_FixPlayerMaxSupplyAfterRaceSwap(gv_pLAYER_01_USER);
     Wait(0.0625, c_timeGame);
     SoundtrackStop(PlayerGroupAll(), c_soundtrackCategoryMusic, true);
     SoundtrackPlay(PlayerGroupAll(), c_soundtrackCategoryMusic, gv_mapMusicTrack, c_soundtrackCueAny, c_soundtrackIndexAny, true);
-    ObjectiveSetState(gv_objectiveDestroyZergBase2, c_objectiveStateHidden);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveDestroyZergBase2);
-    ObjectiveSetState(gv_objectiveDestroyZergBase3, c_objectiveStateHidden);
-    lib5BD4895D_gf_AP_Core_showObjective(gv_objectiveDestroyZergBase3);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveDestroyVoidForces, false);
+    lib5BD4895D_gf_AP_Core_setObjectiveVisibility(gv_objectiveKerriganMustSurvive, false);
     CameraApplyInfo(gv_pLAYER_01_USER, CameraInfoDefault(), 0.0, -1, 10, false);
     VisExploreArea(gv_pLAYER_01_USER, RegionEntireMap(), false, false);
     if ((libABFE498B_gv_aP_Triggers_skipCutscenes == false)) {
@@ -8506,7 +8880,6 @@ bool gt_MidCleanup_Func (bool testConds, bool runActions) {
         TriggerExecute(gt_TransferProtossControlToPlayer, true, false);
     }
 
-    lib5BD4895D_gf_AP_Core_sendLocationLocal(1);
     TriggerExecute(gt_StartAI, true, false);
     Wait(0.5, c_timeReal);
     if ((gv_cinematicCompleted == true)) {
@@ -9384,12 +9757,20 @@ void InitTriggers () {
     gt_ObjectiveKerriganMustSurviveCreate2_Init();
     gt_ObjectiveKerriganMustSurviveComplete2_Init();
     gt_ObjectiveKerriganMustSurviveFailed2_Init();
+    gt_ObjectiveDestroyVoidThrashersCreate_Init();
+    gt_ObjectiveDestroyVoidThrashersUpdate_Init();
+    gt_ObjectiveDestroyVoidThrashersComplete_Init();
     gt_ObjectiveProtossSurvivalCreate_Init();
     gt_ObjectiveProtossSurvivalComplete_Init();
     gt_ObjectiveProtossSurvivalFailedQ_Init();
     gt_ObjectiveZergSurvivalCreate_Init();
     gt_ObjectiveZergSurvivalComplete_Init();
     gt_ObjectiveZergSurvivalFailedQ_Init();
+    gt_ObjectiveKerriganKillsCreate_Init();
+    gt_ObjectiveKerriganKillsVisible_Init();
+    gt_ObjectiveKerriganKillsUpdate_Init();
+    gt_ObjectiveKerriganKillsComplete_Init();
+    gt_ObjectiveKerriganKillsFail_Init();
     gt_IntroQ_Init();
     gt_IntroSetup_Init();
     gt_IntroCinematic_Init();
